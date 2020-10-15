@@ -2,28 +2,42 @@ package com.example.doancuoiky;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView mNavigationView;
     private ViewPager mViewPager;
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView menuNavigationView;
+    private long backPressedTime;
+    private ListView listView;
+    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationView = findViewById(R.id.bottom_nav);
-        mViewPager = findViewById(R.id.view_pager);
-
+        anhXa();
+        actionToolBar();
         setUpViewPager();
 
         mNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -46,6 +60,46 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        menuNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(item.getItemId() == R.id.item1){
+                    TestFragment testFragment = new TestFragment();
+                    loadFragment(testFragment);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+                return false;
+            }
+        });
+    }
+
+    public void loadFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_activity,fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
+
+    private void actionToolBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.ic_action_menu);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+    }
+
+    private void anhXa() {
+        toolbar =(Toolbar) findViewById(R.id.toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        menuNavigationView = findViewById(R.id.navigation_view);
+        listView = findViewById(R.id.listview);
+        mNavigationView = findViewById(R.id.bottom_nav);
+        mViewPager = findViewById(R.id.view_pager);
     }
 
     private void setUpViewPager(){
@@ -81,5 +135,19 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(backPressedTime + 2000 > System.currentTimeMillis()){
+            mToast.cancel();
+            super.onBackPressed();
+            return;
+        }
+        else{
+            mToast = Toast.makeText(MainActivity.this,"Nhấn back thêm 1 lần nữa để thoát",Toast.LENGTH_SHORT);
+            mToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 }

@@ -10,4 +10,3 @@
         android:src="@drawable/iphone_banner_resize"
         android:scaleType="centerCrop"/>
 </LinearLayout>
-<!--    android:scaleType="centerCrop"-->
