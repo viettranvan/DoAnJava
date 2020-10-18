@@ -26,7 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private BottomNavigationView mNavigationView;
+
     private ViewPager mViewPager;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -45,33 +45,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         anhXa();
 
-        /*chuyển trang bằng cách vuốt*/
+        /*chuyển trang bằng cách click vào icon hoặc vuốt*/
         setUpViewPager();
 
         // toolbar, mở drawer menu
         actionToolBar();
-
-        /*======================= Navigation Bottom Tab===========================*/
-//        mNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()){
-//                    case R.id.action_home:
-//                        mViewPager.setCurrentItem(0);
-//                        break;
-//                    case R.id.action_cart:
-//                        mViewPager.setCurrentItem(1);
-//                        break;
-//                    case R.id.action_search:
-//                        mViewPager.setCurrentItem(2);
-//                        break;
-//                    case R.id.action_profile:
-//                        mViewPager.setCurrentItem(3);
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
 
         /*======================= Navigation Drawer Menu===========================*/
 
@@ -82,11 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         menuNavigationView.bringToFront();
         menuNavigationView.setNavigationItemSelectedListener(this);
-
-
     }
-
-
 
     private void actionToolBar() {
         setSupportActionBar(toolbar);
@@ -105,46 +79,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
         menuNavigationView = findViewById(R.id.navigation_view);
         listView = findViewById(R.id.listview);
-//        mNavigationView = findViewById(R.id.bottom_nav);
-//        mViewPager = findViewById(R.id.view_pager);
         ahBottomNavigation  = findViewById(R.id.AHBottomNavigation);
         ahBottomNavigationViewPager = findViewById(R.id.AHBottomNavigationViewPager);
     }
-
-//    private void setUpViewPager(){
-//        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-//        mViewPager.setAdapter(viewPagerAdapter);
-//
-//        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                switch (position){
-//                    case 0:
-//                        mNavigationView.getMenu().findItem(R.id.action_home).setChecked(true);
-//                        break;
-//                    case 1:
-//                        mNavigationView.getMenu().findItem(R.id.action_cart).setChecked(true);
-//                        break;
-//                    case 2:
-//                        mNavigationView.getMenu().findItem(R.id.action_search).setChecked(true);
-//                        break;
-//                    case 3:
-//                        mNavigationView.getMenu().findItem(R.id.action_profile).setChecked(true);
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
-//    }
 
     private void setUpViewPager(){
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -153,14 +90,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Create items
         AHBottomNavigationItem tab_home = new AHBottomNavigationItem(R.string.tab_home, R.mipmap.baseline_home_black_24, R.color.tab_home);
-        AHBottomNavigationItem tab_cart = new AHBottomNavigationItem(R.string.tab_cart, R.mipmap.baseline_shopping_cart_black_24, R.color.tab_cart);
-        AHBottomNavigationItem tab_product = new AHBottomNavigationItem(R.string.tab_product, R.mipmap.baseline_search_black_24, R.color.tab_product);
+        AHBottomNavigationItem tab_product = new AHBottomNavigationItem(R.string.tab_product, R.mipmap.icon_product, R.color.tab_product);
+        AHBottomNavigationItem tab_search = new AHBottomNavigationItem(R.string.tab_search, R.mipmap.baseline_search_black_24, R.color.tab_product);
+        AHBottomNavigationItem tab_cart = new AHBottomNavigationItem(R.string.tab_cart, R.mipmap.icon_cart, R.color.tab_cart);
         AHBottomNavigationItem tab_profile = new AHBottomNavigationItem(R.string.tab_profile, R.mipmap.baseline_person_black_24, R.color.tab_profile);
 
         // Add items
         ahBottomNavigation.addItem(tab_home);
-        ahBottomNavigation.addItem(tab_cart);
         ahBottomNavigation.addItem(tab_product);
+        ahBottomNavigation.addItem(tab_search);
+        ahBottomNavigation.addItem(tab_cart);
         ahBottomNavigation.addItem(tab_profile);
 
         ahBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
@@ -189,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-
     @Override
     public void onBackPressed() {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
@@ -209,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // su kien khi item trong drawer menu dc click
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -222,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_laptop:
                 drawerLayout.closeDrawer(GravityCompat.START);
-                mViewPager.setCurrentItem(1);
+                ahBottomNavigation.setCurrentItem(1);
                 break;
         }
         return true;
@@ -236,16 +175,3 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commit();
     }
 }
-
-//menuNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//@Override
-//public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        if(item.getItemId() == R.id.item1){
-//        TestFragment testFragment = new TestFragment();
-//        loadFragment(testFragment);
-//        drawerLayout.closeDrawer(GravityCompat.START);
-//        }
-//        return false;
-//        }
-//        });
-

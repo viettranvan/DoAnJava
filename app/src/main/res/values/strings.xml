@@ -6,6 +6,8 @@
     <string name="tab_cart">Cart</string>
     <string name="tab_product">Product</string>
     <string name="tab_profile">Profile</string>
+    <string name="tab_search">Search</string>
+
 
     <!-- Header Nav  -->
     <string name="nav_header_name">Name</string>
@@ -19,6 +21,7 @@
     <string name="txt_cart">cart fragment</string>
     <string name="txt_search">search fragment</string>
     <string name="txt_profile">profile fragment</string>
+    <string name="txt_product">product fragment</string>
 
 
 </resources>
