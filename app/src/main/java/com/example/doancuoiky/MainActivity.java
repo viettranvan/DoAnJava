@@ -2,6 +2,7 @@ package com.example.doancuoiky;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -37,6 +40,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AHBottomNavigation ahBottomNavigation;
     private AHBottomNavigationViewPager ahBottomNavigationViewPager;
     private ViewPagerAdapter adapter;
+
+    private View viewEndAnimation;
+    private ImageView viewAnimation;
+
+    private int mCountProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +89,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listView = findViewById(R.id.listview);
         ahBottomNavigation  = findViewById(R.id.AHBottomNavigation);
         ahBottomNavigationViewPager = findViewById(R.id.AHBottomNavigationViewPager);
+        viewEndAnimation = findViewById(R.id.view_end_animation);
+        viewAnimation = findViewById(R.id.view_animation);
+
     }
 
     private void setUpViewPager(){
@@ -173,5 +184,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .replace(R.id.main_activity,fragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
+    }
+
+    public View getViewEndAnimation() {
+        return viewEndAnimation;
+    }
+
+    public ImageView getViewAnimation() {
+        return viewAnimation;
+    }
+
+    public void setCountProductInCart(int count){
+        mCountProduct = count;
+        AHNotification notification = new AHNotification.Builder()
+                .setText(String.valueOf(count))
+                .setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.bg_red))
+                .setTextColor(ContextCompat.getColor(MainActivity.this, R.color.white))
+                .build();
+        ahBottomNavigation.setNotification(notification, 3);
+    }
+
+    public int getCountProduct() {
+        return mCountProduct;
     }
 }

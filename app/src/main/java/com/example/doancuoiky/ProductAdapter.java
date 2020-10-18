@@ -7,7 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 
 import java.util.List;
 
@@ -44,12 +47,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvProductName.setText(product.getName());
         holder.tvProductDescription.setText(product.getDescription());
         holder.tvProductPrice.setText(product.getPrice());
+        if(product.isAddToCart()){
+            holder.imgAddToCart.setBackgroundResource(R.drawable.bg_gray_corner_6);
+        }
+        else{
+            holder.imgAddToCart.setBackgroundResource(R.drawable.bg_red_corner_6);
+        }
 
         // bat su kien
         holder.imgAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iClickAddToCartListener.onClickAddToCart(holder.imgAddToCart,product);
+                if(!product.isAddToCart()){
+                    iClickAddToCartListener.onClickAddToCart(holder.imgAddToCart,product);
+                }
             }
         });
     }
@@ -81,4 +92,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             imgAddToCart = itemView.findViewById(R.id.img_add_to_cart);
         }
     }
+
+//    public void setCountProductInCart(int count){
+//        AHNotification notification = new AHNotification.Builder()
+//                .setText(String.valueOf(count))
+//                .setBackgroundColor(ContextCompat.getColor(MainActivity.this,R.color.bg_red))
+//                .setTextColor(ContextCompat.getColor(MainActivity.this,R.color.white))
+//                .build();
+//
+//    }
 }

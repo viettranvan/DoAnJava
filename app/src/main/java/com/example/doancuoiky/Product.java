@@ -6,6 +6,7 @@ public class Product {
     private String name;
     private String description;
     private String price;
+    private boolean isAddToCart;
 
     public Product(int resourceId, String name, String description, String price) {
         this.resourceId = resourceId;
@@ -44,5 +45,13 @@ public class Product {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public boolean isAddToCart() {
+        return isAddToCart;
+    }
+
+    public void setAddToCart(boolean addToCart) {
+        isAddToCart = addToCart;
     }
 }

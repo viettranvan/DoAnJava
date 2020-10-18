@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -36,8 +37,27 @@ public class ProductFragment extends Fragment {
         productAdapter = new ProductAdapter();
         productAdapter.setData(getListProduct(), new ProductAdapter.IClickAddToCartListener() {
             @Override
-            public void onClickAddToCart(ImageView imgAddToCart, Product product) {
+            public void onClickAddToCart(final ImageView imgAddToCart, final Product product) {
+                AnimationUtil.translateAnimation(mainActivity.getViewAnimation(), imgAddToCart, mainActivity.getViewEndAnimation(), new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
 
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        product.setAddToCart(true);
+                        imgAddToCart.setBackgroundResource(R.drawable.bg_gray_corner_6);
+                        productAdapter.notifyDataSetChanged();
+
+                        mainActivity.setCountProductInCart(mainActivity.getCountProduct() +  1);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
             }
         });
         rcvProduct.setAdapter(productAdapter);
