@@ -18,6 +18,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -31,6 +34,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private long backPressedTime;
     private ListView listView;
     private Toast mToast;
+    private AHBottomNavigation ahBottomNavigation;
+    private AHBottomNavigationViewPager ahBottomNavigationViewPager;
+    private ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,26 +52,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionToolBar();
 
         /*======================= Navigation Bottom Tab===========================*/
-        mNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.action_home:
-                        mViewPager.setCurrentItem(0);
-                        break;
-                    case R.id.action_cart:
-                        mViewPager.setCurrentItem(1);
-                        break;
-                    case R.id.action_search:
-                        mViewPager.setCurrentItem(2);
-                        break;
-                    case R.id.action_profile:
-                        mViewPager.setCurrentItem(3);
-                        break;
-                }
-                return true;
-            }
-        });
+//        mNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()){
+//                    case R.id.action_home:
+//                        mViewPager.setCurrentItem(0);
+//                        break;
+//                    case R.id.action_cart:
+//                        mViewPager.setCurrentItem(1);
+//                        break;
+//                    case R.id.action_search:
+//                        mViewPager.setCurrentItem(2);
+//                        break;
+//                    case R.id.action_profile:
+//                        mViewPager.setCurrentItem(3);
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
         /*======================= Navigation Drawer Menu===========================*/
 
@@ -99,15 +105,73 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
         menuNavigationView = findViewById(R.id.navigation_view);
         listView = findViewById(R.id.listview);
-        mNavigationView = findViewById(R.id.bottom_nav);
-        mViewPager = findViewById(R.id.view_pager);
+//        mNavigationView = findViewById(R.id.bottom_nav);
+//        mViewPager = findViewById(R.id.view_pager);
+        ahBottomNavigation  = findViewById(R.id.AHBottomNavigation);
+        ahBottomNavigationViewPager = findViewById(R.id.AHBottomNavigationViewPager);
     }
 
-    private void setUpViewPager(){
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        mViewPager.setAdapter(viewPagerAdapter);
+//    private void setUpViewPager(){
+//        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+//        mViewPager.setAdapter(viewPagerAdapter);
+//
+//        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                switch (position){
+//                    case 0:
+//                        mNavigationView.getMenu().findItem(R.id.action_home).setChecked(true);
+//                        break;
+//                    case 1:
+//                        mNavigationView.getMenu().findItem(R.id.action_cart).setChecked(true);
+//                        break;
+//                    case 2:
+//                        mNavigationView.getMenu().findItem(R.id.action_search).setChecked(true);
+//                        break;
+//                    case 3:
+//                        mNavigationView.getMenu().findItem(R.id.action_profile).setChecked(true);
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
+//    }
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    private void setUpViewPager(){
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        ahBottomNavigationViewPager.setAdapter(adapter);
+        ahBottomNavigationViewPager.setPagingEnabled(true);
+
+        // Create items
+        AHBottomNavigationItem tab_home = new AHBottomNavigationItem(R.string.tab_home, R.mipmap.baseline_home_black_24, R.color.tab_home);
+        AHBottomNavigationItem tab_cart = new AHBottomNavigationItem(R.string.tab_cart, R.mipmap.baseline_shopping_cart_black_24, R.color.tab_cart);
+        AHBottomNavigationItem tab_product = new AHBottomNavigationItem(R.string.tab_product, R.mipmap.baseline_search_black_24, R.color.tab_product);
+        AHBottomNavigationItem tab_profile = new AHBottomNavigationItem(R.string.tab_profile, R.mipmap.baseline_person_black_24, R.color.tab_profile);
+
+        // Add items
+        ahBottomNavigation.addItem(tab_home);
+        ahBottomNavigation.addItem(tab_cart);
+        ahBottomNavigation.addItem(tab_product);
+        ahBottomNavigation.addItem(tab_profile);
+
+        ahBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+            @Override
+            public boolean onTabSelected(int position, boolean wasSelected) {
+                ahBottomNavigationViewPager.setCurrentItem(position);
+                return true;
+            }
+        });
+
+        ahBottomNavigationViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -115,20 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onPageSelected(int position) {
-                switch (position){
-                    case 0:
-                        mNavigationView.getMenu().findItem(R.id.action_home).setChecked(true);
-                        break;
-                    case 1:
-                        mNavigationView.getMenu().findItem(R.id.action_cart).setChecked(true);
-                        break;
-                    case 2:
-                        mNavigationView.getMenu().findItem(R.id.action_search).setChecked(true);
-                        break;
-                    case 3:
-                        mNavigationView.getMenu().findItem(R.id.action_profile).setChecked(true);
-                        break;
-                }
+                ahBottomNavigation.setCurrentItem(position);
             }
 
             @Override
@@ -137,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
 
     @Override
     public void onBackPressed() {

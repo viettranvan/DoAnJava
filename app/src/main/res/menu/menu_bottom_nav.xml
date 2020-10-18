@@ -3,17 +3,17 @@
     <item
         android:id="@+id/action_home"
         android:icon="@mipmap/baseline_home_black_24"
-        android:title="@string/action_home" />
+        android:title="@string/tab_home" />
     <item
         android:id="@+id/action_cart"
         android:icon="@mipmap/baseline_shopping_cart_black_24"
-        android:title="@string/action_cart" />
+        android:title="@string/tab_cart" />
     <item
         android:id="@+id/action_search"
         android:icon="@mipmap/baseline_search_black_24"
-        android:title="@string/action_search" />
+        android:title="@string/tab_product" />
     <item
         android:id="@+id/action_profile"
         android:icon="@mipmap/baseline_person_black_24"
-        android:title="@string/action_profile" />
+        android:title="@string/tab_profile" />
 </menu>
