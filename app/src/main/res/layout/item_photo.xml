@@ -8,5 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:src="@drawable/iphone_banner_resize"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/iamge"/>
 </LinearLayout>

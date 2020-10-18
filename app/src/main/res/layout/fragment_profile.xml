@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile Fragment"
+        android:text="@string/txt_profile"
         android:textColor="@android:color/white"
         android:textSize="30sp"
         android:layout_centerInParent="true"

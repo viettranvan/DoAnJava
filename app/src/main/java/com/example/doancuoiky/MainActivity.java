@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -67,8 +68,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         /*======================= Navigation Drawer Menu===========================*/
+
+        // ẩn hoắc hiện login, profile
+        Menu menu = menuNavigationView.getMenu();
+        menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
+        menu.findItem(R.id.nav_profile).setVisible(false); // ẩn profile
+
         menuNavigationView.bringToFront();
         menuNavigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
 
@@ -150,7 +159,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_mobile:
+                CartFragment cartFragment = new CartFragment();
+                loadFragment(cartFragment);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this,"share",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_laptop:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                mViewPager.setCurrentItem(1);
+                break;
+        }
         return true;
+    }
+
+    public void loadFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_activity,fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
     }
 }
 
@@ -166,10 +197,3 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        }
 //        });
 
-//    public void loadFragment(Fragment fragment){
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.main_activity,fragment)
-//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//                .commit();
-//    }
