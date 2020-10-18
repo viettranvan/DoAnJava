@@ -5,4 +5,9 @@
     <string name="action_search">Search</string>
     <string name="action_profile">Profile</string>
 
+    <!-- Header Nav  -->
+    <string name="nav_header_name">Name</string>
+    <string name="nav_header_email">name@gmail.com</string>
+
+
 </resources>

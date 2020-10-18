@@ -1,17 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/item1"
-        android:icon="@mipmap/baseline_home_black_24"
-        android:title="Home"/>
 
-    <item
-        android:id="@+id/item2"
-        android:icon="@mipmap/baseline_home_black_24"
-        android:title="Home"/>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@mipmap/baseline_home_black_24"
+            android:title="Home" />
 
-    <item
-        android:id="@+id/item3"
-        android:icon="@mipmap/baseline_home_black_24"
-        android:title="Home"/>
+        <item
+            android:id="@+id/nav_mobile"
+            android:icon="@mipmap/baseline_home_black_24"
+            android:title="Mobile" />
+
+        <item
+            android:id="@+id/nav_laptop"
+            android:icon="@mipmap/baseline_home_black_24"
+            android:title="Laptop" />
+    </group>
+
+
+    <item android:title="Profile">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_login"
+                    android:icon="@mipmap/baseline_home_black_24"
+                    android:title="Login" />
+                <item
+                    android:id="@+id/nav_profile"
+                    android:icon="@mipmap/baseline_home_black_24"
+                    android:title="Profile" />
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@mipmap/baseline_home_black_24"
+                    android:title="Logout" />
+            </group>
+        </menu>
+    </item>
+
+    <group android:checkableBehavior="single">
+        <item android:title="communicate">
+            <menu>
+                <item
+                    android:id="@+id/nav_share"
+                    android:icon="@mipmap/baseline_home_black_24"
+                    android:title="Share" />
+                <item
+                    android:id="@+id/nav_rate"
+                    android:icon="@mipmap/baseline_home_black_24"
+                    android:title="Rate" />
+            </menu>
+        </item>
+
+    </group>
 </menu>

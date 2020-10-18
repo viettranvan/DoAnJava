@@ -20,7 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private BottomNavigationView mNavigationView;
     private ViewPager mViewPager;
@@ -37,9 +37,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         anhXa();
-        actionToolBar();
+
+        /*chuyển trang bằng cách vuốt*/
         setUpViewPager();
 
+        // toolbar, mở drawer menu
+        actionToolBar();
+
+        /*======================= Navigation Bottom Tab===========================*/
         mNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -60,26 +65,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        menuNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.item1){
-                    TestFragment testFragment = new TestFragment();
-                    loadFragment(testFragment);
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                }
-                return false;
-            }
-        });
+
+        /*======================= Navigation Drawer Menu===========================*/
+        menuNavigationView.bringToFront();
+        menuNavigationView.setNavigationItemSelectedListener(this);
     }
 
-    public void loadFragment(Fragment fragment){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.main_activity,fragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-    }
+
 
     private void actionToolBar() {
         setSupportActionBar(toolbar);
@@ -139,15 +131,45 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(backPressedTime + 2000 > System.currentTimeMillis()){
-            mToast.cancel();
-            super.onBackPressed();
-            return;
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
         }
         else{
-            mToast = Toast.makeText(MainActivity.this,"Nhấn back thêm 1 lần nữa để thoát",Toast.LENGTH_SHORT);
-            mToast.show();
+            if(backPressedTime + 2000 > System.currentTimeMillis()){
+                mToast.cancel();
+                super.onBackPressed();
+                return;
+            }
+            else{
+                mToast = Toast.makeText(MainActivity.this,"Nhấn back thêm 1 lần nữa để thoát",Toast.LENGTH_SHORT);
+                mToast.show();
+            }
+            backPressedTime = System.currentTimeMillis();
         }
-        backPressedTime = System.currentTimeMillis();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return true;
     }
 }
+
+//menuNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//@Override
+//public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//        if(item.getItemId() == R.id.item1){
+//        TestFragment testFragment = new TestFragment();
+//        loadFragment(testFragment);
+//        drawerLayout.closeDrawer(GravityCompat.START);
+//        }
+//        return false;
+//        }
+//        });
+
+//    public void loadFragment(Fragment fragment){
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.main_activity,fragment)
+//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                .commit();
+//    }
