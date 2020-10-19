@@ -7,10 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 
 import java.util.List;
 
@@ -93,12 +91,4 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
     }
 
-//    public void setCountProductInCart(int count){
-//        AHNotification notification = new AHNotification.Builder()
-//                .setText(String.valueOf(count))
-//                .setBackgroundColor(ContextCompat.getColor(MainActivity.this,R.color.bg_red))
-//                .setTextColor(ContextCompat.getColor(MainActivity.this,R.color.white))
-//                .build();
-//
-//    }
 }

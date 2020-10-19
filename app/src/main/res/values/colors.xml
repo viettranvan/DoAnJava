@@ -13,4 +13,9 @@
 
     <color name="bg_red">#F44336</color>
     <color name="white">#FFFFFF</color>
+
+    <!--    background-->
+    <color name="bg_gray_light">#A8C5C5C5</color>
+    <color name="bg_white">#FFF</color>
+
 </resources>

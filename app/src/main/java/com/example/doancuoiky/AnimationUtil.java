@@ -15,7 +15,7 @@ public class AnimationUtil {
     private static final int ANIMATION_DURATION = 1000;
     private static boolean isAnimationStart;
 
-    public static void translateAnimation(final ImageView viewAnimation, @NonNull final View startView, View endView,
+    public static void translateAnimation(final ImageView viewAnimation, final View startView, View endView,
                                           final Animation.AnimationListener animationListener){
         startView.setDrawingCacheEnabled(true);
         Bitmap cache = startView.getDrawingCache();
@@ -80,7 +80,7 @@ public class AnimationUtil {
                 isAnimationStart = true;
 
                 viewAnimation.setVisibility(View.VISIBLE);
-                startView.setVisibility(View.VISIBLE);
+                startView.setVisibility(View.INVISIBLE);
 
                 if(animationListener != null){
                     animationListener.onAnimationStart(animation);
