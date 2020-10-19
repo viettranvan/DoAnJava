@@ -17,5 +17,8 @@
     <!--    background-->
     <color name="bg_gray_light">#A8C5C5C5</color>
     <color name="bg_white">#FFF</color>
+    <color name="bg_blue_light">#1292F8</color>
+    <color name="bg_green_light">#27D12E</color>
+
 
 </resources>

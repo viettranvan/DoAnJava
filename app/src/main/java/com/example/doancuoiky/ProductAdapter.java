@@ -79,7 +79,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         private TextView tvProductPrice;
         private ImageView imgAddToCart;
 
-
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
 

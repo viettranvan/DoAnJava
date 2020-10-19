@@ -29,8 +29,6 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    private ViewPager mViewPager;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView menuNavigationView;
@@ -71,8 +69,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void actionToolBar() {
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Trang chủ");
         toolbar.setNavigationIcon(R.drawable.ic_action_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void anhXa() {
-        toolbar =(Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         menuNavigationView = findViewById(R.id.navigation_view);
         listView = findViewById(R.id.listview);
@@ -117,6 +117,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
                 ahBottomNavigationViewPager.setCurrentItem(position);
+                // đặt lại toolbar title tương ứng với tab
+                setToolbarTitle(position);
+
                 return true;
             }
         });
@@ -206,5 +209,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public int getCountProduct() {
         return mCountProduct;
+    }
+
+    private void setToolbarTitle(int position){
+        switch (position){
+            case 0:
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setTitle("Trang chủ");
+                break;
+            case 1:
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setTitle("Danh mục sản phẩm");
+                break;
+            case 2:
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setTitle("Tìm kiếm");
+                break;
+            case 3:
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setTitle("Giỏ hàng");
+                break;
+            case 4:
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setTitle("Thông tin cá nhân");
+                break;
+        }
     }
 }
