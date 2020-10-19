@@ -1,9 +1,15 @@
-package com.example.doancuoiky;
+package com.example.doancuoiky.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.example.doancuoiky.fragment.CartFragment;
+import com.example.doancuoiky.fragment.HomeFragment;
+import com.example.doancuoiky.fragment.ProductFragment;
+import com.example.doancuoiky.fragment.ProfileFragment;
+import com.example.doancuoiky.fragment.SearchFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {

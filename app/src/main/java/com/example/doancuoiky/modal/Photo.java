@@ -1,4 +1,4 @@
-package com.example.doancuoiky;
+package com.example.doancuoiky.modal;
 
 public class Photo {
 

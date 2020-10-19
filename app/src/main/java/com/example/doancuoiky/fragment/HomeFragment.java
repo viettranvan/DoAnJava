@@ -1,4 +1,4 @@
-package com.example.doancuoiky;
+package com.example.doancuoiky.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -6,14 +6,16 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import java.sql.Time;
+import com.example.doancuoiky.modal.Photo;
+import com.example.doancuoiky.adapter.PhotoAdapter;
+import com.example.doancuoiky.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -93,7 +95,7 @@ public class HomeFragment extends Fragment {
         },500,3000); // sau 3s thi chuyen anh, thoi gian delay 0.5s
     }
 
-    // new activity k con ton tai nua thi huy timer
+    // new com.example.doancuoiky.activity k con ton tai nua thi huy timer
     @Override
     public void onDestroyView() {
         super.onDestroyView();

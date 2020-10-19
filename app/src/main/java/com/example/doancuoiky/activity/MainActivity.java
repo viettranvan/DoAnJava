@@ -1,4 +1,4 @@
-package com.example.doancuoiky;
+package com.example.doancuoiky.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +24,9 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.doancuoiky.fragment.CartFragment;
+import com.example.doancuoiky.R;
+import com.example.doancuoiky.adapter.ViewPagerAdapter;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
         menu.findItem(R.id.nav_profile).setVisible(false); // ẩn profile
 
-        menuNavigationView.bringToFront();
+//        menuNavigationView.bringToFront();
         menuNavigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    // bottom tab
     private void setUpViewPager(){
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         ahBottomNavigationViewPager.setAdapter(adapter);
@@ -124,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        // chuyen fragment bang cach vuot
         ahBottomNavigationViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -234,5 +238,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle("Thông tin cá nhân");
                 break;
         }
+        toolbar.setNavigationIcon(R.drawable.ic_action_menu);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
     }
 }

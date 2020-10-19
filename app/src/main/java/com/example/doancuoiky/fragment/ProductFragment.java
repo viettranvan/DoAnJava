@@ -1,4 +1,4 @@
-package com.example.doancuoiky;
+package com.example.doancuoiky.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,13 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.doancuoiky.AnimationUtil;
+import com.example.doancuoiky.modal.Product;
+import com.example.doancuoiky.adapter.ProductAdapter;
+import com.example.doancuoiky.R;
+import com.example.doancuoiky.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;

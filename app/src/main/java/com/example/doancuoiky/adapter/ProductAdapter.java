@@ -1,4 +1,4 @@
-package com.example.doancuoiky;
+package com.example.doancuoiky.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.example.doancuoiky.modal.Product;
+import com.example.doancuoiky.R;
 
 import java.util.List;
 

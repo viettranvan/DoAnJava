@@ -12,6 +12,9 @@
     <string name="nav_header_name">Name</string>
     <string name="nav_header_email">name@gmail.com</string>
 
+    <!--    toolbar-->
+    <string name="title_toolbar">Trang chính</string>
+
     <!-- Image -->
     <string name="iamge">image</string>
     <string name="header_avatar">Avatar</string>
