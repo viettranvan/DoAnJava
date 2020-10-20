@@ -19,6 +19,6 @@
     <color name="bg_white">#FFF</color>
     <color name="bg_blue_light">#1292F8</color>
     <color name="bg_green_light">#27D12E</color>
-
+    <color name="bg_black">#000000</color>
 
 </resources>

@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment {
         },500,3000); // sau 3s thi chuyen anh, thoi gian delay 0.5s
     }
 
-    // new com.example.doancuoiky.activity k con ton tai nua thi huy timer
+    // new activity k con ton tai nua thi huy timer
     @Override
     public void onDestroyView() {
         super.onDestroyView();
