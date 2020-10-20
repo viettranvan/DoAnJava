@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -15,7 +16,9 @@ import com.example.doancuoiky.R;
 
 public class ProfileFragment extends Fragment {
 
-    private LinearLayout addAddress,changeInfo,changePassword;
+    private LinearLayout addAddress,changeInfo,changePassword, profileContainer, toggleProfile;
+    private boolean isExpand = true; // biến check xem profile là expand hay collapse
+    private ImageView img;
 
     @Nullable
     @Override
@@ -25,6 +28,25 @@ public class ProfileFragment extends Fragment {
         addAddress = view.findViewById(R.id.add_address);
         changeInfo = view.findViewById(R.id.change_info);
         changePassword = view.findViewById(R.id.change_password);
+        profileContainer = view.findViewById(R.id.layout_profile_container);
+        toggleProfile = view.findViewById(R.id.show_hide_profile);
+        img = view.findViewById(R.id.img_show_hide_profile);
+
+        toggleProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isExpand){
+                    isExpand = false;
+                    profileContainer.setVisibility(View.VISIBLE);
+                    img.setImageResource(R.drawable.icon_down);
+                }
+                else {
+                    isExpand = true;
+                    profileContainer.setVisibility(View.GONE);
+                    img.setImageResource(R.drawable.icon_right);
+                }
+            }
+        });
 
         addAddress.setOnClickListener(new View.OnClickListener() {
             @Override
