@@ -220,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 0:
                 setSupportActionBar(toolbar);
                 getSupportActionBar().setTitle("Trang chủ");
+
                 break;
             case 1:
                 setSupportActionBar(toolbar);
@@ -245,5 +246,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.cart,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.ic_cart_toolbar:
+                Toast.makeText(this,"Giỏ hàng",Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
