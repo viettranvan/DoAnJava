@@ -6,7 +6,6 @@ import javax.xml.namespace.QName;
 
 public class Cart {
 
-
     private int cartProductImg;
     private String name;
     private String description;
@@ -19,7 +18,6 @@ public class Cart {
         this.description = description;
         this.price = price;
         this.count = count;
-
     }
 
     public int getCartProductImg() {

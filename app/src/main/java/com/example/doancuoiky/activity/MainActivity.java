@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
@@ -28,7 +29,10 @@ import com.example.doancuoiky.fragment.CartFragment;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.ViewPagerAdapter;
 import com.example.doancuoiky.fragment.HomeFragment;
+import com.example.doancuoiky.modal.Cart;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.goToCartOnClickListener {
 
@@ -41,11 +45,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AHBottomNavigation ahBottomNavigation;
     private AHBottomNavigationViewPager ahBottomNavigationViewPager;
     private ViewPagerAdapter adapter;
+    private TextView toolBarTitle;
 
     private View viewEndAnimation;
     private ImageView viewAnimation;
 
     private int mCountProduct;
+
+    public static ArrayList<Cart> arrarCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Trang chủ");
+        toolBarTitle.setText("Trang chủ");
         toolbar.setNavigationIcon(R.drawable.ic_action_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +101,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ahBottomNavigationViewPager = findViewById(R.id.AHBottomNavigationViewPager);
         viewEndAnimation = findViewById(R.id.view_end_animation);
         viewAnimation = findViewById(R.id.view_animation);
+        toolBarTitle = findViewById(R.id.tv_toolbar_title);
 
+        if(arrarCart != null){
+
+        }else{
+            arrarCart = new ArrayList<>();
+        }
     }
 
     // bottom tab
@@ -220,24 +233,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (position){
             case 0:
                 setSupportActionBar(toolbar);
-                getSupportActionBar().setTitle("Trang chủ");
-
+                toolBarTitle.setText("Trang chủ");
                 break;
             case 1:
                 setSupportActionBar(toolbar);
-                getSupportActionBar().setTitle("Danh mục sản phẩm");
+                toolBarTitle.setText("Danh mục sản phẩm");
                 break;
             case 2:
                 setSupportActionBar(toolbar);
-                getSupportActionBar().setTitle("Tìm kiếm");
+                toolBarTitle.setText("Tìm kiếm");
+
                 break;
             case 3:
                 setSupportActionBar(toolbar);
-                getSupportActionBar().setTitle("Giỏ hàng");
+                toolBarTitle.setText("Giỏ hàng");
                 break;
             case 4:
                 setSupportActionBar(toolbar);
-                getSupportActionBar().setTitle("Thông tin cá nhân");
+                toolBarTitle.setText("Thông tin cá nhân");
                 break;
         }
         toolbar.setNavigationIcon(R.drawable.ic_action_menu);
@@ -249,9 +262,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void showNotice(){
-        Toast.makeText(this,"main",Toast.LENGTH_SHORT).show();
-    }
 
     // chuyen den man hinh gio hang
     @Override
