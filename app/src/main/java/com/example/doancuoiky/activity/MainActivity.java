@@ -27,9 +27,10 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.example.doancuoiky.fragment.CartFragment;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.ViewPagerAdapter;
+import com.example.doancuoiky.fragment.HomeFragment;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.goToCartOnClickListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -248,19 +249,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.cart,menu);
-        return true;
+    public void showNotice(){
+        Toast.makeText(this,"main",Toast.LENGTH_SHORT).show();
     }
 
+    // chuyen den man hinh gio hang
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.ic_cart_toolbar:
-                Toast.makeText(this,"Giỏ hàng",Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+    public void onCartIconClickListener() {
+        ahBottomNavigation.setCurrentItem(3);
     }
 }

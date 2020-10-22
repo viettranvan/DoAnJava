@@ -1,17 +1,25 @@
 package com.example.doancuoiky.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.example.doancuoiky.activity.MainActivity;
 import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.adapter.PhotoAdapter;
 import com.example.doancuoiky.R;
@@ -25,11 +33,17 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class HomeFragment extends Fragment {
 
+    // tao interface de callback ra ben ngoai (MainActivity)
+    public interface goToCartOnClickListener{
+        void onCartIconClickListener();
+    }
+
     private ViewPager viewPager;
     private CircleIndicator circleIndicator;
     private PhotoAdapter photoAdapter;
     private List<Photo> mListPhoto;
     private Timer mTimer;
+    private goToCartOnClickListener mGoToCart;
 
     @Nullable
     @Override
@@ -47,6 +61,8 @@ public class HomeFragment extends Fragment {
         photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
         autoSlideImage();
+        setHasOptionsMenu(true);
+
 
         return  view;
     }
@@ -61,6 +77,27 @@ public class HomeFragment extends Fragment {
         list.add(new Photo(R.drawable.xiaomi_banner_resize));
 
         return list;
+
+    }
+
+    // them icon gio hang len thanh toolbar
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.cart,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    // su kien click icon gio hang tren thanh toolbar
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.ic_cart_toolbar:
+
+                mGoToCart.onCartIconClickListener();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // Hàm tự chuyển ảnh trong Image Slider
@@ -103,5 +140,12 @@ public class HomeFragment extends Fragment {
             mTimer.cancel();
             mTimer = null;
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Activity activity) {
+        super.onAttach(activity);
+
+        mGoToCart = (goToCartOnClickListener) activity;
     }
 }
