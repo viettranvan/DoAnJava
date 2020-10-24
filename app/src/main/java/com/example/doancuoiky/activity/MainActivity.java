@@ -11,6 +11,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -218,6 +220,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerLayout.closeDrawer(GravityCompat.START);
                 ahBottomNavigation.setCurrentItem(1);
                 break;
+
+            case R.id.nav_login:
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+//                Toast.makeText(MainActivity.this,"login",Toast.LENGTH_SHORT).show();
+                break;
+
         }
         return true;
     }
@@ -289,5 +298,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onCartIconClickListener() {
         ahBottomNavigation.setCurrentItem(3);
+    }
+
+    public void goToProfile(){
+        ahBottomNavigation.setCurrentItem(4);
     }
 }

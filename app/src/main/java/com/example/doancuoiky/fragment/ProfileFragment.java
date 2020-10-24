@@ -1,5 +1,8 @@
 package com.example.doancuoiky.fragment;
 
+
+import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.doancuoiky.R;
+
+import com.example.doancuoiky.activity.ChangeInfoActivity;
+
 
 public class ProfileFragment extends Fragment {
 
@@ -59,6 +65,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(),"Chuyển đến trang thay đổi thông tin",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity().getApplicationContext(), ChangeInfoActivity.class);
+                startActivity(intent);
             }
         });
 

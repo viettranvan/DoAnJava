@@ -66,11 +66,37 @@
     <string name="txt_plus">+</string>
 
 
-
-
     <string name="zero">0</string>
     <string name="one">1</string>
     <string name="close">X</string>
     <string name="detail">Chi tiết</string>
+
+
+    <string name="toolbar_change_profile_title">Chỉnh sửa thông tin cá nhân</string>
+    <string name="text_login">Đăng nhập</string>
+    <string name="hint_username">Tên đăng nhập</string>
+    <string name="hint_password">Mật khẩu</string>
+    <string name="text_forgot_password">Quên mật khẩu?</string>
+    <string name="button_sign_in">Đăng nhập</string>
+    <string name="text_sign_up1">Bạn chưa có tài khoản?</string>
+    <string name="text_sign_up2">Đăng ký ngay</string>
+
+
+    <!--    sign up screen-->
+    <string name="text_sign_up_message">Tạo tài khoản mới</string>
+    <string name="hint_email">email</string>
+    <string name="hint_phone">Số điện thoại</string>
+    <string name="hint_confirm_password">Nhập lại mật khẩu</string>
+    <string name="button_sign_up">Đăng ký</string>
+    <string name="text_sign_up_terms">Bằng cách đăng ký, bạn đồng ý với các <b>điều khoản và điều kiện </b>của chúng tôi</string>
+
+    <!--    forgot password-->
+    <string name="button_send">Gửi</string>
+    <string name="text_forgot_password_title">Bạn quên mật khẩu? đừng lo lắng</string>
+    <string name="text_forgot_password_message">Nhập email của bạn để khôi phục mật khẩu</string>
+    <string name="text_new_password">Nhập mật khẩu mới của bạn</string>
+    <string name="button_confirm">Xác nhận</string>
+    <string name="text_OTP_code">Nhập mã xác nhận gửi về mail</string>
+
 
 </resources>
