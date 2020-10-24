@@ -236,7 +236,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <Button
-                    android:id="@+id/button_signin"
+                    android:id="@+id/btn_sign_up2"
                     style="@style/Button_layout"
                     android:layout_width="342dp"
                     android:layout_height="wrap_content"
@@ -245,7 +245,6 @@
                     android:text="@string/button_sign_up" />
 
                 <TextView
-                    android:id="@+id/button_signup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

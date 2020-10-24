@@ -110,7 +110,7 @@
 
             <Button
                 style="@style/TextButton"
-                android:id="@+id/btn_forgot_password"
+                android:id="@+id/btn_forgot_password_in_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

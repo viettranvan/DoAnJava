@@ -89,6 +89,13 @@
     <string name="button_sign_up">Đăng ký</string>
     <string name="text_sign_up_terms">Bằng cách đăng ký, bạn đồng ý với các <b>điều khoản và điều kiện </b>của chúng tôi</string>
 
+    <!--    forgot password-->
+    <string name="button_send">Gửi</string>
+    <string name="text_forgot_password_title">Bạn quên mật khẩu? đừng lo lắng</string>
+    <string name="text_forgot_password_message">Nhập email của bạn để khôi phục mật khẩu</string>
+    <string name="text_new_password">Nhập mật khẩu mới của bạn</string>
+    <string name="button_confirm">Xác nhận</string>
+    <string name="text_OTP_code">Nhập mã xác nhận gửi về mail</string>
 
 
 
