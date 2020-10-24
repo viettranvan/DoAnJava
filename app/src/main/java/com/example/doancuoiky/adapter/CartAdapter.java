@@ -1,6 +1,8 @@
 package com.example.doancuoiky.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
@@ -33,7 +36,7 @@ public class CartAdapter extends BaseAdapter{
     int myLayout;
     List<Cart> arrayCart;
     TextView cartProductName,cartProductDescription,cartProductPrice,cartProductCount;
-    Button btnMinus,btnPlus,btnDeleteProduct;
+    Button btnMinus,btnPlus,btnDeleteProduct,btnDetail;
     ImageView imgCartProduct;
 
     // constructor
@@ -73,6 +76,8 @@ public class CartAdapter extends BaseAdapter{
         btnMinus = view.findViewById(R.id.btn_cart_minus);
         btnDeleteProduct = view.findViewById(R.id.btn_delete_product);
         imgCartProduct = view.findViewById(R.id.img_cart_product);
+        btnDetail = view.findViewById(R.id.btn_cart_detail);
+
 
         // gán giá trị
         cartProductName.setText(arrayCart.get(i).getName());
@@ -81,17 +86,37 @@ public class CartAdapter extends BaseAdapter{
         cartProductCount.setText(arrayCart.get(i).getCount());
         imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
 
+        int currentCount = Integer.parseInt(arrayCart.get(i).getCount());
+        if(currentCount <= 1){
+            btnMinus.setEnabled(false);
+            notifyDataSetChanged();
+        }
+        else if(currentCount >= 10){
+            btnPlus.setEnabled(false);
+            notifyDataSetChanged();
+        }
+
+
+
+        // nút giảm số lượng
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int currentCount = Integer.parseInt(arrayCart.get(i).getCount());
-                currentCount -= 1;
+
+                if(currentCount <= 1){
+                }
+                else{
+                    currentCount -= 1;
+                }
                 MainActivity.arrarCart.get(i).setCount(currentCount + "");
                 cartProductCount.setText(arrayCart.get(i).getCount());
                 notifyDataSetChanged();
             }
+
         });
 
+        // nút tăng số lượng
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,16 +128,44 @@ public class CartAdapter extends BaseAdapter{
             }
         });
 
-//        btnDeleteProduct.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("TAG1", "onClick: " + i);
-//                MainActivity.arrarCart.remove(i);
-//
-//                notifyDataSetChanged();
-//            }
-//        });
+        // nút xóa sản phẩm khỏi giỏ hàng
+        btnDeleteProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+
+                AlertDialog.Builder alertDelete;
+                alertDelete = new AlertDialog.Builder(view.getRootView().getContext());
+                alertDelete.setTitle("Thông báo");
+                alertDelete.setMessage("Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?");
+
+                alertDelete.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int index) {
+                        MainActivity.arrarCart.remove(i);
+                        notifyDataSetChanged();
+                        Toast.makeText(view.getContext(),"Xóa thành công",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                alertDelete.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int index) {
+
+                    }
+                });
+
+                alertDelete.show();
+            }
+        });
+
+        btnDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(),"tới màn hình chi tiết index = " + i,Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }
+
 }

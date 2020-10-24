@@ -53,8 +53,9 @@ public class CartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
         anhXa(view);
-        mSetAdapter(view);
+//        mSetAdapter(view);
 
+        setData();
         // kiểm tra arrayCart có rỗng không
         checkData();
 
@@ -62,20 +63,25 @@ public class CartFragment extends Fragment {
         btnOder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                arrayCart.clear();
+                MainActivity.arrarCart.clear();
                 checkData();
-                Toast.makeText(getActivity(),"tiến hành đặt hàng " + arrayCart.size(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"tiến hành đặt hàng " + MainActivity.arrarCart.size(),Toast.LENGTH_SHORT).show();
             }
         });
-
-
 
         return  view;
     }
 
+    private void setData() {
+        if(MainActivity.arrarCart.size() <= 0){
+            MainActivity.arrarCart = (ArrayList<Cart>) getListProductInCart();
+        }
+
+    }
+
     // kiem tra neu gio hang rong thi hien thong bao gio hang rong
     private void checkData() {
-        if(arrayCart.size() <= 0){
+        if(MainActivity.arrarCart.size() <= 0){
             cartAdapter.notifyDataSetChanged();
             tvNotice.setVisibility(View.VISIBLE);
             lvCart.setVisibility(View.INVISIBLE);
@@ -89,56 +95,50 @@ public class CartFragment extends Fragment {
         }
     }
 
-    private void mSetAdapter(View view) {
-
-        lvCart = view.findViewById(R.id.lv_cart);
-        arrayCart = new ArrayList<Cart>();
-
-        arrayCart = (ArrayList<Cart>) getListProductInCart();
-
-        CartAdapter adapter = new CartAdapter(getContext(),R.layout.item_cart,arrayCart);
-
-        lvCart.setAdapter(adapter);
-    }
+//    private void mSetAdapter(View view) {
+//
+//        lvCart = view.findViewById(R.id.lv_cart);
+//        arrayCart = new ArrayList<Cart>();
+//
+//        arrayCart = (ArrayList<Cart>) getListProductInCart();
+//
+//        CartAdapter adapter = new CartAdapter(getContext(),R.layout.item_cart,arrayCart);
+//
+//        lvCart.setAdapter(adapter);
+//    }
 
     private void anhXa(View view) {
         oderContainer = view.findViewById(R.id.order_container);
         btnOder = view.findViewById(R.id.btn_order);
         tvNotice = view.findViewById(R.id.tv_notice);
+        lvCart = view.findViewById(R.id.lv_cart);
 
-        cartAdapter = new CartAdapter(getContext(),R.layout.item_cart,arrayCart);
+        cartAdapter = new CartAdapter(getContext(),R.layout.item_cart,MainActivity.arrarCart);
+        lvCart.setAdapter(cartAdapter);
     }
 
 
     private List<Cart> getListProductInCart(){
-        List<Cart> list = new ArrayList<>();
+
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"iphone ne","02","10.234.432","2"));
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphone1 ne","03","10.234.432","3"));
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone," ne","04","10.234.432","4"));
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"ada ne","05","10.234.432","5"));
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"26 ne","06","10.234.432","6"));
+        return MainActivity.arrarCart;
+
+//        List<Cart> list = new ArrayList<>();
+
+//        list.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
+//        list.add(new Cart(R.drawable.iphone,"iphone","02","10.234.432","2"));
+//        list.add(new Cart(R.drawable.iphone1,"iphone1","03","10.234.432","3"));
+//        list.add(new Cart(R.drawable.iphone,"iphone","041","10.234.432","4"));
+//        list.add(new Cart(R.drawable.iphone1,"iphone1","05","10.234.432","5"));
+//        list.add(new Cart(R.drawable.iphone,"iphone1","06","10.234.432","6"));
 //
-//        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
-//        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"iphone ne","02","10.234.432","2"));
-//        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphone1 ne","03","10.234.432","3"));
-//        MainActivity.arrarCart.add(new Cart(R.drawable.iphone," ne","04","10.234.432","4"));
-//        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"ada ne","05","10.234.432","5"));
-//        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"26 ne","06","10.234.432","6"));
-
-
-        list.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
-        list.add(new Cart(R.drawable.iphone,"iphone","02","10.234.432","2"));
-        list.add(new Cart(R.drawable.iphone1,"iphone1","03","10.234.432","3"));
-        list.add(new Cart(R.drawable.iphone,"iphone","041","10.234.432","4"));
-        list.add(new Cart(R.drawable.iphone1,"iphone1","05","10.234.432","5"));
-        list.add(new Cart(R.drawable.iphone,"iphone1","06","10.234.432","6"));
-
-        return list;
-//        return MainActivity.arrarCart;
+//        return list;
     }
 
-    private List<Cart> setListProductInCart(int i,String s){
-        List<Cart> list = getListProductInCart();
 
-        Cart a = new Cart(arrayCart.get(i).getCartProductImg(),arrayCart.get(i).getName(),arrayCart.get(i).getDescription(),
-                arrayCart.get(i).getPrice(),s);
-        arrayCart.add(a);
-
-        return list;
-    }
 }
