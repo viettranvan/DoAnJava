@@ -81,7 +81,14 @@
     <string name="text_sign_up2">Đăng ký ngay</string>
 
 
-    button_sign_in
+    <!--    sign up screen-->
+    <string name="text_sign_up_message">Tạo tài khoản mới</string>
+    <string name="hint_email">email</string>
+    <string name="hint_phone">Số điện thoại</string>
+    <string name="hint_confirm_password">Nhập lại mật khẩu</string>
+    <string name="button_sign_up">Đăng ký</string>
+    <string name="text_sign_up_terms">Bằng cách đăng ký, bạn đồng ý với các <b>điều khoản và điều kiện </b>của chúng tôi</string>
+
 
 
 

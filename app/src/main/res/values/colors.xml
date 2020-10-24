@@ -22,5 +22,7 @@
     <color name="bg_black">#000000</color>
     <color name="bg_gray_invisible">#BAF4F4F4</color>
 
+    <color name="bg_text_input">#F7F7F7</color>
+
 
 </resources>
