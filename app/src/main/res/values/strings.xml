@@ -71,6 +71,7 @@
     <string name="close">X</string>
     <string name="detail">Chi tiết</string>
 
+
     <string name="toolbar_change_profile_title">Chỉnh sửa thông tin cá nhân</string>
     <string name="text_login">Đăng nhập</string>
     <string name="hint_username">Tên đăng nhập</string>
@@ -96,8 +97,6 @@
     <string name="text_new_password">Nhập mật khẩu mới của bạn</string>
     <string name="button_confirm">Xác nhận</string>
     <string name="text_OTP_code">Nhập mã xác nhận gửi về mail</string>
-
-
 
 
 </resources>
