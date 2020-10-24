@@ -1,5 +1,7 @@
 package com.example.doancuoiky.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -35,17 +38,16 @@ import java.util.Timer;
 
 import me.relex.circleindicator.CircleIndicator;
 
-public class CartFragment extends Fragment {
+public class CartFragment extends Fragment  {
 
     private LinearLayout oderContainer;
     private Button btnOder;
     private TextView tvNotice;
-
+    private MainActivity mainActivity;
+    private Product product,productPosition;
 
     ListView lvCart;
-    ArrayList<Cart> arrayCart;
     CartAdapter cartAdapter;
-
 
     @Nullable
     @Override
@@ -53,30 +55,73 @@ public class CartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
         anhXa(view);
-//        mSetAdapter(view);
 
-        setData();
         // kiểm tra arrayCart có rỗng không
         checkData();
 
-
+        // sự kiện khi nhấn vào button đặt hàng
         btnOder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MainActivity.arrarCart.clear();
                 checkData();
                 Toast.makeText(getActivity(),"tiến hành đặt hàng " + MainActivity.arrarCart.size(),Toast.LENGTH_SHORT).show();
+                mainActivity.setCountProductInCart(0);
+
+                // trả lại trạng thái enebal cho tất cả button thêm trong Product Fragment
+                for(int i = 0;i < MainActivity.arrarProduct.size();i++){
+                    product = MainActivity.arrarProduct.get(i);
+                    product.setAddToCart(false);
+                }
+            }
+        });
+
+        cartAdapter.onDelete(new CartAdapter.IClickOnDeleteProductInCart() {
+            @Override
+            public void onClickDeleteProductInCart(final int index) {
+
+                AlertDialog.Builder alertDelete;
+                alertDelete = new AlertDialog.Builder(getContext());
+                alertDelete.setTitle("Thông báo");
+                alertDelete.setMessage("Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?");
+
+                alertDelete.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        // trả lại trạng thái enebal cho button thêm giỏ hàng -> Fragment Product
+                        // (đang duyệt dựa trên tên sản phẩm)
+                        String name = MainActivity.arrarCart.get(index).getName();
+                        for(int k = 0 ;k < MainActivity.arrarProduct.size();k ++){
+                            Log.d("TAG1", "index: " + k +"\nTen:" + MainActivity.arrarProduct.get(k).getName());
+                            if(MainActivity.arrarProduct.get(k).getName().equals(name)){
+
+                                product = MainActivity.arrarProduct.get(k);
+                                product.setAddToCart(false);
+                            }
+                        }
+
+                        MainActivity.arrarCart.remove(index);
+                        cartAdapter.notifyDataSetChanged();
+                        Toast.makeText(getContext(),"Xóa thành công",Toast.LENGTH_SHORT).show();
+                        mainActivity.setCountProductInCart(MainActivity.arrarCart.size());
+                        checkData();
+                    }
+                });
+
+
+                alertDelete.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                alertDelete.show();
             }
         });
 
         return  view;
-    }
-
-    private void setData() {
-        if(MainActivity.arrarCart.size() <= 0){
-            MainActivity.arrarCart = (ArrayList<Cart>) getListProductInCart();
-        }
-
     }
 
     // kiem tra neu gio hang rong thi hien thong bao gio hang rong
@@ -95,50 +140,17 @@ public class CartFragment extends Fragment {
         }
     }
 
-//    private void mSetAdapter(View view) {
-//
-//        lvCart = view.findViewById(R.id.lv_cart);
-//        arrayCart = new ArrayList<Cart>();
-//
-//        arrayCart = (ArrayList<Cart>) getListProductInCart();
-//
-//        CartAdapter adapter = new CartAdapter(getContext(),R.layout.item_cart,arrayCart);
-//
-//        lvCart.setAdapter(adapter);
-//    }
-
     private void anhXa(View view) {
         oderContainer = view.findViewById(R.id.order_container);
         btnOder = view.findViewById(R.id.btn_order);
         tvNotice = view.findViewById(R.id.tv_notice);
         lvCart = view.findViewById(R.id.lv_cart);
 
+        mainActivity = (MainActivity) getActivity();
+
+
         cartAdapter = new CartAdapter(getContext(),R.layout.item_cart,MainActivity.arrarCart);
         lvCart.setAdapter(cartAdapter);
     }
-
-
-    private List<Cart> getListProductInCart(){
-
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"iphone ne","02","10.234.432","2"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphone1 ne","03","10.234.432","3"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone," ne","04","10.234.432","4"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"ada ne","05","10.234.432","5"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"26 ne","06","10.234.432","6"));
-        return MainActivity.arrarCart;
-
-//        List<Cart> list = new ArrayList<>();
-
-//        list.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
-//        list.add(new Cart(R.drawable.iphone,"iphone","02","10.234.432","2"));
-//        list.add(new Cart(R.drawable.iphone1,"iphone1","03","10.234.432","3"));
-//        list.add(new Cart(R.drawable.iphone,"iphone","041","10.234.432","4"));
-//        list.add(new Cart(R.drawable.iphone1,"iphone1","05","10.234.432","5"));
-//        list.add(new Cart(R.drawable.iphone,"iphone1","06","10.234.432","6"));
-//
-//        return list;
-    }
-
 
 }

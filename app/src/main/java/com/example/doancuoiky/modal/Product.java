@@ -48,6 +48,9 @@ public class Product {
     }
 
     public boolean isAddToCart() {
+
+
+
         return isAddToCart;
     }
 

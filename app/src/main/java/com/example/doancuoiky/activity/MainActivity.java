@@ -30,6 +30,7 @@ import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.ViewPagerAdapter;
 import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.modal.Cart;
+import com.example.doancuoiky.modal.Product;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int mCountProduct;
 
     public static ArrayList<Cart> arrarCart;
+    public static ArrayList<Product> arrarProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +69,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // toolbar, mở drawer menu
         actionToolBar();
 
-        /*======================= Navigation Drawer Menu===========================*/
 
+        /*======================= Navigation Drawer Menu===========================*/
         // ẩn hoắc hiện login, profile
         Menu menu = menuNavigationView.getMenu();
         menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
@@ -76,6 +78,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //        menuNavigationView.bringToFront();
         menuNavigationView.setNavigationItemSelectedListener(this);
+
+        if(arrarCart.size() > 0){
+            setCountProductInCart(arrarCart.size());
+        }
     }
 
     private void actionToolBar() {
@@ -108,6 +114,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else{
             arrarCart = new ArrayList<>();
         }
+
+        if(arrarProduct != null){
+
+        }else{
+            arrarProduct = new ArrayList<>();
+        }
+
+        arrarProduct.add(new Product(R.drawable.iphone1,"Iphone XR1","Mau do1","10000000"));
+        arrarProduct.add(new Product(R.drawable.iphone,"Iphone XR2","Mau den2","10000001"));
+        arrarProduct.add(new Product(R.drawable.iphone1,"Iphone XR3","Mau do3","10000000"));
+
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"iphone ne","02","10.234.432","2"));
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphone1 ne","03","10.234.432","3"));
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone," ne","04","10.234.432","4"));
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"ada ne","05","10.234.432","5"));
+        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"26 ne","06","10.234.432","6"));
     }
 
     // bottom tab
@@ -261,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
 
     // chuyen den man hinh gio hang
     @Override

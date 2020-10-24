@@ -31,6 +31,18 @@ import java.util.List;
 
 public class CartAdapter extends BaseAdapter{
 
+    private IClickOnDeleteProductInCart iClickOnDeleteProductInCart;
+
+    // dung interface de callback su kien ra ben ngoai -> Fragment Cart
+    public interface IClickOnDeleteProductInCart{
+        // dinh nghia cho method muon xu ly
+        void onClickDeleteProductInCart(int index); // truyền vào index -> vị trí cần xóa
+    }
+
+    public void onDelete(IClickOnDeleteProductInCart listener){
+        this.iClickOnDeleteProductInCart = listener;
+    }
+
 
     Context myContext;
     int myLayout;
@@ -96,8 +108,6 @@ public class CartAdapter extends BaseAdapter{
             notifyDataSetChanged();
         }
 
-
-
         // nút giảm số lượng
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,28 +143,8 @@ public class CartAdapter extends BaseAdapter{
             @Override
             public void onClick(final View view) {
 
-                AlertDialog.Builder alertDelete;
-                alertDelete = new AlertDialog.Builder(view.getRootView().getContext());
-                alertDelete.setTitle("Thông báo");
-                alertDelete.setMessage("Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?");
 
-                alertDelete.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int index) {
-                        MainActivity.arrarCart.remove(i);
-                        notifyDataSetChanged();
-                        Toast.makeText(view.getContext(),"Xóa thành công",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                alertDelete.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int index) {
-
-                    }
-                });
-
-                alertDelete.show();
+                iClickOnDeleteProductInCart.onClickDeleteProductInCart(i);
             }
         });
 
@@ -167,5 +157,4 @@ public class CartAdapter extends BaseAdapter{
 
         return view;
     }
-
 }

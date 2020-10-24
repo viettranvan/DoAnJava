@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doancuoiky.AnimationUtil;
+import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Product;
 import com.example.doancuoiky.adapter.ProductAdapter;
 import com.example.doancuoiky.R;
@@ -40,22 +42,32 @@ public class ProductFragment extends Fragment {
         rcvProduct.setLayoutManager(linearLayoutManager);
 
         productAdapter = new ProductAdapter();
-        productAdapter.setData(getListProduct(), new ProductAdapter.IClickAddToCartListener() {
+        productAdapter.setData(MainActivity.arrarProduct, new ProductAdapter.IClickAddToCartListener() {
             @Override
             public void onClickAddToCart(final ImageView imgAddToCart, final Product product) {
                 AnimationUtil.translateAnimation(mainActivity.getViewAnimation(), imgAddToCart, mainActivity.getViewEndAnimation(), new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
                         product.setAddToCart(true);
                         imgAddToCart.setBackgroundResource(R.drawable.bg_gray_corner_6);
                         productAdapter.notifyDataSetChanged();
 
-                        mainActivity.setCountProductInCart(mainActivity.getCountProduct() +  1);
+                        int id = product.getResourceId();
+                        String name = product.getName();
+                        String description = product.getDescription();
+                        String price = product.getPrice();
+
+                        Cart cart = new Cart(id, name, description, price, "1");
+                        MainActivity.arrarCart.add(cart);
+
+                        // tăng số lượng sản phẩm giỏ hàng lên 1
+                        mainActivity.setCountProductInCart(MainActivity.arrarCart.size());
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+
                     }
 
                     @Override
@@ -66,35 +78,9 @@ public class ProductFragment extends Fragment {
             }
         });
         rcvProduct.setAdapter(productAdapter);
+//        mainActivity.setCountProductInCart(MainActivity.arrarCart.size());
 
         return  mView;
     }
 
-    private List<Product> getListProduct(){
-        List<Product> list = new ArrayList<>();
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-        list.add(new Product(R.drawable.iphone1,"Iphone XR","Mau do","10000000"));
-        list.add(new Product(R.drawable.iphone,"Iphone XR","Mau den","10000001"));
-
-        return list;
-    }
 }

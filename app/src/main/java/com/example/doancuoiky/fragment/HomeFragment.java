@@ -63,7 +63,6 @@ public class HomeFragment extends Fragment {
         autoSlideImage();
         setHasOptionsMenu(true);
 
-
         return  view;
     }
 
@@ -142,6 +141,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    // sự kiến chuyển đến màn hình giỏ hàng khi click icon trên toolbar
     @Override
     public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);

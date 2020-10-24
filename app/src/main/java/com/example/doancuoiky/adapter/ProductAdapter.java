@@ -1,10 +1,13 @@
 package com.example.doancuoiky.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +22,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Product> mListProduct;
     private IClickAddToCartListener iClickAddToCartListener;
+    private RelativeLayout relativeLayout;
 
     // dung interface de callback su kien ra ben ngoai
     public interface IClickAddToCartListener{
@@ -39,7 +43,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ProductViewHolder holder, final int position) {
         final Product product = mListProduct.get(position);
         if(product == null){
             return;
@@ -48,6 +52,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvProductName.setText(product.getName());
         holder.tvProductDescription.setText(product.getDescription());
         holder.tvProductPrice.setText(product.getPrice());
+
         if(product.isAddToCart()){
             holder.imgAddToCart.setBackgroundResource(R.drawable.bg_gray_corner_6);
         }
@@ -59,9 +64,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.imgAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(view.getContext(),"index = " + position,Toast.LENGTH_SHORT).show();
                 if(!product.isAddToCart()){
                     iClickAddToCartListener.onClickAddToCart(holder.imgAddToCart,product);
                 }
+            }
+        });
+
+        // den man hinh chi tiet
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(),"đên màn hình chi tiết",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -90,6 +104,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductDescription = itemView.findViewById(R.id.tv_product_description);
             tvProductPrice = itemView.findViewById(R.id.tv_product_price);
             imgAddToCart = itemView.findViewById(R.id.img_add_to_cart);
+            relativeLayout = itemView.findViewById(R.id.abc);
         }
     }
 
