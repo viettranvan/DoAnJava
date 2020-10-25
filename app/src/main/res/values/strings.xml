@@ -98,5 +98,13 @@
     <string name="button_confirm">Xác nhận</string>
     <string name="text_OTP_code">Nhập mã xác nhận gửi về mail</string>
 
+    <!--    change password-->
+    <string name="text_change_password_toolbar">Đổi mật khẩu</string>
+    <string name="sample_email">email@gmail.com</string>
+    <string name="hint_current_password">Mật khẩu hiện tại</string>
+    <string name="hint_new_password">Mật khẩu mới</string>
+
+
+
 
 </resources>
