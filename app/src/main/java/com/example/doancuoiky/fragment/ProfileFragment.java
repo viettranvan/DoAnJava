@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.doancuoiky.R;
 
 import com.example.doancuoiky.activity.ChangeInfoActivity;
+import com.example.doancuoiky.activity.ChangePasswordActivity;
 
 
 public class ProfileFragment extends Fragment {
@@ -74,6 +75,9 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(),"Chuyển đến trang đổi mật khẩu",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity().getApplicationContext(), ChangePasswordActivity.class);
+
+                startActivity(intent);
             }
         });
 

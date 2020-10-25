@@ -14,7 +14,7 @@
         android:background="#2196F3" >
 
         <ImageView
-            android:id="@+id/iv_back"
+            android:id="@+id/iv_back_change_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icon_back_white"
@@ -30,47 +30,401 @@
         />
 
     </androidx.appcompat.widget.Toolbar>
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar_change_info"
-        android:orientation="vertical">
-        <LinearLayout
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        android:background="@color/white">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ho ten"
-                android:textSize="30sp"/>
+            android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="50dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_gravity="end"/>
-                <EditText
+                android:orientation="vertical"
+                android:layout_centerInParent="true">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:hint="@string/app_name"
-                    android:background="@color/bg_gray_light"/>
+                    android:orientation="vertical"
+                    android:background="@color/bg_gray_invisible"
+                    android:layout_marginBottom="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_title_name"
+                        android:layout_marginStart="10dp"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/bg_gray_light"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:hintEnabled="false">
+
+                            <EditText
+                                android:id="@+id/edt_username_change_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/icon_person_18"
+                                android:drawablePadding="12dp"
+                                android:text="@string/name"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="45dp"
+                                android:singleLine="true" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/bg_gray_invisible"
+                    android:layout_marginBottom="10dp"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_title_email"
+                        android:layout_marginStart="10dp"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/bg_gray_light"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:hintEnabled="false">
+
+                            <EditText
+                                android:id="@+id/edt_email_change_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/icon_mail_18"
+                                android:drawablePadding="12dp"
+                                android:text="@string/sample_email"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="45dp"
+                                android:singleLine="true"
+                                android:inputType="textEmailAddress"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <!--     date time picker           -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/bg_gray_invisible"
+                    android:layout_marginBottom="10dp"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_title_birthday"
+                        android:layout_marginStart="10dp"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/bg_gray_light"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:hintEnabled="false">
+
+                            <EditText
+                                android:id="@+id/edt_birthday_change_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/icon_date_18"
+                                android:drawablePadding="12dp"
+                                android:text="@string/birthday"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="45dp"
+                                android:singleLine="true" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/bg_gray_invisible"
+                    android:layout_marginBottom="10dp"
+                    android:paddingBottom="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_title_gender"
+                        android:layout_marginStart="10dp"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/bg_gray_light"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:minWidth="320dp"
+                            android:minHeight="45dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="12dp"
+                            >
+
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/icon_gender_18"
+                                android:layout_gravity="start"/>
+
+                            <RadioGroup
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:layout_marginStart="10dp">
+
+                                <RadioButton
+                                    android:id="@+id/rd_gender_male_change_info"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Nam"
+                                    android:checked="true"
+                                    />
+
+                                <RadioButton
+                                    android:id="@+id/rd_gender_female_change_info"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Nữ"/>
+                            </RadioGroup>
+                        </LinearLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/bg_gray_invisible"
+                    android:layout_marginBottom="10dp"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_title_identification_card"
+                        android:layout_marginStart="10dp"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/bg_gray_light"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:hintEnabled="false">
+
+                            <EditText
+                                android:id="@+id/edt_identification_card_change_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/icon_credit_card_18"
+                                android:drawablePadding="12dp"
+                                android:text="@string/cmnd"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="45dp"
+                                android:singleLine="true" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/bg_gray_invisible"
+                    android:layout_marginBottom="10dp"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_title_phone_number"
+                        android:layout_marginStart="10dp"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/bg_gray_light"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:hintEnabled="false">
+
+                            <EditText
+                                android:id="@+id/edt_phone_number_change_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/icon_phone_18"
+                                android:drawablePadding="12dp"
+                                android:text="@string/phone"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="45dp"
+                                android:singleLine="true" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/bg_gray_invisible"
+                    android:layout_marginBottom="10dp"
+                    android:paddingBottom="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_title_address"
+                        android:layout_marginStart="10dp"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="@color/bg_gray_light"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:hintEnabled="false">
+
+                            <EditText
+                                android:id="@+id/edt_address_change_info"
+                                android:layout_width="320dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/icon_location_18"
+                                android:drawablePadding="12dp"
+                                android:text="@string/address"
+                                android:imeOptions="actionNext"
+                                android:minWidth="320dp"
+                                android:minHeight="45dp"
+                                android:padding="5dp"
+                                />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_sign_up2"
+                    style="@style/Button_layout"
+                    android:layout_width="342dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/button_update"
+                    android:layout_marginBottom="20dp"/>
+
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
-    </LinearLayout>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
-
+    </ScrollView>
 
 </RelativeLayout>

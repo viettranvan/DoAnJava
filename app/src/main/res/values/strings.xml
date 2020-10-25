@@ -29,7 +29,7 @@
 
     <!--    In profile fragment-->
     <string name="txt_title_name">Họ và tên:</string>
-    <string name="txt_title_email">Email tài khoản:</string>
+    <string name="txt_title_email">Email: </string>
     <string name="txt_title_birthday">Ngày sinh:</string>
     <string name="txt_title_gender">Giới tính:</string>
     <string name="txt_title_identification_card">Số CMND:</string>
@@ -71,8 +71,9 @@
     <string name="close">X</string>
     <string name="detail">Chi tiết</string>
 
-
     <string name="toolbar_change_profile_title">Chỉnh sửa thông tin cá nhân</string>
+
+    <!--  in sign up-->
     <string name="text_login">Đăng nhập</string>
     <string name="hint_username">Tên đăng nhập</string>
     <string name="hint_password">Mật khẩu</string>
@@ -104,6 +105,8 @@
     <string name="hint_current_password">Mật khẩu hiện tại</string>
     <string name="hint_new_password">Mật khẩu mới</string>
 
+    <!-- change info-->
+    <string name="button_update">Cập nhật</string>
 
 
 
