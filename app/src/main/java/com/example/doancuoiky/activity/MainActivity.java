@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -307,6 +308,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onCartIconClickListener() {
         ahBottomNavigation.setCurrentItem(3);
+    }
+
+    // ẩn bottom tab
+    public void hideBottomTab(){
+        ahBottomNavigation.setVisibility(View.GONE);
+    }
+
+    // hiện bottom tab
+    public void showBottomTab(){
+        ahBottomNavigation.setVisibility(View.VISIBLE);
     }
 
 }

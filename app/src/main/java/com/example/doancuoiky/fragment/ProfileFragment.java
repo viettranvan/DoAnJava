@@ -29,7 +29,7 @@ public class ProfileFragment extends Fragment {
     private boolean isExpand = true; // biến check xem profile là expand hay collapse
     private ImageView img;
 
-    private LinearLayout profileNotLoggedIn, profileLogged, changeInfoPassword;
+    private LinearLayout profileNotLoggedIn, profileLogged, changeInfoPassword, gotoOrderManagement;
     private TextView profileIconNext;
 
     @Nullable
@@ -38,7 +38,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         anhXa(view);
-
+        checkIsLogin();
 
         toggleProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +53,14 @@ public class ProfileFragment extends Fragment {
                     profileContainer.setVisibility(View.GONE);
                     img.setImageResource(R.drawable.icon_right);
                 }
+            }
+        });
+
+        gotoOrderManagement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.isLogin = true;
+                checkIsLogin();
             }
         });
 
@@ -97,8 +105,10 @@ public class ProfileFragment extends Fragment {
         profileLogged = view.findViewById(R.id.profile_logged);
         changeInfoPassword = view.findViewById(R.id.chane_info_password);
         profileIconNext = view.findViewById(R.id.icon_next_profile_fragment);
+        gotoOrderManagement = view.findViewById(R.id.oder_management_profile_fragment);
 
-
+    }
+    private void checkIsLogin(){
         if(MainActivity.isLogin){
             profileNotLoggedIn.setVisibility(View.GONE);
             profileLogged.setVisibility(View.VISIBLE);

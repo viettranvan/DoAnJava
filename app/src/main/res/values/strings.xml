@@ -120,6 +120,29 @@
     <!-- change info-->
     <string name="button_update">Cập nhật</string>
 
+    <!-- fragment search -->
+    <string name="input_key">Nhập tên sản phẩm bạn muốn tìm kiếm</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="cart">Giỏ hàng</string>
+
+
+    <!-- drawable menu -->
+    <string name="home">Trang chính</string>
+    <string name="mobile">Điện thoại</string>
+    <string name="laptop">Laptop</string>
+    <string name="login">Đăng nhập</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="profile">Thông tin cá nhân</string>
+    <string name="share">Chia sẻ</string>
+    <string name="rate">Đánh giá</string>
+    <string name="communicate">Cộng đồng</string>
+
+    <!-- in search fragment -->
+    <string name="text_history_search">Lịch Sử tìm kiếm</string>
+    <string name="text_delete">Xóa</string>
+
+
+
 
 
 </resources>
