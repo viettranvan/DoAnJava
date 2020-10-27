@@ -11,6 +11,9 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +34,7 @@ import com.example.doancuoiky.adapter.ViewPagerAdapter;
 import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Product;
+import com.example.doancuoiky.modal.ProductNew;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -55,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static ArrayList<Cart> arrarCart;
     public static ArrayList<Product> arrarProduct;
+    public static ArrayList<ProductNew> arrayProductNew;
+    public static boolean isLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +88,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(arrarCart.size() > 0){
             setCountProductInCart(arrarCart.size());
         }
+
+        // chuyen den man hinh profile
+        Intent intent = getIntent();
+        String toProfile = intent.getStringExtra("gotoProfile");
+        if (toProfile != null && toProfile.contentEquals("profile")) {
+            ahBottomNavigation.setCurrentItem(4);
+        }
+
+        // chuyen den man hinh gio hang
+        String toCart = intent.getStringExtra("gotoCart");
+        if (toCart != null && toCart.contentEquals("cart")) {
+            ahBottomNavigation.setCurrentItem(3);
+        }
+
     }
 
     private void actionToolBar() {
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolBarTitle.setText("Trang chủ");
@@ -113,24 +132,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }else{
             arrarCart = new ArrayList<>();
+            arrarCart.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
+            arrarCart.add(new Cart(R.drawable.iphone,"iphone ne","02","10.234.432","2"));
+            arrarCart.add(new Cart(R.drawable.iphone1,"iphone1 ne","03","10.234.432","3"));
+            arrarCart.add(new Cart(R.drawable.iphone," ne","04","10.234.432","4"));
+            arrarCart.add(new Cart(R.drawable.iphone1,"ada ne","05","10.234.432","5"));
+            arrarCart.add(new Cart(R.drawable.iphone,"26 ne","06","10.234.432","6"));
         }
 
         if(arrarProduct != null){
 
         }else{
             arrarProduct = new ArrayList<>();
+            arrarProduct.add(new Product(R.drawable.iphone1,"Iphone XR1","Mau do1","10000000"));
+            arrarProduct.add(new Product(R.drawable.iphone,"Iphone XR2","Mau den2","10000001"));
+            arrarProduct.add(new Product(R.drawable.iphone1,"Iphone XR3","Mau do3","10000000"));
         }
 
-        arrarProduct.add(new Product(R.drawable.iphone1,"Iphone XR1","Mau do1","10000000"));
-        arrarProduct.add(new Product(R.drawable.iphone,"Iphone XR2","Mau den2","10000001"));
-        arrarProduct.add(new Product(R.drawable.iphone1,"Iphone XR3","Mau do3","10000000"));
+        if(arrayProductNew != null){
 
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"iphone ne","02","10.234.432","2"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphone1 ne","03","10.234.432","3"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone," ne","04","10.234.432","4"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"ada ne","05","10.234.432","5"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"26 ne","06","10.234.432","6"));
+        }else{
+            arrayProductNew = new ArrayList<>();
+            arrayProductNew.add(new ProductNew(1,1,"iphone","ai phôn",123f,R.drawable.iphone));
+            arrayProductNew.add(new ProductNew(2,1,"iphone1","ai phôn ",120f,R.drawable.iphone1));
+            arrayProductNew.add(new ProductNew(3,1,"meow","meoooooo",131f,R.drawable.meow));
+            arrayProductNew.add(new ProductNew(4,2,"iphone","ai phôn",123f,R.drawable.iphone));
+            arrayProductNew.add(new ProductNew(5,2,"iphone1","ai phôn",123f,R.drawable.iphone1));
+            arrayProductNew.add(new ProductNew(6,2,"meow","meoooooo",123f,R.drawable.meow));
+
+        }
+
     }
 
     // bottom tab
@@ -207,9 +238,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_mobile:
-                CartFragment cartFragment = new CartFragment();
-                loadFragment(cartFragment);
-                drawerLayout.closeDrawer(GravityCompat.START);
+//                CartFragment cartFragment = new CartFragment();
+//                loadFragment(cartFragment);
+//                drawerLayout.closeDrawer(GravityCompat.START);
+                Toast.makeText(this,"mobile",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_share:
                 Toast.makeText(this,"share",Toast.LENGTH_SHORT).show();
@@ -218,6 +250,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerLayout.closeDrawer(GravityCompat.START);
                 ahBottomNavigation.setCurrentItem(1);
                 break;
+
+            case R.id.nav_login:
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+//                Toast.makeText(MainActivity.this,"login",Toast.LENGTH_SHORT).show();
+                break;
+
         }
         return true;
     }
@@ -290,4 +329,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onCartIconClickListener() {
         ahBottomNavigation.setCurrentItem(3);
     }
+
+    // ẩn bottom tab
+    public void hideBottomTab(){
+        ahBottomNavigation.setVisibility(View.GONE);
+    }
+
+    // hiện bottom tab
+    public void showBottomTab(){
+        ahBottomNavigation.setVisibility(View.VISIBLE);
+    }
+
 }

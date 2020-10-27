@@ -16,10 +16,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.example.doancuoiky.activity.ChangePasswordActivity;
 import com.example.doancuoiky.activity.MainActivity;
+import com.example.doancuoiky.activity.ProductDetailActivity;
+import com.example.doancuoiky.adapter.ProductNewAdapter;
 import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.adapter.PhotoAdapter;
 import com.example.doancuoiky.R;
@@ -44,14 +49,36 @@ public class HomeFragment extends Fragment {
     private List<Photo> mListPhoto;
     private Timer mTimer;
     private goToCartOnClickListener mGoToCart;
+    private RecyclerView recyclerView;
+
+    ProductNewAdapter productNewAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        anhXa(view);
+
+        productNewAdapter.onGotoDetail(new ProductNewAdapter.IClickGotoProductDetail() {
+            @Override
+            public void onClickGotoDetail(int index) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), ProductDetailActivity.class);
+//                intent.putExtra("productDetail",index);
+                intent.putExtra("productDetail",index);
+                startActivity(intent);
+            }
+        });
+        autoSlideImage();
+        setHasOptionsMenu(true);
+
+        return  view;
+    }
+
+    private void anhXa(View view) {
         viewPager = view.findViewById(R.id.view_pager_photo);
         circleIndicator = view.findViewById(R.id.circle_indicator);
+        recyclerView = view.findViewById(R.id.rcv_product_new_home_fragment);
 
         mListPhoto = getListPhoto();
         photoAdapter = new PhotoAdapter(this,mListPhoto);
@@ -60,10 +87,10 @@ public class HomeFragment extends Fragment {
         circleIndicator.setViewPager(viewPager);
         photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
-        autoSlideImage();
-        setHasOptionsMenu(true);
-
-        return  view;
+        productNewAdapter = new ProductNewAdapter(getContext(),MainActivity.arrayProductNew);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        recyclerView.setAdapter(productNewAdapter);
     }
 
     private List<Photo> getListPhoto(){
@@ -97,6 +124,14 @@ public class HomeFragment extends Fragment {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // sự kiến chuyển đến màn hình giỏ hàng khi click icon trên toolbar
+    @Override
+    public void onAttach(@NonNull Activity activity) {
+        super.onAttach(activity);
+
+        mGoToCart = (goToCartOnClickListener) activity;
     }
 
     // Hàm tự chuyển ảnh trong Image Slider
@@ -141,11 +176,4 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    // sự kiến chuyển đến màn hình giỏ hàng khi click icon trên toolbar
-    @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
-
-        mGoToCart = (goToCartOnClickListener) activity;
-    }
 }
