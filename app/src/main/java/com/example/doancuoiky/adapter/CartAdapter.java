@@ -43,7 +43,6 @@ public class CartAdapter extends BaseAdapter{
         this.iClickOnDeleteProductInCart = listener;
     }
 
-
     Context myContext;
     int myLayout;
     List<Cart> arrayCart;
@@ -57,7 +56,6 @@ public class CartAdapter extends BaseAdapter{
         myLayout = layout;
         arrayCart = cartList;
     }
-
 
     @Override
     public int getCount() {
@@ -79,34 +77,9 @@ public class CartAdapter extends BaseAdapter{
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         view = inflater.inflate(myLayout,null);
-        // Ánh xạ và gán giá trị
-        cartProductName = view.findViewById(R.id.tv_cart_product_name);
-        cartProductDescription = view.findViewById(R.id.tv_cart_product_description);
-        cartProductPrice = view.findViewById(R.id.tv_cart_product_price);
-        cartProductCount = view.findViewById(R.id.tv_cart_product_count);
-        btnPlus = view.findViewById(R.id.btn_cart_plus);
-        btnMinus = view.findViewById(R.id.btn_cart_minus);
-        btnDeleteProduct = view.findViewById(R.id.btn_delete_product);
-        imgCartProduct = view.findViewById(R.id.img_cart_product);
-        btnDetail = view.findViewById(R.id.btn_cart_detail);
 
+        anhXa(view,i);
 
-        // gán giá trị
-        cartProductName.setText(arrayCart.get(i).getName());
-        cartProductDescription.setText(arrayCart.get(i).getDescription());
-        cartProductPrice.setText(arrayCart.get(i).getPrice());
-        cartProductCount.setText(arrayCart.get(i).getCount());
-        imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
-
-        int currentCount = Integer.parseInt(arrayCart.get(i).getCount());
-        if(currentCount <= 1){
-            btnMinus.setEnabled(false);
-            notifyDataSetChanged();
-        }
-        else if(currentCount >= 10){
-            btnPlus.setEnabled(false);
-            notifyDataSetChanged();
-        }
 
         // nút giảm số lượng
         btnMinus.setOnClickListener(new View.OnClickListener() {
@@ -142,8 +115,6 @@ public class CartAdapter extends BaseAdapter{
         btnDeleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-
-
                 iClickOnDeleteProductInCart.onClickDeleteProductInCart(i);
             }
         });
@@ -156,5 +127,35 @@ public class CartAdapter extends BaseAdapter{
         });
 
         return view;
+    }
+
+    private void anhXa(View view,int i) {
+        // Ánh xạ và gán giá trị
+        cartProductName = view.findViewById(R.id.tv_cart_product_name);
+        cartProductDescription = view.findViewById(R.id.tv_cart_product_description);
+        cartProductPrice = view.findViewById(R.id.tv_cart_product_price);
+        cartProductCount = view.findViewById(R.id.tv_cart_product_count);
+        btnPlus = view.findViewById(R.id.btn_cart_plus);
+        btnMinus = view.findViewById(R.id.btn_cart_minus);
+        btnDeleteProduct = view.findViewById(R.id.btn_delete_product);
+        imgCartProduct = view.findViewById(R.id.img_cart_product);
+        btnDetail = view.findViewById(R.id.btn_cart_detail);
+
+        // gán giá trị
+        cartProductName.setText(arrayCart.get(i).getName());
+        cartProductDescription.setText(arrayCart.get(i).getDescription());
+        cartProductPrice.setText(arrayCart.get(i).getPrice());
+        cartProductCount.setText(arrayCart.get(i).getCount());
+        imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
+
+        int currentCount = Integer.parseInt(arrayCart.get(i).getCount());
+        if(currentCount <= 1){
+            btnMinus.setEnabled(false);
+            notifyDataSetChanged();
+        }
+        else if(currentCount >= 10){
+            btnPlus.setEnabled(false);
+            notifyDataSetChanged();
+        }
     }
 }

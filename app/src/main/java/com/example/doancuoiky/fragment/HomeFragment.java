@@ -99,6 +99,14 @@ public class HomeFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    // sự kiến chuyển đến màn hình giỏ hàng khi click icon trên toolbar
+    @Override
+    public void onAttach(@NonNull Activity activity) {
+        super.onAttach(activity);
+
+        mGoToCart = (goToCartOnClickListener) activity;
+    }
+
     // Hàm tự chuyển ảnh trong Image Slider
     private void autoSlideImage(){
         if(mListPhoto == null || mListPhoto.isEmpty() || viewPager == null){
@@ -141,11 +149,5 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    // sự kiến chuyển đến màn hình giỏ hàng khi click icon trên toolbar
-    @Override
-    public void onAttach(@NonNull Activity activity) {
-        super.onAttach(activity);
 
-        mGoToCart = (goToCartOnClickListener) activity;
-    }
 }

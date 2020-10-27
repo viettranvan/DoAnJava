@@ -5,50 +5,50 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@mipmap/baseline_home_black_24"
-            android:title="Home" />
+            android:title="@string/home" />
 
         <item
             android:id="@+id/nav_mobile"
             android:icon="@mipmap/icon_mobile"
-            android:title="Mobile" />
+            android:title="@string/mobile" />
 
         <item
             android:id="@+id/nav_laptop"
             android:icon="@mipmap/icon_laptop"
-            android:title="Laptop" />
+            android:title="@string/laptop" />
     </group>
 
     <group android:checkableBehavior="single">
-        <item android:title="Profile">
+        <item android:title="@string/profile">
             <menu>
                 <item
                     android:id="@+id/nav_login"
                     android:icon="@mipmap/icon_login"
-                    android:title="Login" />
+                    android:title="@string/login" />
                 <item
                     android:id="@+id/nav_profile"
                     android:icon="@mipmap/baseline_person_black_24"
-                    android:title="Profile" />
+                    android:title="@string/profile" />
                 <item
                     android:id="@+id/nav_logout"
                     android:icon="@mipmap/icon_logout"
-                    android:title="Logout" />
+                    android:title="@string/logout" />
             </menu>
         </item>
     </group>
 
 
     <group android:checkableBehavior="single">
-        <item android:title="communicate">
+        <item android:title="@string/communicate">
             <menu>
                 <item
                     android:id="@+id/nav_share"
                     android:icon="@mipmap/baseline_home_black_24"
-                    android:title="Share" />
+                    android:title="@string/share" />
                 <item
                     android:id="@+id/nav_rate"
                     android:icon="@mipmap/baseline_home_black_24"
-                    android:title="Rate" />
+                    android:title="@string/rate" />
             </menu>
         </item>
 

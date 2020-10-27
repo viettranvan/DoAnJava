@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static ArrayList<Cart> arrarCart;
     public static ArrayList<Product> arrarProduct;
+    public static boolean isLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if(arrarCart.size() > 0){
             setCountProductInCart(arrarCart.size());
+        }
+
+        // chuyen den man hinh profile
+        Intent i = getIntent();
+        String data = i.getStringExtra("FromChangeInfo");
+
+        if (data != null && data.contentEquals("4")) {
+            ahBottomNavigation.setCurrentItem(4);
         }
     }
 
@@ -300,7 +310,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ahBottomNavigation.setCurrentItem(3);
     }
 
-    public void goToProfile(){
-        ahBottomNavigation.setCurrentItem(4);
+    // ẩn bottom tab
+    public void hideBottomTab(){
+        ahBottomNavigation.setVisibility(View.GONE);
     }
+
+    // hiện bottom tab
+    public void showBottomTab(){
+        ahBottomNavigation.setVisibility(View.VISIBLE);
+    }
+
 }
