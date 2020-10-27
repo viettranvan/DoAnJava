@@ -20,43 +20,6 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
 
     private IClickOnCopyKeySearch iClickOnCopyKeySearch;
 
-    @Override
-    public Filter getFilter() {
-        Filter filter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                FilterResults filterResults = new FilterResults();
-
-                if(charSequence == null || charSequence.length() == 0 ){
-                    filterResults.count = arraySearchData.size();
-                    filterResults.values = arraySearchData;
-                }
-                else{
-                    String searchStr = charSequence.toString().toLowerCase();
-                    List<Search> resultData = new ArrayList<>();
-
-                    for(Search search:arraySearchData){
-                        if(search.getTitle().contains(searchStr)){
-                            resultData.add(search);
-                        }
-
-                        filterResults.count = resultData.size();
-                        filterResults.values = resultData;
-                    }
-                }
-
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                arraySearchData = (List<Search>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
-        return filter;
-    }
-
     // dung interface de callback su kien ra ben ngoai -> Fragment Cart
     public interface IClickOnCopyKeySearch{
         // dinh nghia cho method muon xu ly
@@ -71,16 +34,20 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
     int myLayout;
     List<Search> arraySearchData;
     ImageView ivCopy;
+    CustomFilter filter;
+    List<Search> filterList;
 
     public SearchAdapter(Context context,int layout,List<Search> array){
         myContex = context;
         myLayout = layout;
         arraySearchData = array;
+        this.filterList = array;
     }
 
 
     @Override
     public int getCount() {
+        if(arraySearchData == null) return 0;
         return arraySearchData.size();
     }
 
@@ -100,7 +67,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         view = inflater.inflate(myLayout,null);
 
         // anhs xa va gan gia tri
-        TextView txtName1 = view.findViewById(R.id.value_search );
+        TextView valueSearch = view.findViewById(R.id.value_search );
         ivCopy = view.findViewById(R.id.icon_copy_to_search);
 
 
@@ -113,8 +80,52 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         });
 
         // gan gia tri
-        txtName1.setText(arraySearchData.get(i).getTitle());
+        valueSearch.setText(arraySearchData.get(i).getTitle());
 
         return view;
+    }
+
+    @Override
+    public Filter getFilter() {
+
+        if(filter == null){
+            filter = new CustomFilter();
+        }
+        return filter;
+    }
+
+    class CustomFilter extends Filter{
+
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            FilterResults filterResults = new FilterResults();
+
+            if(charSequence == null || charSequence.length() == 0 ){
+                filterResults.count = filterList.size();
+                filterResults.values = filterList;
+            }
+            else{
+                String searchStr = charSequence.toString().toLowerCase();
+                List<Search> filters = new ArrayList<>();
+
+                for(int i = 0;i < filterList.size();i++){
+                    if(filterList.get(i).getTitle().contains(searchStr)){
+                        Search s = new Search(filterList.get(i).getTitle());
+                        filters.add(s);
+                    }
+                }
+                filterResults.count = filters.size();
+                filterResults.values = filters;
+            }
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            arraySearchData = (List<Search>) filterResults.values;
+
+            notifyDataSetChanged();
+        }
     }
 }

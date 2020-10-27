@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -104,8 +105,6 @@ public class SearchFragment extends Fragment {
         }
 
 
-
-
         adapterData = new SearchAdapter(getContext(),R.layout.item_search,arrayListData);
         lvData.setAdapter(adapterData);
 
@@ -177,7 +176,6 @@ public class SearchFragment extends Fragment {
 
                     checkData();
                 }
-
                 return true;
             }
         });
