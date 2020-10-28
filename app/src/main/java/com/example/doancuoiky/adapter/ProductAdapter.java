@@ -1,5 +1,6 @@
 package com.example.doancuoiky.adapter;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.doancuoiky.activity.ProductDetailActivity;
 import com.example.doancuoiky.modal.Product;
 import com.example.doancuoiky.R;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
@@ -51,7 +54,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.imgProduct.setImageResource(product.getResourceId());
         holder.tvProductName.setText(product.getName());
         holder.tvProductDescription.setText(product.getDescription());
-        holder.tvProductPrice.setText(product.getPrice());
+
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        holder.tvProductPrice.setText(decimalFormat .format(product.getPrice()) +" đ");
 
         if(product.isAddToCart()){
             holder.imgAddToCart.setBackgroundResource(R.drawable.bg_gray_corner_6);
@@ -75,7 +80,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"đên màn hình chi tiết",Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(),"đên màn hình chi tiết" + position,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(),ProductDetailActivity.class);
+                intent.putExtra("gotoDetail2",mListProduct.get(position));
+                view.getContext().startActivity(intent);
             }
         });
     }

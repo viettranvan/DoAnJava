@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             yourBool = getIntent().getExtras().getBoolean("yourBoolName");
             MainActivity.isLogin = yourBool;
             checkLogin();
-
         }
     }
 
@@ -157,36 +156,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }else{
             arrarCart = new ArrayList<>();
-            arrarCart.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
-            arrarCart.add(new Cart(R.drawable.iphone,"iphone ne","02","10.234.432","2"));
-            arrarCart.add(new Cart(R.drawable.iphone1,"iphone1 ne","03","10.234.432","3"));
-            arrarCart.add(new Cart(R.drawable.iphone," ne","04","10.234.432","4"));
-            arrarCart.add(new Cart(R.drawable.iphone1,"ada ne","05","10.234.432","5"));
-            arrarCart.add(new Cart(R.drawable.iphone,"26 ne","06","10.234.432","6"));
+//            arrarCart.add(new Cart(R.drawable.realme_banner_resize,"realme","Điện thoại realme","4.000.000","1"));
+//            arrarCart.add(new Cart(R.drawable.iphone,"ihone","Điện thoại iphone XR","10.000.000","2"));
+//            arrarCart.add(new Cart(R.drawable.samsum_banner_resize,"Samsung","Điện thoại samsung","8.000.000","3"));
+//            arrarCart.add(new Cart(R.drawable.oppo_banner_resize," Oppo","Điện thoại oppo","10.234.432","4"));
+//            arrarCart.add(new Cart(R.drawable.laptop_asus,"Laptop asus","Laptop Asus","10.500.500","5"));
+//            arrarCart.add(new Cart(R.drawable.laptop_dell,"Laptop dell","Laptop dell","9.000.000","6"));
         }
 
         if(arrarProduct != null){
 
         }else{
             arrarProduct = new ArrayList<>();
-            arrarProduct.add(new Product(R.drawable.iphone1,"Iphone XR1","Mau do1","10000000"));
-            arrarProduct.add(new Product(R.drawable.iphone,"Iphone XR2","Mau den2","10000001"));
-            arrarProduct.add(new Product(R.drawable.iphone1,"Iphone XR3","Mau do3","10000000"));
+            arrarProduct.add(new Product(R.drawable.realme_banner_resize,"realme","Điện thoại realme",4000000));
+            arrarProduct.add(new Product(R.drawable.iphone,"Iphone XR","Điện thoại iphone XR",10000000));
+            arrarProduct.add(new Product(R.drawable.samsum_banner_resize,"Samsung","Điện thoại samsung",8000000));
+            arrarProduct.add(new Product(R.drawable.laptop_asus,"Laptop asus","Laptop Asus",10500500));
+            arrarProduct.add(new Product(R.drawable.laptop_dell,"Laptop dell","Laptop dell",9000000));
         }
 
         if(arrayProductNew != null){
 
         }else{
             arrayProductNew = new ArrayList<>();
-            arrayProductNew.add(new ProductNew(1,1,"iphone","ai phôn",123f,R.drawable.iphone));
-            arrayProductNew.add(new ProductNew(2,1,"iphone1","ai phôn ",120f,R.drawable.iphone1));
-            arrayProductNew.add(new ProductNew(3,1,"meow","meoooooo",131f,R.drawable.meow));
-            arrayProductNew.add(new ProductNew(4,2,"iphone","ai phôn",123f,R.drawable.iphone));
-            arrayProductNew.add(new ProductNew(5,2,"iphone1","ai phôn",123f,R.drawable.iphone1));
-            arrayProductNew.add(new ProductNew(6,2,"meow","meoooooo",123f,R.drawable.meow));
-
+            arrayProductNew.add(new ProductNew(1,1,"iphone XR","Điện thoại iphone XR",10000000f,R.drawable.iphone));
+            arrayProductNew.add(new ProductNew(2,1,"Samsung","Điện thoại samsung ",8000000f,R.drawable.samsum_banner_resize));
+            arrayProductNew.add(new ProductNew(3,1,"Oppo","Điện thoại oppo",5000000f,R.drawable.oppo_banner_resize));
+            arrayProductNew.add(new ProductNew(4,2,"Asus","Laptop  Asus",10500500f,R.drawable.laptop_asus));
+            arrayProductNew.add(new ProductNew(5,2,"Dell","Laprop Dell",9000000f,R.drawable.laptop_dell));
         }
-
     }
 
     // bottom tab
@@ -289,8 +287,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerLayout.closeDrawer(GravityCompat.START);
                 MainActivity.isLogin = false;
                 checkLogin();
+
                 finish();
-                startActivity(getIntent());
+                startActivity(new Intent(this,MainActivity.class));
+
                 break;
         }
         return true;

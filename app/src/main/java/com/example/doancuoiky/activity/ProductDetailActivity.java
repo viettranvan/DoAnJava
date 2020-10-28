@@ -41,7 +41,6 @@ public class ProductDetailActivity extends AppCompatActivity {
     private List<Photo> mListPhoto;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

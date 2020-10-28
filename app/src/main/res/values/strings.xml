@@ -3,10 +3,10 @@
 
     <!-- Bottom Tab  -->
     <string name="tab_home">Home</string>
-    <string name="tab_cart">Cart</string>
-    <string name="tab_product">Product</string>
-    <string name="tab_profile">Profile</string>
-    <string name="tab_search">Search</string>
+    <string name="tab_cart">Giỏ hàng</string>
+    <string name="tab_product">Danh mục</string>
+    <string name="tab_profile">Cá nhân</string>
+    <string name="tab_search">Tìm kiếm</string>
 
     <!-- Header Nav  -->
     <string name="nav_header_name">Name</string>
@@ -43,11 +43,11 @@
     <string name="icon_next">▷</string>
 
     <string name="name">Trần Văn Việt</string>
-    <string name="email">viettranvan2k@gmail.comfanjafjnafnafn</string>
+    <string name="email">viettranvan2k@gmail.com</string>
     <string name="birthday">02-10-2000</string>
     <string name="gender">Nam</string>
     <string name="cmnd">2417701**</string>
-    <string name="address">Đăk Lăk adahidk hadika di ijad kịa dop kja d knad k</string>
+    <string name="address">Đăk Lăk</string>
     <string name="phone">0394848858</string>
 
     <string name="text_welcome">Chào mừng bạn đến với MOLA</string>
@@ -133,7 +133,7 @@
     <string name="login">Đăng nhập</string>
     <string name="logout">Đăng xuất</string>
     <string name="profile">Thông tin cá nhân</string>
-    <string name="share">Chia sẻ</string>
+    <string name="share">Hỗ trợ</string>
     <string name="rate">Đánh giá</string>
     <string name="communicate">Cộng đồng</string>
 

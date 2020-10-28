@@ -2,6 +2,7 @@ package com.example.doancuoiky.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.activity.MainActivity;
+import com.example.doancuoiky.activity.ProductDetailActivity;
 import com.example.doancuoiky.fragment.CartFragment;
 import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.modal.Cart;
@@ -49,6 +51,7 @@ public class CartAdapter extends BaseAdapter{
     TextView cartProductName,cartProductDescription,cartProductPrice,cartProductCount;
     Button btnMinus,btnPlus,btnDeleteProduct,btnDetail;
     ImageView imgCartProduct;
+
 
     // constructor
     public CartAdapter(Context context,int layout, List<Cart> cartList){
@@ -95,6 +98,7 @@ public class CartAdapter extends BaseAdapter{
                 MainActivity.arrarCart.get(i).setCount(currentCount + "");
                 cartProductCount.setText(arrayCart.get(i).getCount());
                 notifyDataSetChanged();
+
             }
 
         });
@@ -123,6 +127,8 @@ public class CartAdapter extends BaseAdapter{
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(),"tới màn hình chi tiết index = " + i,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(), ProductDetailActivity.class);
+                view.getContext().startActivity(intent);
             }
         });
 
@@ -144,7 +150,11 @@ public class CartAdapter extends BaseAdapter{
         // gán giá trị
         cartProductName.setText(arrayCart.get(i).getName());
         cartProductDescription.setText(arrayCart.get(i).getDescription());
-        cartProductPrice.setText(arrayCart.get(i).getPrice());
+
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        cartProductPrice.setText(decimalFormat.format(arrayCart.get(i).getPrice()) + " đ");
+
+
         cartProductCount.setText(arrayCart.get(i).getCount());
         imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
 
