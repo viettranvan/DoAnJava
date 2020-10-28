@@ -20,7 +20,9 @@ import com.example.doancuoiky.R;
 
 import com.example.doancuoiky.activity.ChangeInfoActivity;
 import com.example.doancuoiky.activity.ChangePasswordActivity;
+
 import com.example.doancuoiky.activity.LoginActivity;
+
 import com.example.doancuoiky.activity.MainActivity;
 
 
@@ -41,6 +43,7 @@ public class ProfileFragment extends Fragment {
         anhXa(view);
         checkIsLogin();
 
+
         profileNotLoggedIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,6 +51,7 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
 
         toggleProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +86,7 @@ public class ProfileFragment extends Fragment {
         changeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(getActivity().getApplicationContext(), ChangeInfoActivity.class);
                 startActivity(intent);
             }
@@ -90,6 +95,7 @@ public class ProfileFragment extends Fragment {
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(getActivity().getApplicationContext(), ChangePasswordActivity.class);
 
                 startActivity(intent);

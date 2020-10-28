@@ -60,9 +60,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static ArrayList<Cart> arrarCart;
     public static ArrayList<Product> arrarProduct;
+
     public static ArrayList<ProductNew> arrayProductNew;
     public static boolean isLogin = false;
     Boolean yourBool;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             yourBool = getIntent().getExtras().getBoolean("yourBoolName");
             MainActivity.isLogin = yourBool;
             checkLogin();
+
         }
     }
 
@@ -279,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
 //                Toast.makeText(MainActivity.this,"login",Toast.LENGTH_SHORT).show();
                 break;
+
             case R.id.nav_profile:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 ahBottomNavigation.setCurrentItem(4);
@@ -292,6 +296,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this,MainActivity.class));
 
                 break;
+
         }
         return true;
     }
@@ -364,6 +369,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onCartIconClickListener() {
         ahBottomNavigation.setCurrentItem(3);
     }
-
 
 }
