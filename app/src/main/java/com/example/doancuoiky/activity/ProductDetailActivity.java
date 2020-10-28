@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,15 +19,27 @@ import android.widget.Toast;
 
 
 import com.example.doancuoiky.R;
+import com.example.doancuoiky.adapter.PhotoAdapter;
+import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.modal.Product;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
+
+import me.relex.circleindicator.CircleIndicator;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    private TextView textView;
+    private TextView tvProductName,tvProductPrice;
     private ImageView goBack;
     Toolbar toolbar;
+    private ViewPager viewPager;
+    private CircleIndicator circleIndicator;
+    private PhotoAdapter photoAdapter;
+
+    private List<Photo> mListPhoto;
+
 
 
     @Override
@@ -38,7 +51,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,17 +60,42 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         int pos = i.getIntExtra("productDetail",0);
-        Toast.makeText(this, MainActivity.arrayProductNew.get(pos).getProductName() , Toast.LENGTH_SHORT).show();
+
+        tvProductName.setText(MainActivity.arrayProductNew.get(pos).getProductName());
+        tvProductPrice.setText(MainActivity.arrayProductNew.get(pos).getProductPrice() + "");
 
     }
 
-
-
-
     private void anhXa() {
-        textView = findViewById(R.id.product_detail_title);
+        tvProductName = findViewById(R.id.product_detail_name);
+        tvProductPrice = findViewById(R.id.product_detail_price);
         goBack = findViewById(R.id.iv_back_product_detail);
         toolbar = findViewById(R.id.toolbar_product_detail);
+        viewPager = findViewById(R.id.view_pager_photo_detail_photo);
+        circleIndicator = findViewById(R.id.circle_indicator_detail);
+
+        mListPhoto = getListPhoto();
+        photoAdapter = new PhotoAdapter(this,mListPhoto);
+        viewPager.setAdapter(photoAdapter);
+
+        circleIndicator.setViewPager(viewPager);
+        photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
+
+    }
+
+    private List<Photo> getListPhoto(){
+        Intent i = getIntent();
+        int pos = i.getIntExtra("productDetail",0);
+
+        List<Photo> list = new ArrayList<>();
+        list.add(new Photo(MainActivity.arrayProductNew.get(pos).getProductImage()));
+        list.add(new Photo(R.drawable.vivo_banner_resize));
+        list.add(new Photo(MainActivity.arrayProductNew.get(pos).getProductImage()));
+        list.add(new Photo(R.drawable.samsum_banner_resize));
+        list.add(new Photo(MainActivity.arrayProductNew.get(pos).getProductImage()));
+        list.add(new Photo(R.drawable.xiaomi_banner_resize));
+
+        return list;
 
     }
 

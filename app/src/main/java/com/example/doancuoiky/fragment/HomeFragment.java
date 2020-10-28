@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rcv_product_new_home_fragment);
 
         mListPhoto = getListPhoto();
-        photoAdapter = new PhotoAdapter(this,mListPhoto);
+        photoAdapter = new PhotoAdapter(getContext(),mListPhoto);
         viewPager.setAdapter(photoAdapter);
 
         circleIndicator.setViewPager(viewPager);

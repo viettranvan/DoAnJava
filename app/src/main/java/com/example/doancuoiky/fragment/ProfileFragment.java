@@ -59,8 +59,7 @@ public class ProfileFragment extends Fragment {
         gotoOrderManagement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.isLogin = true;
-                checkIsLogin();
+
             }
         });
 

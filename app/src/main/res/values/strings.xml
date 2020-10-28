@@ -143,6 +143,8 @@
 
 
     <string name="text_new_product">Sản phẩm mới nhất</string>
+    <string name="text_description">Thông số kỹ thuật</string>
+    <string name="text_add_to_cart">Thêm vào giỏ hàng</string>
 
 
 </resources>

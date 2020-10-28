@@ -39,16 +39,110 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="10">
 
-        <TextView
-            android:id="@+id/product_detail_title"
+        <ScrollView
+            android:layout_weight="9"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/app_name"
-            android:textStyle="bold"
-            android:textSize="30sp"/>
+            android:layout_height="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/view_pager_photo_detail_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"/>
+
+                    <me.relex.circleindicator.CircleIndicator
+                        android:id="@+id/circle_indicator_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignBottom="@+id/view_pager_photo_detail_photo"
+                        android:layout_centerInParent="true"
+                        android:background="@color/bg_black_light"
+                        />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/product_detail_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name"
+                        android:textStyle="bold"
+                        android:textSize="30sp"
+                        android:textColor="@color/bg_black_light"
+                        android:layout_marginStart="10dp"/>
+
+                    <TextView
+                        android:id="@+id/product_detail_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/detail"
+                        android:textStyle="bold"
+                        android:textSize="30sp"
+                        android:textColor="@color/bg_red"
+                        android:layout_marginStart="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_description"
+                            android:textStyle="bold"
+                            android:textSize="30sp"
+                            android:textColor="@color/bg_black_light"
+                            android:layout_marginStart="10dp"/>
+
+                            <ListView
+                                android:id="@+id/lv_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <Button
+                android:id="@+id/btn_add_product_to_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_red_corner_6"
+                android:text="@string/text_add_to_cart"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="10dp"
+                android:textAllCaps="false"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
     </LinearLayout>
+
+
 
 
 </LinearLayout>

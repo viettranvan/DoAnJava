@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static ArrayList<Product> arrarProduct;
     public static ArrayList<ProductNew> arrayProductNew;
     public static boolean isLogin = false;
+    Boolean yourBool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         /*======================= Navigation Drawer Menu===========================*/
         // ẩn hoắc hiện login, profile
-        Menu menu = menuNavigationView.getMenu();
-        menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
-        menu.findItem(R.id.nav_profile).setVisible(false); // ẩn profile
+        checkLogin();
+
 
 //        menuNavigationView.bringToFront();
         menuNavigationView.setNavigationItemSelectedListener(this);
@@ -89,17 +90,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setCountProductInCart(arrarCart.size());
         }
 
-        // chuyen den man hinh profile
-        Intent intent = getIntent();
-        String toProfile = intent.getStringExtra("gotoProfile");
-        if (toProfile != null && toProfile.contentEquals("profile")) {
-            ahBottomNavigation.setCurrentItem(4);
-        }
+        if(getIntent().getExtras() != null){
 
-        // chuyen den man hinh gio hang
-        String toCart = intent.getStringExtra("gotoCart");
-        if (toCart != null && toCart.contentEquals("cart")) {
-            ahBottomNavigation.setCurrentItem(3);
+            Intent intent = getIntent();
+
+            // chuyen den man hinh profile
+            String toProfile = intent.getStringExtra("gotoProfile");
+            if (toProfile != null && toProfile.contentEquals("profile")) {
+                ahBottomNavigation.setCurrentItem(4);
+            }
+
+            // chuyen den man hinh gio hang
+            String toCart = intent.getStringExtra("gotoCart");
+            if (toCart != null && toCart.contentEquals("cart")) {
+                ahBottomNavigation.setCurrentItem(3);
+            }
+
+            yourBool = getIntent().getExtras().getBoolean("yourBoolName");
+            MainActivity.isLogin = yourBool;
+            checkLogin();
+
+        }
+    }
+
+    private void checkLogin() {
+        Menu menu = menuNavigationView.getMenu();
+
+        if(isLogin){
+            menu.findItem(R.id.nav_login).setVisible(false);
+            menu.findItem(R.id.nav_logout).setVisible(true); // hiện logout
+            menu.findItem(R.id.nav_profile).setVisible(true); // hiện profile
+        }
+        else{
+            menu.findItem(R.id.nav_login).setVisible(true);
+            menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
+            menu.findItem(R.id.nav_profile).setVisible(false); // ẩn profile
         }
 
     }
@@ -256,7 +281,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
 //                Toast.makeText(MainActivity.this,"login",Toast.LENGTH_SHORT).show();
                 break;
-
+            case R.id.nav_profile:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                ahBottomNavigation.setCurrentItem(4);
+                break;
+            case R.id.nav_logout:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                MainActivity.isLogin = false;
+                checkLogin();
+                finish();
+                startActivity(getIntent());
+                break;
         }
         return true;
     }
@@ -330,14 +365,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ahBottomNavigation.setCurrentItem(3);
     }
 
-    // ẩn bottom tab
-    public void hideBottomTab(){
-        ahBottomNavigation.setVisibility(View.GONE);
-    }
-
-    // hiện bottom tab
-    public void showBottomTab(){
-        ahBottomNavigation.setVisibility(View.VISIBLE);
-    }
 
 }
