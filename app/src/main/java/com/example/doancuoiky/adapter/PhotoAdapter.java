@@ -1,5 +1,6 @@
 package com.example.doancuoiky.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,11 @@ import java.util.List;
 
 public class PhotoAdapter extends PagerAdapter {
 
-    private HomeFragment mContext;
+//    private HomeFragment mContext;
+    Context mContext;
     private List<Photo> mListPhoto;
 
-    public PhotoAdapter(HomeFragment mContext, List<Photo> mListPhoto) {
+    public PhotoAdapter(Context mContext, List<Photo> mListPhoto) {
         this.mContext = mContext;
         this.mListPhoto = mListPhoto;
     }

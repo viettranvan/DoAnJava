@@ -1,14 +1,16 @@
 package com.example.doancuoiky.modal;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
 
     private int resourceId;
     private String name;
     private String description;
-    private String price;
+    private int price;
     private boolean isAddToCart;
 
-    public Product(int resourceId, String name, String description, String price) {
+    public Product(int resourceId, String name, String description, int price) {
         this.resourceId = resourceId;
         this.name = name;
         this.description = description;
@@ -39,11 +41,11 @@ public class Product {
         this.description = description;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

@@ -1,5 +1,7 @@
 package com.example.doancuoiky.modal;
 
+import android.content.Intent;
+
 import java.lang.ref.SoftReference;
 
 import javax.xml.namespace.QName;
@@ -9,10 +11,10 @@ public class Cart {
     private int cartProductImg;
     private String name;
     private String description;
-    private String price;
+    private int price;
     private String count;
 
-    public Cart(int cartProductImg, String name, String description, String price, String count) {
+    public Cart(int cartProductImg, String name, String description, int price, String count) {
         this.cartProductImg = cartProductImg;
         this.name = name;
         this.description = description;
@@ -44,11 +46,11 @@ public class Cart {
         this.description = description;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

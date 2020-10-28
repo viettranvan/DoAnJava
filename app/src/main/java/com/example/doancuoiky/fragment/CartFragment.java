@@ -32,6 +32,7 @@ import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.modal.Product;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -42,9 +43,10 @@ public class CartFragment extends Fragment  {
 
     private LinearLayout oderContainer;
     private Button btnOder;
-    private TextView tvNotice;
+    private TextView tvNotice, tvTotal;
     private MainActivity mainActivity;
-    private Product product,productPosition;
+    private Product product;
+
 
     ListView lvCart;
     CartAdapter cartAdapter;
@@ -90,10 +92,9 @@ public class CartFragment extends Fragment  {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         // trả lại trạng thái enebal cho button thêm giỏ hàng -> Fragment Product
-                        // (đang duyệt dựa trên tên sản phẩm)
+                        // (đang duyệt dựa trên tên sản phẩm) -> đổi lại id sau này
                         String name = MainActivity.arrarCart.get(index).getName();
                         for(int k = 0 ;k < MainActivity.arrarProduct.size();k ++){
-                            Log.d("TAG1", "index: " + k +"\nTen:" + MainActivity.arrarProduct.get(k).getName());
                             if(MainActivity.arrarProduct.get(k).getName().equals(name)){
 
                                 product = MainActivity.arrarProduct.get(k);
@@ -106,9 +107,11 @@ public class CartFragment extends Fragment  {
                         Toast.makeText(getContext(),"Xóa thành công",Toast.LENGTH_SHORT).show();
                         mainActivity.setCountProductInCart(MainActivity.arrarCart.size());
                         checkData();
+
+                        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+                        tvTotal.setText(decimalFormat.format(totalPrice()) + "đ");
                     }
                 });
-
 
                 alertDelete.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                     @Override
@@ -119,6 +122,7 @@ public class CartFragment extends Fragment  {
 
                 alertDelete.show();
             }
+
         });
 
         return  view;
@@ -144,13 +148,23 @@ public class CartFragment extends Fragment  {
         oderContainer = view.findViewById(R.id.order_container);
         btnOder = view.findViewById(R.id.btn_order);
         tvNotice = view.findViewById(R.id.tv_notice);
+        tvTotal = view.findViewById(R.id.tv_total);
         lvCart = view.findViewById(R.id.lv_cart);
 
         mainActivity = (MainActivity) getActivity();
 
-
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        tvTotal.setText(decimalFormat.format(totalPrice()) + "đ");
         cartAdapter = new CartAdapter(getContext(),R.layout.item_cart,MainActivity.arrarCart);
         lvCart.setAdapter(cartAdapter);
+    }
+
+    public int totalPrice(){
+        int total = 0;
+        for(int i = 0;i < MainActivity.arrarCart.size();i++){
+            total += MainActivity.arrarCart.get(i).getPrice();
+        }
+        return total;
     }
 
 }

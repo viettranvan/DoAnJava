@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.example.doancuoiky.adapter.ViewPagerAdapter;
 import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Product;
+import com.example.doancuoiky.modal.ProductNew;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -58,7 +60,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static ArrayList<Cart> arrarCart;
     public static ArrayList<Product> arrarProduct;
+
+    public static ArrayList<ProductNew> arrayProductNew;
     public static boolean isLogin = false;
+    Boolean yourBool;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +82,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         /*======================= Navigation Drawer Menu===========================*/
         // ẩn hoắc hiện login, profile
-        Menu menu = menuNavigationView.getMenu();
-        menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
-        menu.findItem(R.id.nav_profile).setVisible(false); // ẩn profile
+        checkLogin();
+
 
 //        menuNavigationView.bringToFront();
         menuNavigationView.setNavigationItemSelectedListener(this);
@@ -87,17 +92,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setCountProductInCart(arrarCart.size());
         }
 
-        // chuyen den man hinh profile
-        Intent i = getIntent();
-        String data = i.getStringExtra("FromChangeInfo");
+        if(getIntent().getExtras() != null){
 
-        if (data != null && data.contentEquals("4")) {
-            ahBottomNavigation.setCurrentItem(4);
+            Intent intent = getIntent();
+
+            // chuyen den man hinh profile
+            String toProfile = intent.getStringExtra("gotoProfile");
+            if (toProfile != null && toProfile.contentEquals("profile")) {
+                ahBottomNavigation.setCurrentItem(4);
+            }
+
+            // chuyen den man hinh gio hang
+            String toCart = intent.getStringExtra("gotoCart");
+            if (toCart != null && toCart.contentEquals("cart")) {
+                ahBottomNavigation.setCurrentItem(3);
+            }
+
+            yourBool = getIntent().getExtras().getBoolean("yourBoolName");
+            MainActivity.isLogin = yourBool;
+            checkLogin();
+
         }
     }
 
-    private void actionToolBar() {
+    private void checkLogin() {
+        Menu menu = menuNavigationView.getMenu();
 
+        if(isLogin){
+            menu.findItem(R.id.nav_login).setVisible(false);
+            menu.findItem(R.id.nav_logout).setVisible(true); // hiện logout
+            menu.findItem(R.id.nav_profile).setVisible(true); // hiện profile
+        }
+        else{
+            menu.findItem(R.id.nav_login).setVisible(true);
+            menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
+            menu.findItem(R.id.nav_profile).setVisible(false); // ẩn profile
+        }
+
+    }
+
+    private void actionToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolBarTitle.setText("Trang chủ");
@@ -125,24 +159,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }else{
             arrarCart = new ArrayList<>();
+//            arrarCart.add(new Cart(R.drawable.realme_banner_resize,"realme","Điện thoại realme","4.000.000","1"));
+//            arrarCart.add(new Cart(R.drawable.iphone,"ihone","Điện thoại iphone XR","10.000.000","2"));
+//            arrarCart.add(new Cart(R.drawable.samsum_banner_resize,"Samsung","Điện thoại samsung","8.000.000","3"));
+//            arrarCart.add(new Cart(R.drawable.oppo_banner_resize," Oppo","Điện thoại oppo","10.234.432","4"));
+//            arrarCart.add(new Cart(R.drawable.laptop_asus,"Laptop asus","Laptop Asus","10.500.500","5"));
+//            arrarCart.add(new Cart(R.drawable.laptop_dell,"Laptop dell","Laptop dell","9.000.000","6"));
         }
 
         if(arrarProduct != null){
 
         }else{
             arrarProduct = new ArrayList<>();
+            arrarProduct.add(new Product(R.drawable.realme_banner_resize,"realme","Điện thoại realme",4000000));
+            arrarProduct.add(new Product(R.drawable.iphone,"Iphone XR","Điện thoại iphone XR",10000000));
+            arrarProduct.add(new Product(R.drawable.samsum_banner_resize,"Samsung","Điện thoại samsung",8000000));
+            arrarProduct.add(new Product(R.drawable.laptop_asus,"Laptop asus","Laptop Asus",10500500));
+            arrarProduct.add(new Product(R.drawable.laptop_dell,"Laptop dell","Laptop dell",9000000));
         }
 
-        arrarProduct.add(new Product(R.drawable.iphone1,"Iphone XR1","Mau do1","10000000"));
-        arrarProduct.add(new Product(R.drawable.iphone,"Iphone XR2","Mau den2","10000001"));
-        arrarProduct.add(new Product(R.drawable.iphone1,"Iphone XR3","Mau do3","10000000"));
+        if(arrayProductNew != null){
 
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphondadade1 ne","01","10.234.432","1"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"iphone ne","02","10.234.432","2"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"iphone1 ne","03","10.234.432","3"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone," ne","04","10.234.432","4"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone1,"ada ne","05","10.234.432","5"));
-        MainActivity.arrarCart.add(new Cart(R.drawable.iphone,"26 ne","06","10.234.432","6"));
+        }else{
+            arrayProductNew = new ArrayList<>();
+            arrayProductNew.add(new ProductNew(1,1,"iphone XR","Điện thoại iphone XR",10000000f,R.drawable.iphone));
+            arrayProductNew.add(new ProductNew(2,1,"Samsung","Điện thoại samsung ",8000000f,R.drawable.samsum_banner_resize));
+            arrayProductNew.add(new ProductNew(3,1,"Oppo","Điện thoại oppo",5000000f,R.drawable.oppo_banner_resize));
+            arrayProductNew.add(new ProductNew(4,2,"Asus","Laptop  Asus",10500500f,R.drawable.laptop_asus));
+            arrayProductNew.add(new ProductNew(5,2,"Dell","Laprop Dell",9000000f,R.drawable.laptop_dell));
+        }
     }
 
     // bottom tab
@@ -219,9 +264,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_mobile:
-                CartFragment cartFragment = new CartFragment();
-                loadFragment(cartFragment);
-                drawerLayout.closeDrawer(GravityCompat.START);
+//                CartFragment cartFragment = new CartFragment();
+//                loadFragment(cartFragment);
+//                drawerLayout.closeDrawer(GravityCompat.START);
+                Toast.makeText(this,"mobile",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_share:
                 Toast.makeText(this,"share",Toast.LENGTH_SHORT).show();
@@ -235,6 +281,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent);
 //                Toast.makeText(MainActivity.this,"login",Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.nav_profile:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                ahBottomNavigation.setCurrentItem(4);
+                break;
+            case R.id.nav_logout:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                MainActivity.isLogin = false;
+                checkLogin();
+
+                finish();
+                startActivity(new Intent(this,MainActivity.class));
+
                 break;
 
         }
@@ -308,16 +368,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onCartIconClickListener() {
         ahBottomNavigation.setCurrentItem(3);
-    }
-
-    // ẩn bottom tab
-    public void hideBottomTab(){
-        ahBottomNavigation.setVisibility(View.GONE);
-    }
-
-    // hiện bottom tab
-    public void showBottomTab(){
-        ahBottomNavigation.setVisibility(View.VISIBLE);
     }
 
 }

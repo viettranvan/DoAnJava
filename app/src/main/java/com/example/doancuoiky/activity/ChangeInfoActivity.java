@@ -72,7 +72,9 @@ public class ChangeInfoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(ChangeInfoActivity.this,"cập nhật",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(ChangeInfoActivity.this,MainActivity.class);
-                intent.putExtra("FromChangeInfo","4");
+
+                intent.putExtra("gotoProfile","profile");
+
                 startActivity(intent);
             }
         });

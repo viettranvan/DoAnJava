@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doancuoiky.AnimationUtil;
+import com.example.doancuoiky.adapter.ProductNewAdapter;
 import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Product;
 import com.example.doancuoiky.adapter.ProductAdapter;
@@ -57,7 +58,7 @@ public class ProductFragment extends Fragment {
                         int id = product.getResourceId();
                         String name = product.getName();
                         String description = product.getDescription();
-                        String price = product.getPrice();
+                        int price = product.getPrice();
 
                         Cart cart = new Cart(id, name, description, price, "1");
                         MainActivity.arrarCart.add(cart);
