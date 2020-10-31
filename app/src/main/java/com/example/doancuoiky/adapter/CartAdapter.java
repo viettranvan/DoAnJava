@@ -97,6 +97,7 @@ public class CartAdapter extends BaseAdapter{
                 }
                 MainActivity.arrarCart.get(i).setCount(currentCount + "");
                 cartProductCount.setText(arrayCart.get(i).getCount());
+                CartFragment.updateTotalPrice();
                 notifyDataSetChanged();
 
             }
@@ -111,6 +112,7 @@ public class CartAdapter extends BaseAdapter{
                 currentCount += 1;
                 MainActivity.arrarCart.get(i).setCount(currentCount + "");
                 cartProductCount.setText(arrayCart.get(i).getCount());
+                CartFragment.updateTotalPrice();
                 notifyDataSetChanged();
             }
         });
@@ -134,6 +136,8 @@ public class CartAdapter extends BaseAdapter{
 
         return view;
     }
+
+
 
     private void anhXa(View view,int i) {
         // Ánh xạ và gán giá trị

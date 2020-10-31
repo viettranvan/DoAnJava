@@ -179,11 +179,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }else{
             arrayProductNew = new ArrayList<>();
-            arrayProductNew.add(new ProductNew(1,1,"iphone XR","Điện thoại iphone XR",10000000f,R.drawable.iphone));
-            arrayProductNew.add(new ProductNew(2,1,"Samsung","Điện thoại samsung ",8000000f,R.drawable.samsum_banner_resize));
-            arrayProductNew.add(new ProductNew(3,1,"Oppo","Điện thoại oppo",5000000f,R.drawable.oppo_banner_resize));
-            arrayProductNew.add(new ProductNew(4,2,"Asus","Laptop  Asus",10500500f,R.drawable.laptop_asus));
-            arrayProductNew.add(new ProductNew(5,2,"Dell","Laprop Dell",9000000f,R.drawable.laptop_dell));
+            arrayProductNew.add(new ProductNew(1,1,"iphone XR","Điện thoại iphone XR",10000000,R.drawable.iphone));
+            arrayProductNew.add(new ProductNew(2,1,"Samsung","Điện thoại samsung ",8000000,R.drawable.samsum_banner_resize));
+            arrayProductNew.add(new ProductNew(3,1,"Oppo","Điện thoại oppo",5000000,R.drawable.oppo_banner_resize));
+            arrayProductNew.add(new ProductNew(4,2,"Asus","Laptop  Asus",10500500,R.drawable.laptop_asus));
+            arrayProductNew.add(new ProductNew(5,2,"Dell","Laprop Dell",9000000,R.drawable.laptop_dell));
         }
     }
 

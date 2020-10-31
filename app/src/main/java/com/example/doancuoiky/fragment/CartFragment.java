@@ -43,10 +43,10 @@ public class CartFragment extends Fragment  {
 
     private LinearLayout oderContainer;
     private Button btnOder;
-    private TextView tvNotice, tvTotal;
+    private TextView tvNotice;
+    private static TextView tvTotal;
     private MainActivity mainActivity;
     private Product product;
-
 
     ListView lvCart;
     CartAdapter cartAdapter;
@@ -65,16 +65,17 @@ public class CartFragment extends Fragment  {
         btnOder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.arrarCart.clear();
-                checkData();
+//                MainActivity.arrarCart.clear();
+//                checkData();
                 Toast.makeText(getActivity(),"tiến hành đặt hàng " + MainActivity.arrarCart.size(),Toast.LENGTH_SHORT).show();
-                mainActivity.setCountProductInCart(0);
-
+//                mainActivity.setCountProductInCart(0);
+                MainActivity.arrarCart.get(0).setCount("2");
+                cartAdapter.notifyDataSetChanged();
                 // trả lại trạng thái enebal cho tất cả button thêm trong Product Fragment
-                for(int i = 0;i < MainActivity.arrarProduct.size();i++){
-                    product = MainActivity.arrarProduct.get(i);
-                    product.setAddToCart(false);
-                }
+//                for(int i = 0;i < MainActivity.arrarProduct.size();i++){
+//                    product = MainActivity.arrarProduct.get(i);
+//                    product.setAddToCart(false);
+//                }
             }
         });
 
@@ -96,7 +97,6 @@ public class CartFragment extends Fragment  {
                         String name = MainActivity.arrarCart.get(index).getName();
                         for(int k = 0 ;k < MainActivity.arrarProduct.size();k ++){
                             if(MainActivity.arrarProduct.get(k).getName().equals(name)){
-
                                 product = MainActivity.arrarProduct.get(k);
                                 product.setAddToCart(false);
                             }
@@ -108,21 +108,18 @@ public class CartFragment extends Fragment  {
                         mainActivity.setCountProductInCart(MainActivity.arrarCart.size());
                         checkData();
 
-                        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-                        tvTotal.setText(decimalFormat.format(totalPrice()) + "đ");
+                        updateTotalPrice();
                     }
                 });
 
                 alertDelete.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
                     }
                 });
 
                 alertDelete.show();
             }
-
         });
 
         return  view;
@@ -153,18 +150,19 @@ public class CartFragment extends Fragment  {
 
         mainActivity = (MainActivity) getActivity();
 
-        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        tvTotal.setText(decimalFormat.format(totalPrice()) + "đ");
+        updateTotalPrice();
         cartAdapter = new CartAdapter(getContext(),R.layout.item_cart,MainActivity.arrarCart);
         lvCart.setAdapter(cartAdapter);
     }
 
-    public int totalPrice(){
+    public static void updateTotalPrice(){
         int total = 0;
         for(int i = 0;i < MainActivity.arrarCart.size();i++){
-            total += MainActivity.arrarCart.get(i).getPrice();
+            int count = Integer.parseInt(MainActivity.arrarCart.get(i).getCount());
+            total += MainActivity.arrarCart.get(i).getPrice() * count;
         }
-        return total;
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        tvTotal.setText(decimalFormat.format(total) + "đ");
     }
 
 }

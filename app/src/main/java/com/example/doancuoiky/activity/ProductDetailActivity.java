@@ -13,7 +13,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.example.doancuoiky.adapter.PhotoAdapter;
 import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.modal.Product;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
@@ -40,6 +43,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private List<Photo> mListPhoto;
 
+    private ListView description;
+    ArrayList<String> arrayDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         int pos = i.getIntExtra("productDetail",0);
 
         tvProductName.setText(MainActivity.arrayProductNew.get(pos).getProductName());
-        tvProductPrice.setText(MainActivity.arrayProductNew.get(pos).getProductPrice() + "");
+
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        tvProductPrice.setText(decimalFormat.format(MainActivity.arrayProductNew.get(pos).getProductPrice())  + " đ");
 
     }
 
@@ -73,6 +80,16 @@ public class ProductDetailActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager_photo_detail_photo);
         circleIndicator = findViewById(R.id.circle_indicator_detail);
 
+        description = findViewById(R.id.lv_description);
+
+        arrayDescription = new ArrayList<>();
+
+        addTempData();
+
+
+        ArrayAdapter adapter = new ArrayAdapter(ProductDetailActivity.this,android.R.layout.simple_list_item_1,arrayDescription);
+        description.setAdapter(adapter);
+
         mListPhoto = getListPhoto();
         photoAdapter = new PhotoAdapter(this,mListPhoto);
         viewPager.setAdapter(photoAdapter);
@@ -81,6 +98,41 @@ public class ProductDetailActivity extends AppCompatActivity {
         photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
     }
+
+    private void addTempData() {
+        if(arrayDescription != null && arrayDescription.size() == 0){
+            arrayDescription.add("Hãng sản xuất: Apple");
+            arrayDescription.add("Kích thước: 158.2 x 77.9 x 7.3 mm (6.23 x 3.07 x 0.29 in)");
+            arrayDescription.add("Trọng lượng: 192 g (6.77 oz)");
+            arrayDescription.add("Bộ nhớ đệm / Ram: 32 GB, 2 GB RAM");
+            arrayDescription.add("Bộ nhớ trong: 32 GB");
+            arrayDescription.add("Loại SIM: Nano-SIM");
+            arrayDescription.add("Loại màn hình: Cảm ứng điện dung LED-backlit IPS LCD, 16 triệu màu");
+            arrayDescription.add("Kích thước màn hình: 5.5 inches");
+            arrayDescription.add("Độ phân giải màn hình: 1080 x 1920 pixels");
+            arrayDescription.add("Hệ điều hành: iOS");
+            arrayDescription.add("Phiên bản hệ điều hành: 11");
+            arrayDescription.add("Chipset: Apple A9 APL1022");
+            arrayDescription.add("CPU: 2x 1.84 GHz Twister");
+            arrayDescription.add("GPU: PowerVR GT7600 (6 lõi đồ họa)");
+            arrayDescription.add("Khe cắm thẻ nhớ: Không");
+            arrayDescription.add("Camera sau: 12 MP (f/2.2, 29mm, 1/3\", 1.22 µm), tự động lấy nét nhận diện theo giai đoạn, OIS, LED flash kép (2 tone)");
+            arrayDescription.add("Camera trước: 5 MP (f/2.2, 31mm), 1080p@30fps, 720p@240fps, nhận diện khuôn mặt, HDR, panorama");
+            arrayDescription.add("Quay video: 2160p@30fps, 1080p@60fps, 1080p@120fps, 720p@240fps");
+            arrayDescription.add("3G: HSPA 42.2/5.76 Mbps, EV-DO Rev.A 3.1 Mbps");
+            arrayDescription.add("4G: LTE-A (2CA) Cat6 300/50 Mbps");
+            arrayDescription.add("WLAN: Wi-Fi 802.11 a/b/g/n/ac, dual-band, hotspot");
+            arrayDescription.add("Bluetooth: 4.2, A2DP, LE");
+            arrayDescription.add("GPS: A-GPS, GLONASS, GALILEO, QZSS");
+            arrayDescription.add("NFC: Yes");
+            arrayDescription.add("USB: 2.0");
+            arrayDescription.add("Cảm biến: Vân tay, gia tốc, la bàn, khoảng cách, con quay quy hồi, phong vũ biểu");
+            arrayDescription.add("Pin: Li-ion 2750 mA");
+
+        }
+    }
+
+
 
     private List<Photo> getListPhoto(){
         Intent i = getIntent();
