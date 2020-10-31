@@ -12,7 +12,9 @@ import com.example.doancuoiky.R;
 
 public class LoginActivity extends AppCompatActivity {
 
+
     private Button forgotPassword,signIn, signUp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         anhXa();
+
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +52,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void anhXa() {
+
         signIn = findViewById(R.id.btn_sign_in);
+
         signUp = findViewById(R.id.btn_sign_up);
         forgotPassword = findViewById(R.id.btn_forgot_password_in_login);
     }

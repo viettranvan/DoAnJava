@@ -159,6 +159,7 @@ public class CartAdapter extends BaseAdapter{
         cartProductPrice.setText(decimalFormat.format(arrayCart.get(i).getPrice()) + " đ");
 
 
+
         cartProductCount.setText(arrayCart.get(i).getCount());
         imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
 
