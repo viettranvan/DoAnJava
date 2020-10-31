@@ -6,6 +6,7 @@ import androidx.core.view.GravityCompat;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -67,17 +68,23 @@ public class ChangeInfoActivity extends AppCompatActivity {
             }
         });
 
+
+
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ChangeInfoActivity.this,"cập nhật",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ChangeInfoActivity.this,MainActivity.class);
 
-                intent.putExtra("gotoProfile","profile");
+                goToMainActivity();
 
-                startActivity(intent);
+                finish();
             }
         });
+    }
+
+    private void goToMainActivity() {
+        Intent intent = new Intent(ChangeInfoActivity.this,MainActivity.class);
+                intent.putExtra("gotoProfile","profile");
+        startActivity(intent);
     }
 
     private void showDateDialog() {

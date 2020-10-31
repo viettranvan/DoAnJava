@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 
 import com.example.doancuoiky.activity.ChangeInfoActivity;
@@ -23,7 +24,7 @@ import com.example.doancuoiky.activity.ChangePasswordActivity;
 
 import com.example.doancuoiky.activity.LoginActivity;
 
-import com.example.doancuoiky.activity.MainActivity;
+import com.example.doancuoiky.activity.OrderManagementActivity;
 
 
 public class ProfileFragment extends Fragment {
@@ -33,6 +34,7 @@ public class ProfileFragment extends Fragment {
     private ImageView img;
 
     private LinearLayout profileNotLoggedIn, profileLogged, changeInfoPassword, gotoOrderManagement;
+    private LinearLayout gotoPendingOrder, gotoShippingOrder,gotoSuccessOrder;
     private TextView profileIconNext;
 
     @Nullable
@@ -47,8 +49,7 @@ public class ProfileFragment extends Fragment {
         profileNotLoggedIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
+                gotoLogin();
             }
         });
 
@@ -72,7 +73,48 @@ public class ProfileFragment extends Fragment {
         gotoOrderManagement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(GlobalVariable.isLogin){
+                    gotoOrderManagement("all");
+                }
+                else{
+                    gotoLogin();
+                }
+            }
+        });
 
+        gotoPendingOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(GlobalVariable.isLogin){
+                    gotoOrderManagement("pending");
+                }
+                else{
+                    gotoLogin();
+                }
+            }
+        });
+
+        gotoShippingOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(GlobalVariable.isLogin){
+                    gotoOrderManagement("shipping");
+                }
+                else{
+                    gotoLogin();
+                }
+            }
+        });
+
+        gotoSuccessOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(GlobalVariable.isLogin){
+                    gotoOrderManagement("success");
+                }
+                else{
+                    gotoLogin();
+                }
             }
         });
 
@@ -105,6 +147,31 @@ public class ProfileFragment extends Fragment {
         return  view;
     }
 
+    private void gotoOrderManagement(String value) {
+        Intent intent = new Intent(getActivity().getApplicationContext(),OrderManagementActivity.class);
+
+        switch (value){
+            case "all":
+                intent.putExtra("gotoOrderManagement","all");
+                break;
+            case "pending":
+                intent.putExtra("gotoOrderManagement","pending");
+                break;
+            case "shipping":
+                intent.putExtra("gotoOrderManagement","shipping");
+                break;
+            case "success":
+                intent.putExtra("gotoOrderManagement","success");
+                break;
+        }
+        startActivity(intent);
+    }
+
+    private void gotoLogin() {
+        Intent intent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+    }
+
     private void anhXa(View view) {
         addAddress = view.findViewById(R.id.add_address);
         changeInfo = view.findViewById(R.id.change_info);
@@ -117,11 +184,15 @@ public class ProfileFragment extends Fragment {
         profileLogged = view.findViewById(R.id.profile_logged);
         changeInfoPassword = view.findViewById(R.id.chane_info_password);
         profileIconNext = view.findViewById(R.id.icon_next_profile_fragment);
+
         gotoOrderManagement = view.findViewById(R.id.oder_management_profile_fragment);
+        gotoPendingOrder = view.findViewById(R.id.layout_oder_pending_profile_fragment);
+        gotoShippingOrder = view.findViewById(R.id.layout_oder_shipping_profile_fragment);
+        gotoSuccessOrder = view.findViewById(R.id.layout_oder_success_profile_fragment);
 
     }
     private void checkIsLogin(){
-        if(MainActivity.isLogin){
+        if(GlobalVariable.isLogin){
             profileNotLoggedIn.setVisibility(View.GONE);
             profileLogged.setVisibility(View.VISIBLE);
             toggleProfile.setVisibility(View.VISIBLE);

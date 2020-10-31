@@ -13,7 +13,6 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -29,7 +28,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
-import com.example.doancuoiky.fragment.CartFragment;
+import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.ViewPagerAdapter;
 import com.example.doancuoiky.fragment.HomeFragment;
@@ -62,8 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static ArrayList<Product> arrarProduct;
 
     public static ArrayList<ProductNew> arrayProductNew;
-    public static boolean isLogin = false;
-    Boolean yourBool;
+//    public static boolean isLogin = true;
 
 
     @Override
@@ -73,19 +71,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         anhXa();
 
-        /*chuyển trang bằng cách click vào icon hoặc vuốt*/
-        setUpViewPager();
+        setUpViewPager(); /*chuyển trang bằng cách click vào icon hoặc vuốt*/
 
-        // toolbar, mở drawer menu
-        actionToolBar();
+        actionToolBar(); // toolbar, mở drawer menu
 
-
-        /*======================= Navigation Drawer Menu===========================*/
-        // ẩn hoắc hiện login, profile
         checkLogin();
 
 
-//        menuNavigationView.bringToFront();
         menuNavigationView.setNavigationItemSelectedListener(this);
 
         if(arrarCart.size() > 0){
@@ -99,7 +91,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // chuyen den man hinh profile
             String toProfile = intent.getStringExtra("gotoProfile");
             if (toProfile != null && toProfile.contentEquals("profile")) {
-                ahBottomNavigation.setCurrentItem(4);
+                GlobalVariable.isLogin=true;
+//                checkLogin();
+//                ahBottomNavigation.setCurrentItem(4);
+                Log.d("TAG1", "****: " + GlobalVariable.isLogin);
             }
 
             // chuyen den man hinh gio hang
@@ -108,17 +103,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ahBottomNavigation.setCurrentItem(3);
             }
 
-            yourBool = getIntent().getExtras().getBoolean("yourBoolName");
-            MainActivity.isLogin = yourBool;
-            checkLogin();
+            if(getIntent().getExtras().getBoolean("loginTrue") == true){
+                GlobalVariable.isLogin = true;
+                checkLogin();
+            }
+
 
         }
+
     }
 
     private void checkLogin() {
         Menu menu = menuNavigationView.getMenu();
 
-        if(isLogin){
+        if(GlobalVariable.isLogin){
             menu.findItem(R.id.nav_login).setVisible(false);
             menu.findItem(R.id.nav_logout).setVisible(true); // hiện logout
             menu.findItem(R.id.nav_profile).setVisible(true); // hiện profile
@@ -188,6 +186,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             arrayProductNew.add(new ProductNew(4,2,"Asus","Laptop  Asus",10500500,R.drawable.laptop_asus));
             arrayProductNew.add(new ProductNew(5,2,"Dell","Laprop Dell",9000000,R.drawable.laptop_dell));
         }
+
+
     }
 
     // bottom tab
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this,"mobile",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_share:
-                Toast.makeText(this,"share",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"share: " + GlobalVariable.isLogin ,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_laptop:
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -289,12 +289,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logout:
                 drawerLayout.closeDrawer(GravityCompat.START);
-                MainActivity.isLogin = false;
+                GlobalVariable.isLogin = false;
                 checkLogin();
 
                 finish();
                 startActivity(new Intent(this,MainActivity.class));
-
                 break;
 
         }
@@ -325,10 +324,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setTextColor(ContextCompat.getColor(MainActivity.this, R.color.white))
                 .build();
         ahBottomNavigation.setNotification(notification, 3);
-    }
-
-    public int getCountProduct() {
-        return mCountProduct;
     }
 
     private void setToolbarTitle(int position){

@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("yourBoolName", true);
+                intent.putExtra("loginTrue", true);
                 startActivity(intent);
             }
         });

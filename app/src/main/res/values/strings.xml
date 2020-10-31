@@ -24,6 +24,10 @@
     <string name="txt_search">search fragment</string>
     <string name="txt_profile">profile fragment</string>
     <string name="txt_product">product fragment</string>
+    <string name="txt_all_order">all order fragment</string>
+    <string name="txt_success_order">all order fragment</string>
+    <string name="txt_pending_order">all order fragment</string>
+    <string name="txt_shipping_order">all order fragment</string>
 
     <string name="txt_avatar">product fragment</string>
 
@@ -84,6 +88,7 @@
     <string name="detail">Chi tiết</string>
 
     <string name="toolbar_change_profile_title">Chỉnh sửa thông tin cá nhân</string>
+    <string name="toolbar_order_management_title">Quản lý đơn hàng</string>
 
     <!--  in sign up-->
     <string name="text_login">Đăng nhập</string>
@@ -141,7 +146,6 @@
     <!-- in search fragment -->
     <string name="text_history_search">Lịch Sử tìm kiếm</string>
     <string name="text_delete">Xóa</string>
-
 
 
     <string name="text_new_product">Sản phẩm mới nhất</string>

@@ -1,34 +1,31 @@
 package com.example.doancuoiky.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.PhotoAdapter;
 import com.example.doancuoiky.modal.Photo;
-import com.example.doancuoiky.modal.Product;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -40,6 +37,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private CircleIndicator circleIndicator;
     private PhotoAdapter photoAdapter;
+    private Button addToCart;
 
     private List<Photo> mListPhoto;
 
@@ -62,6 +60,13 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
+        addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ProductDetailActivity.this, "them vao gio hang" , Toast.LENGTH_SHORT).show();
+            }
+        });
+
         Intent i = getIntent();
         int pos = i.getIntExtra("productDetail",0);
 
@@ -79,6 +84,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar_product_detail);
         viewPager = findViewById(R.id.view_pager_photo_detail_photo);
         circleIndicator = findViewById(R.id.circle_indicator_detail);
+        addToCart = findViewById(R.id.btn_add_product_to_cart);
 
         description = findViewById(R.id.lv_description);
 
@@ -131,7 +137,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         }
     }
-
 
 
     private List<Photo> getListPhoto(){
