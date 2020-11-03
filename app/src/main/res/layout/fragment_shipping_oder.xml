@@ -5,13 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".fragment.AllOderFragment"
     android:orientation="vertical"
-    android:background="@color/bg_red">
+    android:background="@color/bg_gray_invisible">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/lv_shipping_order_fragment_pending_order"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/txt_shipping_order" />
+        android:dividerHeight="10dp"
+        android:divider="@color/bg_gray_invisible"/>
 
 
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -86,11 +87,33 @@ public class ProductDetailActivity extends AppCompatActivity {
         circleIndicator = findViewById(R.id.circle_indicator_detail);
         addToCart = findViewById(R.id.btn_add_product_to_cart);
 
+
         description = findViewById(R.id.lv_description);
 
-        arrayDescription = new ArrayList<>();
+        description.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int action = motionEvent.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        view.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
 
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        view.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                view.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
+
+        arrayDescription = new ArrayList<>();
         addTempData();
+
+
 
 
         ArrayAdapter adapter = new ArrayAdapter(ProductDetailActivity.this,android.R.layout.simple_list_item_1,arrayDescription);
@@ -102,6 +125,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         circleIndicator.setViewPager(viewPager);
         photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
+
+
 
     }
 

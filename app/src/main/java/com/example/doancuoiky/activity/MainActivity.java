@@ -92,9 +92,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String toProfile = intent.getStringExtra("gotoProfile");
             if (toProfile != null && toProfile.contentEquals("profile")) {
                 GlobalVariable.isLogin=true;
-//                checkLogin();
-//                ahBottomNavigation.setCurrentItem(4);
-                Log.d("TAG1", "****: " + GlobalVariable.isLogin);
+                checkLogin();
+                ahBottomNavigation.setCurrentItem(4);
             }
 
             // chuyen den man hinh gio hang

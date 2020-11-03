@@ -90,6 +90,7 @@
     <string name="toolbar_change_profile_title">Chỉnh sửa thông tin cá nhân</string>
     <string name="toolbar_order_management_title">Quản lý đơn hàng</string>
 
+
     <!--  in sign up-->
     <string name="text_login">Đăng nhập</string>
     <string name="hint_username">Tên đăng nhập</string>
@@ -98,7 +99,6 @@
     <string name="button_sign_in">Đăng nhập</string>
     <string name="text_sign_up1">Bạn chưa có tài khoản?</string>
     <string name="text_sign_up2">Đăng ký ngay</string>
-
 
     <!--    sign up screen-->
     <string name="text_sign_up_message">Tạo tài khoản mới</string>
@@ -130,7 +130,6 @@
     <string name="search">Tìm kiếm</string>
     <string name="cart">Giỏ hàng</string>
 
-
     <!-- drawable menu -->
     <string name="home">Trang chính</string>
     <string name="mobile">Điện thoại</string>
@@ -147,11 +146,27 @@
     <string name="text_history_search">Lịch Sử tìm kiếm</string>
     <string name="text_delete">Xóa</string>
 
-
     <string name="text_new_product">Sản phẩm mới nhất</string>
-    <string name="text_description">Thông số kỹ thuật</string>
+    <string name="text_description">Mô tả</string>
+    <string name="text_specifications">Thông số kỹ thuật</string>
     <string name="text_add_to_cart">Thêm vào giỏ hàng</string>
 
+    <string name="mota">OPPO A5 (2020) 128GB là chiếc smartphone mới ra
+        mắt của thương hiệu OPPO nhận nhiệm vụ đánh chiếm phân khúc giá
+        rẻ/tầm trung với rất nhiều điểm nhấn đáng giá.</string>
+    
+    <!-- in order -->
+    <string name="text_order_id">ID đơn hàng:</string>
+    <string name="text_order_date">Thời gian đặt:</string>
+    <string name="text_order_status">Trạng thái:</string>
+    <string name="text_order_total">Tổng:</string>
+    <string name="text_status_0">Đang chờ xử lý</string>
+    <string name="text_status_1">Đang giao</string>
+    <string name="text_status_2">Hoàn tất</string>
 
+    <string name="text_order_id_tmp">ORDER001</string>
+    <string name="text_order_date_tmp">11/03/2020 12:15:03</string>
+    <string name="text_order_status_tmp">Hoàn tất</string>
+    <string name="text_order_total_tmp">18.000.000 đ</string>
 
 </resources>

@@ -23,12 +23,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.activity.MainActivity;
 import com.example.doancuoiky.adapter.CartAdapter;
 import com.example.doancuoiky.adapter.PhotoAdapter;
 import com.example.doancuoiky.adapter.ProductAdapter;
 import com.example.doancuoiky.modal.Cart;
+import com.example.doancuoiky.modal.Order;
 import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.modal.Product;
 
@@ -65,17 +67,16 @@ public class CartFragment extends Fragment  {
         btnOder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                MainActivity.arrarCart.clear();
-//                checkData();
+                MainActivity.arrarCart.clear();
+                checkData();
                 Toast.makeText(getActivity(),"tiến hành đặt hàng " + MainActivity.arrarCart.size(),Toast.LENGTH_SHORT).show();
-//                mainActivity.setCountProductInCart(0);
-                MainActivity.arrarCart.get(0).setCount("2");
+                mainActivity.setCountProductInCart(0);
                 cartAdapter.notifyDataSetChanged();
                 // trả lại trạng thái enebal cho tất cả button thêm trong Product Fragment
-//                for(int i = 0;i < MainActivity.arrarProduct.size();i++){
-//                    product = MainActivity.arrarProduct.get(i);
-//                    product.setAddToCart(false);
-//                }
+                for(int i = 0;i < MainActivity.arrarProduct.size();i++){
+                    product = MainActivity.arrarProduct.get(i);
+                    product.setAddToCart(false);
+                }
             }
         });
 

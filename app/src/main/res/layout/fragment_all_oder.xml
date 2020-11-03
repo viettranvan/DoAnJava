@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.AllOderFragment"
-    android:orientation="vertical">
-
-    <TextView
+    android:orientation="vertical"
+    android:background="@color/bg_gray_light">
+    
+    <ListView
+        android:id="@+id/lv_all_order_fragment_all_order"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/txt_all_order" />
-
+        android:dividerHeight="10dp"
+        android:divider="@color/bg_gray_invisible"/>
 
 </LinearLayout>

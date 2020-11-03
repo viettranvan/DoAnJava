@@ -9,9 +9,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.OrderViewPagerAdapter;
+import com.example.doancuoiky.modal.Order;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 public class OrderManagementActivity extends AppCompatActivity {
 
@@ -62,6 +66,15 @@ public class OrderManagementActivity extends AppCompatActivity {
         if (toProfile != null && toProfile.contentEquals("success")) {
             TabLayout.Tab tab = mTabLayout.getTabAt(3);
             tab.select();
+        }
+
+        if(GlobalVariable.arrayOrder == null){
+            GlobalVariable.arrayOrder = new ArrayList<>();
+
+            GlobalVariable.arrayOrder.add(new Order("01","11-03-2020 12:15:03",0,20000000));
+            GlobalVariable.arrayOrder.add(new Order("02","11-03-2020 12:15:03",0,18000000));
+            GlobalVariable.arrayOrder.add(new Order("03","11-03-2020 12:15:03",1,23500000));
+            GlobalVariable.arrayOrder.add(new Order("04","11-03-2020 12:15:03",2,8000000));
         }
 
     }
