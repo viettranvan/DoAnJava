@@ -53,10 +53,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     app:hintEnabled="false">
-                    <EditText
-                        android:id="@+id/edt_username"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_username_login"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="12dp"
@@ -66,7 +66,6 @@
                         android:hint="@string/hint_username"
                         android:imeOptions="actionNext"
                         android:minWidth="320dp"
-                        android:minHeight="50dp"
                         android:singleLine="true"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -88,8 +87,8 @@
                     app:hintEnabled="false"
                     app:passwordToggleEnabled="true">
 
-                    <EditText
-                        android:id="@+id/et_password"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_password_login"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

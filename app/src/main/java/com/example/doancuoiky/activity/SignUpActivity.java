@@ -63,3 +63,46 @@ public class SignUpActivity extends AppCompatActivity {
         signUp = findViewById(R.id.btn_sign_up2);
     }
 }
+
+
+//    private boolean validateUsername(){
+//        String usernameInput = textInputUsername.getEditText().getText().toString().trim();
+//
+//        if (usernameInput.isEmpty()) {
+//            textInputUsername.setError("Field can't be empty");
+//
+//            return false;
+//        } else if (usernameInput.length() > 15) {
+//            textInputUsername.setError("Username too long");
+//            return false;
+//        } else {
+//            textInputUsername.setError(null);
+//            return true;
+//        }
+//
+//    }
+//
+//    private boolean validatePassword() {
+//        String passwordInput = textInputPassword.getEditText().getText().toString().trim();
+//        if (passwordInput.isEmpty()) {
+//            textInputPassword.setError("Field can't be empty");
+//            return false;
+//        } else if (!GlobalVariable.PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+//            textInputPassword.setError("Password too weak");
+//            return false;
+//        } else {
+//            textInputPassword.setError(null);
+//            return true;
+//        }
+//    }
+//
+//    public void confirmInput(View v) {
+//        if ( !validateUsername() | !validatePassword()) {
+//            return;
+//        }
+//
+//        String input = "Username: " + textInputUsername.getEditText().getText().toString();
+//        input += "\n";
+//        input += "Password: " + textInputPassword.getEditText().getText().toString();
+//        Toast.makeText(this, input, Toast.LENGTH_SHORT).show();
+//    }
