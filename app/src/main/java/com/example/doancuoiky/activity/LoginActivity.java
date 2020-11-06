@@ -39,21 +39,19 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("loginTrue", true);
-                startActivity(intent);
+//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                intent.putExtra("loginTrue", true);
+//                startActivity(intent);
 
-//                if(checkData()){
-//                    Toast.makeText(LoginActivity.this, textInputUsername.getText().toString() + "\n" +
-//                            textInputPassword.getText().toString(), Toast.LENGTH_SHORT).show();
-//                }
-//                else {
-//                    setError();
-//
-//                }
+                if(checkData()){
+                    Toast.makeText(LoginActivity.this, textInputUsername.getText().toString() + "\n" +
+                            textInputPassword.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    setError();
+                }
             }
         });
-
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
 
         textInputUsername = findViewById(R.id.edt_username_login);
         textInputPassword = findViewById(R.id.edt_password_login);
-
     }
 
     private void validateUsername() {
@@ -90,14 +87,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if(!hasFocus){
-                    if (textInputUsername.getText().toString().length() <= 0) {
-                        textInputUsername.setError("Vui lòng nhập email hoặc tên tài khoản");
-                    } else if (textInputUsername.getText().toString().length() > 0 &&
-                            textInputUsername.getText().toString().length() < 8) {
-                        textInputUsername.setError("Tên đăng nhập phải dài ít nhất 8 ký tự");
-                    } else {
-                        textInputUsername.setError(null);
-                    }
+                    setErrorUsername();
                 }
             }
         });
@@ -108,42 +98,20 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if(!hasFocus) {
-                    if (textInputPassword.getText().toString().length() <= 0) {
-                        textInputPassword.setError("Vui lòng nhập mật khẩu");
-                    } else if (textInputPassword.getText().toString().length() > 0 &&
-                            textInputPassword.getText().toString().length() < 6) {
-                        textInputPassword.setError("Mật khẩu phải chứa ít nhất 8 ký tự bao gồm chữ thường, " +
-                                "chữ hoa và ký tự đặc biệt");
-                    } else {
-                        textInputPassword.setError(null);
-                    }
+                    setErrorPassword();
                 }
             }
         });
-
     }
 
     private void setError(){
-        if(textInputUsername.getText().length() < 6 || textInputPassword.getText().length() < 6){
-            if (textInputUsername.getText().toString().length() <= 0) {
-                textInputUsername.setError("Vui lòng nhập email hoặc tên tài khoản");
-            } else if (textInputUsername.getText().toString().length() > 0 &&
-                    textInputUsername.getText().toString().length() < 6) {
-                textInputUsername.setError("Tên đăng nhập phải dài ít nhất 8 ký tự");
-            } else {
-                textInputUsername.setError(null);
-            }
-
-            if (textInputPassword.getText().toString().length() <= 0) {
-                textInputPassword.setError("Vui lòng nhập mật khẩu");
-            } else if (textInputPassword.getText().toString().length() > 0 &&
-                    textInputPassword.getText().toString().length() < 6) {
-                textInputPassword.setError("Mật khẩu phải chứa ít nhất 8 ký tự bao gồm chữ thường, " +
-                        "chữ hoa và ký tự đặc biệt");
-            } else {
-                textInputPassword.setError(null);
-            }
+        if(textInputUsername.getText().length() < 8){
+            setErrorUsername();
         }
+        if(textInputPassword.getText().length() < 8){
+            setErrorPassword();
+        }
+
     }
 
     // Kiểm tra độ dài nhập ở edittext có hợp lệ
@@ -157,8 +125,29 @@ public class LoginActivity extends AppCompatActivity {
         else{
             return true;
         }
-
     }
 
+    private void setErrorUsername(){
+        if (textInputUsername.getText().toString().length() <= 0) {
+            textInputUsername.setError("Vui lòng nhập email hoặc tên tài khoản");
+        } else if (textInputUsername.getText().toString().length() > 0 &&
+                textInputUsername.getText().toString().length() < 8) {
+            textInputUsername.setError("Tên đăng nhập phải dài ít nhất 8 ký tự");
+        } else {
+            textInputUsername.setError(null);
+        }
+    }
+
+    private void setErrorPassword(){
+        if (textInputPassword.getText().toString().length() <= 0) {
+            textInputPassword.setError("Vui lòng nhập mật khẩu");
+        } else if (textInputPassword.getText().toString().length() > 0 &&
+                textInputPassword.getText().toString().length() < 6) {
+            textInputPassword.setError("Mật khẩu phải chứa ít nhất 8 ký tự bao gồm chữ thường, " +
+                    "chữ hoa và ký tự đặc biệt");
+        } else {
+            textInputPassword.setError(null);
+        }
+    }
 
 }

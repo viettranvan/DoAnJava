@@ -80,9 +80,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"đên màn hình chi tiết" + position,Toast.LENGTH_SHORT).show();
+
+
                 Intent intent = new Intent(view.getContext(),ProductDetailActivity.class);
-                intent.putExtra("gotoDetail2",mListProduct.get(position));
+                intent.putExtra("productDetail",position);
                 view.getContext().startActivity(intent);
             }
         });

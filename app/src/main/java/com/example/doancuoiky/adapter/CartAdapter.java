@@ -78,7 +78,7 @@ public class CartAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
-        LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         view = inflater.inflate(myLayout,null);
 
@@ -129,16 +129,24 @@ public class CartAdapter extends BaseAdapter{
         btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"tới màn hình chi tiết index = " + i,Toast.LENGTH_SHORT).show();
+                String id = GlobalVariable.arrayCart.get(i).getID();
+                int idProduct = 0;
+                for(int index = 0;index < GlobalVariable.arrarProduct.size();index++){
+                    if(GlobalVariable.arrarProduct.get(index).getProductID().equals(id)){
+                        Log.d("TAG1", "index = " + id );
+                        idProduct = index;
+                        break;
+                    }
+                }
+
                 Intent intent = new Intent(view.getContext(), ProductDetailActivity.class);
+                intent.putExtra("productDetail",idProduct);
                 view.getContext().startActivity(intent);
             }
         });
 
         return view;
     }
-
-
 
     private void anhXa(View view,int i) {
         // Ánh xạ và gán giá trị

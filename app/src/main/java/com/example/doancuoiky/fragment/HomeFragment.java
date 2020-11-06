@@ -25,10 +25,12 @@ import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.activity.ChangePasswordActivity;
 import com.example.doancuoiky.activity.MainActivity;
 import com.example.doancuoiky.activity.ProductDetailActivity;
+import com.example.doancuoiky.adapter.ProductAdapter;
 import com.example.doancuoiky.adapter.ProductNewAdapter;
 import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.adapter.PhotoAdapter;
 import com.example.doancuoiky.R;
+import com.example.doancuoiky.modal.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,7 @@ public class HomeFragment extends Fragment {
     private Timer mTimer;
     private goToCartOnClickListener mGoToCart;
     private RecyclerView recyclerView;
+    private ArrayList<Product> productNew;
 
     ProductNewAdapter productNewAdapter;
 
@@ -88,10 +91,25 @@ public class HomeFragment extends Fragment {
         circleIndicator.setViewPager(viewPager);
         photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
-        productNewAdapter = new ProductNewAdapter(getContext(), GlobalVariable.arrayProductNew);
+        if(productNew == null){
+            productNew = new ArrayList<>();
+        }
+
+        if(GlobalVariable.arrarProduct.size() > 6){
+            for(int i = 0 ;i < 6;i++){
+                productNew.add(GlobalVariable.arrarProduct.get(i));
+            }
+        }
+        else{
+            productNew = GlobalVariable.arrarProduct;
+        }
+
+        productNewAdapter = new ProductNewAdapter(getContext(), productNew);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         recyclerView.setAdapter(productNewAdapter);
+
+
     }
 
     private List<Photo> getListPhoto(){

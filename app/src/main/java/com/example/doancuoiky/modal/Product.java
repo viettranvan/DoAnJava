@@ -4,13 +4,14 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
 
-    public String productID;
-    public String productTypeID;
-    public String productName;
-    public String productDescription;
-    public String specifications; // thong so ky thuat
-    public int productPrice;
-    public int productImage;
+    private String productID;
+    private String productTypeID;
+    private String productName;
+    private String productDescription;
+    private String specifications; // thong so ky thuat
+    private int productPrice;
+    private int productImage;
+    private int count;
     private boolean isAddToCart;
 
     public Product(String productID, String productTypeID, String productName,
@@ -23,6 +24,38 @@ public class Product implements Serializable {
         this.productPrice = productPrice;
         this.productImage = productImage;
     }
+
+    public Product(String productID, String productTypeID, String productName, String productDescription,
+                   String specifications, int productPrice, int productImage, int count) {
+        this.productID = productID;
+        this.productTypeID = productTypeID;
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.specifications = specifications;
+        this.productPrice = productPrice;
+        this.productImage = productImage;
+        this.count = count;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    //    public Product(String productID, String productTypeID, String productName,
+//                String productDescription, String specifications, int productPrice, int productImage, int count) {
+//        this.productID = productID;
+//        this.productTypeID = productTypeID;
+//        this.productName = productName;
+//        this.productDescription = productDescription;
+//        this.specifications = specifications;
+//        this.productPrice = productPrice;
+//        this.productImage = productImage;
+//        this.count = count;
+//    }
 
     public String getProductID() {
         return productID;

@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doancuoiky.R;
-import com.example.doancuoiky.modal.ProductNew;
+import com.example.doancuoiky.modal.Product;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -32,15 +32,13 @@ public class ProductNewAdapter extends RecyclerView.Adapter<ProductNewAdapter.It
     }
 
     Context context;
-    ArrayList<ProductNew> arrayProductNew;
+    ArrayList<Product> arrayProductNew;
 
 
-
-    public ProductNewAdapter(Context context, ArrayList<ProductNew> arrayProductNew) {
+    public ProductNewAdapter(Context context, ArrayList<Product> arrayProductNew) {
         this.context = context;
         this.arrayProductNew = arrayProductNew;
     }
-
 
     @NonNull
     @Override
@@ -48,13 +46,12 @@ public class ProductNewAdapter extends RecyclerView.Adapter<ProductNewAdapter.It
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product_new,null);
         ItemHolder itemHolder = new ItemHolder(view);
 
-
         return itemHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position){
-        ProductNew productNew = arrayProductNew.get(position);
+        Product productNew = arrayProductNew.get(position);
 
         holder.tvProductName.setText(productNew.getProductName());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
@@ -81,10 +78,10 @@ public class ProductNewAdapter extends RecyclerView.Adapter<ProductNewAdapter.It
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
-            imgProduct = itemView.findViewById(R.id.img_product_image);
-            tvProductName = itemView.findViewById(R.id.tv_product_name);
-            tvProductPrice = itemView.findViewById(R.id.tv_product_price);
-
+            imgProduct = itemView.findViewById(R.id.img_product_image_product_new);
+            tvProductName = itemView.findViewById(R.id.tv_product_name_product_new);
+            tvProductDescription = itemView.findViewById(R.id.tv_product_description_product_new);
+            tvProductPrice = itemView.findViewById(R.id.tv_product_price_product_new);
         }
     }
 }

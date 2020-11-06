@@ -70,10 +70,14 @@
             android:id="@+id/tv_cart_product_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txt_cart_product_description"
+            android:text="@string/mota"
             android:textSize="16sp"
             android:textColor="@android:color/darker_gray"
-            android:textStyle="italic"/>
+            android:textStyle="italic"
+            android:lines="2"
+            android:maxLines="2"
+            android:ellipsize="end"
+            />
 
         <TextView
             android:id="@+id/tv_cart_product_price"

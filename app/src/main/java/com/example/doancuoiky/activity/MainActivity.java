@@ -34,7 +34,6 @@ import com.example.doancuoiky.adapter.ViewPagerAdapter;
 import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Product;
-import com.example.doancuoiky.modal.ProductNew;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -161,19 +160,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     getString(R.string.mota),"4gb-64gb",10500500,R.drawable.laptop_asus));
             GlobalVariable.arrarProduct.add(new Product("005","002","Laptop dell",
                     getString(R.string.mota),"4gb-64gb",9000000,R.drawable.laptop_dell));
+            GlobalVariable.arrarProduct.add(new Product("006","001","Điện thoại samsung",
+                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.meow));
+            GlobalVariable.arrarProduct.add(new Product("007","002","Laptop Asus",
+                    getString(R.string.mota),"4gb-64gb",10500500,R.mipmap.ic_launcher));
+            GlobalVariable.arrarProduct.add(new Product("008","002","Laptop dell",
+                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.iphone1));
         }
 
-        if(GlobalVariable.arrayProductNew != null){
-
-        }else{
-            GlobalVariable.arrayProductNew = new ArrayList<>();
-
-            GlobalVariable.arrayProductNew.add(new ProductNew("1","1","iphone XR", getString(R.string.mota),"Điện thoại iphone XR" ,10000000,R.drawable.iphone));
-            GlobalVariable.arrayProductNew.add(new ProductNew("2","1","Samsung",getString(R.string.mota),"Điện thoại samsung ",8000000,R.drawable.samsum_banner_resize));
-            GlobalVariable.arrayProductNew.add(new ProductNew("3","1","Oppo",getString(R.string.mota),"Điện thoại oppo",5000000,R.drawable.oppo_banner_resize));
-            GlobalVariable.arrayProductNew.add(new ProductNew("4","2","Asus",getString(R.string.mota),"Laptop  Asus",10500500,R.drawable.laptop_asus));
-            GlobalVariable.arrayProductNew.add(new ProductNew("5","2","Dell",getString(R.string.mota),"Laprop Dell",9000000,R.drawable.laptop_dell));
-        }
     }
 
     // bottom tab
