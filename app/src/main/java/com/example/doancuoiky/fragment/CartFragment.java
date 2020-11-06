@@ -67,14 +67,14 @@ public class CartFragment extends Fragment  {
         btnOder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.arrarCart.clear();
+                GlobalVariable.arrayCart.clear();
                 checkData();
-                Toast.makeText(getActivity(),"tiến hành đặt hàng " + MainActivity.arrarCart.size(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"tiến hành đặt hàng " + GlobalVariable.arrayCart.size(),Toast.LENGTH_SHORT).show();
                 mainActivity.setCountProductInCart(0);
                 cartAdapter.notifyDataSetChanged();
                 // trả lại trạng thái enebal cho tất cả button thêm trong Product Fragment
-                for(int i = 0;i < MainActivity.arrarProduct.size();i++){
-                    product = MainActivity.arrarProduct.get(i);
+                for(int i = 0;i < GlobalVariable.arrarProduct.size();i++){
+                    product = GlobalVariable.arrarProduct.get(i);
                     product.setAddToCart(false);
                 }
             }
@@ -95,18 +95,18 @@ public class CartFragment extends Fragment  {
 
                         // trả lại trạng thái enebal cho button thêm giỏ hàng -> Fragment Product
                         // (đang duyệt dựa trên tên sản phẩm) -> đổi lại id sau này
-                        String name = MainActivity.arrarCart.get(index).getName();
-                        for(int k = 0 ;k < MainActivity.arrarProduct.size();k ++){
-                            if(MainActivity.arrarProduct.get(k).getName().equals(name)){
-                                product = MainActivity.arrarProduct.get(k);
+                        String name = GlobalVariable.arrayCart.get(index).getName();
+                        for(int k = 0 ;k < GlobalVariable.arrarProduct.size();k ++){
+                            if(GlobalVariable.arrarProduct.get(k).getProductName().equals(name)){
+                                product = GlobalVariable.arrarProduct.get(k);
                                 product.setAddToCart(false);
                             }
                         }
 
-                        MainActivity.arrarCart.remove(index);
+                        GlobalVariable.arrayCart.remove(index);
                         cartAdapter.notifyDataSetChanged();
                         Toast.makeText(getContext(),"Xóa thành công",Toast.LENGTH_SHORT).show();
-                        mainActivity.setCountProductInCart(MainActivity.arrarCart.size());
+                        mainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
                         checkData();
 
                         updateTotalPrice();
@@ -128,7 +128,7 @@ public class CartFragment extends Fragment  {
 
     // kiem tra neu gio hang rong thi hien thong bao gio hang rong
     private void checkData() {
-        if(MainActivity.arrarCart.size() <= 0){
+        if(GlobalVariable.arrayCart.size() <= 0){
             cartAdapter.notifyDataSetChanged();
             tvNotice.setVisibility(View.VISIBLE);
             lvCart.setVisibility(View.INVISIBLE);
@@ -152,15 +152,15 @@ public class CartFragment extends Fragment  {
         mainActivity = (MainActivity) getActivity();
 
         updateTotalPrice();
-        cartAdapter = new CartAdapter(getContext(),R.layout.item_cart,MainActivity.arrarCart);
+        cartAdapter = new CartAdapter(getContext(),R.layout.item_cart,GlobalVariable.arrayCart);
         lvCart.setAdapter(cartAdapter);
     }
 
     public static void updateTotalPrice(){
         int total = 0;
-        for(int i = 0;i < MainActivity.arrarCart.size();i++){
-            int count = Integer.parseInt(MainActivity.arrarCart.get(i).getCount());
-            total += MainActivity.arrarCart.get(i).getPrice() * count;
+        for(int i = 0;i < GlobalVariable.arrayCart.size();i++){
+            int count = GlobalVariable.arrayCart.get(i).getCount();
+            total += GlobalVariable.arrayCart.get(i).getPrice() * count;
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         tvTotal.setText(decimalFormat.format(total) + "đ");

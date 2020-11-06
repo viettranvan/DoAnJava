@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.activity.ChangePasswordActivity;
 import com.example.doancuoiky.activity.MainActivity;
 import com.example.doancuoiky.activity.ProductDetailActivity;
@@ -87,7 +88,7 @@ public class HomeFragment extends Fragment {
         circleIndicator.setViewPager(viewPager);
         photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
-        productNewAdapter = new ProductNewAdapter(getContext(),MainActivity.arrayProductNew);
+        productNewAdapter = new ProductNewAdapter(getContext(), GlobalVariable.arrayProductNew);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         recyclerView.setAdapter(productNewAdapter);
@@ -103,7 +104,6 @@ public class HomeFragment extends Fragment {
         list.add(new Photo(R.drawable.xiaomi_banner_resize));
 
         return list;
-
     }
 
     // them icon gio hang len thanh toolbar
@@ -118,10 +118,8 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.ic_cart_toolbar:
-
                 mGoToCart.onCartIconClickListener();
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }

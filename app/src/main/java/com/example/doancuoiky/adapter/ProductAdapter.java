@@ -51,12 +51,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         if(product == null){
             return;
         }
-        holder.imgProduct.setImageResource(product.getResourceId());
-        holder.tvProductName.setText(product.getName());
-        holder.tvProductDescription.setText(product.getDescription());
+        holder.imgProduct.setImageResource(product.getProductImage());
+        holder.tvProductName.setText(product.getProductName());
+        holder.tvProductDescription.setText(product.getProductDescription());
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.tvProductPrice.setText(decimalFormat .format(product.getPrice()) +" đ");
+        holder.tvProductPrice.setText(decimalFormat .format(product.getProductPrice()) +" đ");
 
         if(product.isAddToCart()){
             holder.imgAddToCart.setBackgroundResource(R.drawable.bg_gray_corner_6);

@@ -2,6 +2,8 @@ package com.example.doancuoiky;
 
 import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Order;
+import com.example.doancuoiky.modal.Product;
+import com.example.doancuoiky.modal.ProductNew;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -11,7 +13,9 @@ public class GlobalVariable {
 
 //    public static ArrayList<Cart> arrarCart;
     public static ArrayList<Order> arrayOrder;
-
+    public static ArrayList<Cart> arrayCart;
+    public static ArrayList<Product> arrarProduct;
+    public static ArrayList<ProductNew> arrayProductNew;
 
     public static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^" +
@@ -24,3 +28,4 @@ public class GlobalVariable {
                     ".{4,}" +               //at least 4 characters
                     "$");
 }
+

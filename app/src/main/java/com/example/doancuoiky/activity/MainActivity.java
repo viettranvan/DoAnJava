@@ -55,15 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private View viewEndAnimation;
     private ImageView viewAnimation;
 
-    private int mCountProduct;
-
-    public static ArrayList<Cart> arrarCart;
-    public static ArrayList<Product> arrarProduct;
-
-    public static ArrayList<ProductNew> arrayProductNew;
-//    public static boolean isLogin = true;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         menuNavigationView.setNavigationItemSelectedListener(this);
 
-        if(arrarCart.size() > 0){
-            setCountProductInCart(arrarCart.size());
+        if(GlobalVariable.arrayCart.size() > 0){
+            setCountProductInCart(GlobalVariable.arrayCart.size());
         }
 
         if(getIntent().getExtras() != null){
@@ -106,10 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 GlobalVariable.isLogin = true;
                 checkLogin();
             }
-
-
         }
-
     }
 
     private void checkLogin() {
@@ -125,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
             menu.findItem(R.id.nav_profile).setVisible(false); // ẩn profile
         }
-
     }
 
     private void actionToolBar() {
@@ -152,41 +139,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewAnimation = findViewById(R.id.view_animation);
         toolBarTitle = findViewById(R.id.tv_toolbar_title);
 
-        if(arrarCart != null){
+        if(GlobalVariable.arrayCart != null){
 
         }else{
-            arrarCart = new ArrayList<>();
-//            arrarCart.add(new Cart(R.drawable.realme_banner_resize,"realme","Điện thoại realme","4.000.000","1"));
-//            arrarCart.add(new Cart(R.drawable.iphone,"ihone","Điện thoại iphone XR","10.000.000","2"));
-//            arrarCart.add(new Cart(R.drawable.samsum_banner_resize,"Samsung","Điện thoại samsung","8.000.000","3"));
-//            arrarCart.add(new Cart(R.drawable.oppo_banner_resize," Oppo","Điện thoại oppo","10.234.432","4"));
-//            arrarCart.add(new Cart(R.drawable.laptop_asus,"Laptop asus","Laptop Asus","10.500.500","5"));
-//            arrarCart.add(new Cart(R.drawable.laptop_dell,"Laptop dell","Laptop dell","9.000.000","6"));
+            GlobalVariable.arrayCart = new ArrayList<>();
+
+//            GlobalVariable.arrayCart.add(new Cart("00a","001","test","4gb","small",100000,R.drawable.meow,1));
         }
 
-        if(arrarProduct != null){
+        if(GlobalVariable.arrarProduct != null){
 
         }else{
-            arrarProduct = new ArrayList<>();
-            arrarProduct.add(new Product(R.drawable.realme_banner_resize,"realme","Điện thoại realme",4000000));
-            arrarProduct.add(new Product(R.drawable.iphone,"Iphone XR","Điện thoại iphone XR",10000000));
-            arrarProduct.add(new Product(R.drawable.samsum_banner_resize,"Samsung","Điện thoại samsung",8000000));
-            arrarProduct.add(new Product(R.drawable.laptop_asus,"Laptop asus","Laptop Asus",10500500));
-            arrarProduct.add(new Product(R.drawable.laptop_dell,"Laptop dell","Laptop dell",9000000));
+            GlobalVariable.arrarProduct = new ArrayList<>();
+            GlobalVariable.arrarProduct.add(new Product("001","001","Điện thoại realme",
+                    getString(R.string.mota),"4gb-64gb",4000000,R.drawable.realme_banner_resize));
+            GlobalVariable.arrarProduct.add(new Product("002","001","Điện thoại iphone XR",
+                    getString(R.string.mota),"4gb-64gb",10000000,R.drawable.iphone));
+            GlobalVariable.arrarProduct.add(new Product("003","001","Điện thoại samsung",
+                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.samsum_banner_resize));
+            GlobalVariable.arrarProduct.add(new Product("004","002","Laptop Asus",
+                    getString(R.string.mota),"4gb-64gb",10500500,R.drawable.laptop_asus));
+            GlobalVariable.arrarProduct.add(new Product("005","002","Laptop dell",
+                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.laptop_dell));
         }
 
-        if(arrayProductNew != null){
+        if(GlobalVariable.arrayProductNew != null){
 
         }else{
-            arrayProductNew = new ArrayList<>();
-            arrayProductNew.add(new ProductNew(1,1,"iphone XR","Điện thoại iphone XR",10000000,R.drawable.iphone));
-            arrayProductNew.add(new ProductNew(2,1,"Samsung","Điện thoại samsung ",8000000,R.drawable.samsum_banner_resize));
-            arrayProductNew.add(new ProductNew(3,1,"Oppo","Điện thoại oppo",5000000,R.drawable.oppo_banner_resize));
-            arrayProductNew.add(new ProductNew(4,2,"Asus","Laptop  Asus",10500500,R.drawable.laptop_asus));
-            arrayProductNew.add(new ProductNew(5,2,"Dell","Laprop Dell",9000000,R.drawable.laptop_dell));
+            GlobalVariable.arrayProductNew = new ArrayList<>();
+
+            GlobalVariable.arrayProductNew.add(new ProductNew("1","1","iphone XR", getString(R.string.mota),"Điện thoại iphone XR" ,10000000,R.drawable.iphone));
+            GlobalVariable.arrayProductNew.add(new ProductNew("2","1","Samsung",getString(R.string.mota),"Điện thoại samsung ",8000000,R.drawable.samsum_banner_resize));
+            GlobalVariable.arrayProductNew.add(new ProductNew("3","1","Oppo",getString(R.string.mota),"Điện thoại oppo",5000000,R.drawable.oppo_banner_resize));
+            GlobalVariable.arrayProductNew.add(new ProductNew("4","2","Asus",getString(R.string.mota),"Laptop  Asus",10500500,R.drawable.laptop_asus));
+            GlobalVariable.arrayProductNew.add(new ProductNew("5","2","Dell",getString(R.string.mota),"Laprop Dell",9000000,R.drawable.laptop_dell));
         }
-
-
     }
 
     // bottom tab
@@ -294,7 +281,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
                 startActivity(new Intent(this,MainActivity.class));
                 break;
-
         }
         return true;
     }
@@ -316,7 +302,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setCountProductInCart(int count){
-        mCountProduct = count;
         AHNotification notification = new AHNotification.Builder()
                 .setText(String.valueOf(count))
                 .setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.bg_red))

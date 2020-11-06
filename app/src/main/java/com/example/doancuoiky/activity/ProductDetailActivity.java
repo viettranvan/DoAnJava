@@ -32,7 +32,7 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    private TextView tvProductName,tvProductPrice;
+    private TextView tvProductName,tvProductPrice, tvDescription;
     private ImageView goBack;
     Toolbar toolbar;
     private ViewPager viewPager;
@@ -71,10 +71,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         Intent i = getIntent();
         int pos = i.getIntExtra("productDetail",0);
 
-        tvProductName.setText(MainActivity.arrayProductNew.get(pos).getProductName());
+        tvProductName.setText(GlobalVariable.arrayProductNew.get(pos).getProductName());
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        tvProductPrice.setText(decimalFormat.format(MainActivity.arrayProductNew.get(pos).getProductPrice())  + " đ");
+        tvProductPrice.setText(decimalFormat.format(GlobalVariable.arrayProductNew.get(pos).getProductPrice())  + " đ");
+
+        tvDescription.setText(GlobalVariable.arrayProductNew.get(pos).getProductDescription());
+
 
     }
 
@@ -86,7 +89,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager_photo_detail_photo);
         circleIndicator = findViewById(R.id.circle_indicator_detail);
         addToCart = findViewById(R.id.btn_add_product_to_cart);
-
+        tvDescription = findViewById(R.id.tv_description_detail_activity);
 
         description = findViewById(R.id.lv_description);
 
@@ -125,8 +128,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         circleIndicator.setViewPager(viewPager);
         photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
-
-
 
     }
 
@@ -169,11 +170,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         int pos = i.getIntExtra("productDetail",0);
 
         List<Photo> list = new ArrayList<>();
-        list.add(new Photo(MainActivity.arrayProductNew.get(pos).getProductImage()));
+        list.add(new Photo(GlobalVariable.arrayProductNew.get(pos).getProductImage()));
         list.add(new Photo(R.drawable.vivo_banner_resize));
-        list.add(new Photo(MainActivity.arrayProductNew.get(pos).getProductImage()));
+        list.add(new Photo(GlobalVariable.arrayProductNew.get(pos).getProductImage()));
         list.add(new Photo(R.drawable.samsum_banner_resize));
-        list.add(new Photo(MainActivity.arrayProductNew.get(pos).getProductImage()));
+        list.add(new Photo(GlobalVariable.arrayProductNew.get(pos).getProductImage()));
         list.add(new Photo(R.drawable.xiaomi_banner_resize));
 
         return list;

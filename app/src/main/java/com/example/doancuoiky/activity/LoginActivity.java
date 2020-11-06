@@ -40,8 +40,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                intent.putExtra("loginTrue", true);
-//                startActivity(intent);
+                intent.putExtra("loginTrue", true);
+                startActivity(intent);
 
 //                if(checkData()){
 //                    Toast.makeText(LoginActivity.this, textInputUsername.getText().toString() + "\n" +

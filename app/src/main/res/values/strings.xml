@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">DoAnCuoiKy</string>
+    <string name="app_title1">MO</string>
+    <string name="app_title2">LA </string>
+    <string name="app_title3"> SHOP</string>
+
 
     <!-- Bottom Tab  -->
     <string name="tab_home">Home</string>
@@ -28,7 +32,6 @@
     <string name="txt_success_order">all order fragment</string>
     <string name="txt_pending_order">all order fragment</string>
     <string name="txt_shipping_order">all order fragment</string>
-
     <string name="txt_avatar">product fragment</string>
 
     <!--    In profile fragment-->
@@ -94,6 +97,7 @@
     <!--  in sign up-->
     <string name="text_login">Đăng nhập</string>
     <string name="hint_username">Tên đăng nhập</string>
+    <string name="hint_full_name">Họ và tên</string>
     <string name="hint_password">Mật khẩu</string>
     <string name="text_forgot_password">Quên mật khẩu?</string>
     <string name="button_sign_in">Đăng nhập</string>
@@ -168,5 +172,24 @@
     <string name="text_order_date_tmp">11/03/2020 12:15:03</string>
     <string name="text_order_status_tmp">Hoàn tất</string>
     <string name="text_order_total_tmp">18.000.000 đ</string>
+
+    <!-- in profile fragment -->
+    <string name="text_sort">Sắp xếp:</string>
+    <string name="text_price_increase">Giá tăng dần</string>
+    <string name="text_price_decrease">Giá giảm dần</string>
+    <string name="text_filter">Lọc</string>
+
+    <string-array name="sort">
+        <item>Không sắp xếp</item>
+        <item>Giá tăng dần</item>
+        <item>Giá giảm dần</item>
+        <item>Đánh giá</item>
+    </string-array>
+
+    <!-- In product Detail -->
+    <string name="feedback_from_customer">Khách hàng nhận xét</string>
+    <string name="text_show_all">Xem tất cả</string>
+
+
 
 </resources>

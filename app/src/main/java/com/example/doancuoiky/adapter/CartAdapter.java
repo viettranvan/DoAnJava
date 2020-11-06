@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
+import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.activity.MainActivity;
 import com.example.doancuoiky.activity.ProductDetailActivity;
@@ -88,15 +89,15 @@ public class CartAdapter extends BaseAdapter{
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int currentCount = Integer.parseInt(arrayCart.get(i).getCount());
+                int currentCount = arrayCart.get(i).getCount();
 
                 if(currentCount <= 1){
                 }
                 else{
                     currentCount -= 1;
                 }
-                MainActivity.arrarCart.get(i).setCount(currentCount + "");
-                cartProductCount.setText(arrayCart.get(i).getCount());
+                GlobalVariable.arrayCart.get(i).setCount(currentCount);
+                cartProductCount.setText(arrayCart.get(i).getCount() +  "");
                 CartFragment.updateTotalPrice();
                 notifyDataSetChanged();
 
@@ -108,10 +109,10 @@ public class CartAdapter extends BaseAdapter{
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int currentCount = Integer.parseInt(arrayCart.get(i).getCount());
+                int currentCount = arrayCart.get(i).getCount();
                 currentCount += 1;
-                MainActivity.arrarCart.get(i).setCount(currentCount + "");
-                cartProductCount.setText(arrayCart.get(i).getCount());
+                GlobalVariable.arrayCart.get(i).setCount(currentCount);
+                cartProductCount.setText(arrayCart.get(i).getCount() + "");
                 CartFragment.updateTotalPrice();
                 notifyDataSetChanged();
             }
@@ -158,12 +159,10 @@ public class CartAdapter extends BaseAdapter{
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         cartProductPrice.setText(decimalFormat.format(arrayCart.get(i).getPrice()) + " đ");
 
-
-
-        cartProductCount.setText(arrayCart.get(i).getCount());
+        cartProductCount.setText(arrayCart.get(i).getCount() + "");
         imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
 
-        int currentCount = Integer.parseInt(arrayCart.get(i).getCount());
+        int currentCount = arrayCart.get(i).getCount();
         if(currentCount <= 1){
             btnMinus.setEnabled(false);
             notifyDataSetChanged();

@@ -25,4 +25,7 @@
 
     <color name="bg_text_input">#F7F7F7</color>
 
+    <color name="duskYellow">#FFEB3B</color>
+    <color name="lightGrey">#2A2E2E</color>
+
 </resources>
