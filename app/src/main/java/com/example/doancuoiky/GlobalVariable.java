@@ -12,7 +12,9 @@ public class GlobalVariable {
 
     public static ArrayList<Order> arrayOrder;
     public static ArrayList<Cart> arrayCart;
-    public static ArrayList<Product> arrarProduct;
+    public static ArrayList<Product> arrayProduct;
+    public static ArrayList<Product> arrayMobile;
+    public static ArrayList<Product> arrayLaptop;
 
     public static String TOKEN = null;
     public static ArrayList<String> arrayProfile;
@@ -27,6 +29,8 @@ public class GlobalVariable {
     public static final int INDEX_ACC_CREATE    = 8;
     public static final int INDEX_AVATAR        = 9;
     public static final int INDEX_RATE          = 10;
+    public static final int INDEX_BIRTHDAY      = 11;
+
 
     public static final String PASSWORD_PATTERN = "^" +
                                 "(?=.*[0-9])" +         //at least 1 digit
@@ -46,6 +50,23 @@ public class GlobalVariable {
     public static final String LOGIN_URL = localhost + "api/login";
     public static final String USER_INFO_URL = localhost + "api/user";
     public static final String USER_SIGN_UP = localhost + "api/user";
+    public static final String USER_UPDATE = localhost + "api/update-user";
+
+
+    public static String  validateNameFirstUpperCase(String string){
+        char[] chars = string.toLowerCase().toCharArray();
+        boolean found = false;
+        for (int i = 0; i < chars.length; i++) {
+            if (!found && Character.isLetter(chars[i])) {
+                chars[i] = Character.toUpperCase(chars[i]);
+                found = true;
+            } else if (Character.isWhitespace(chars[i]) || chars[i]=='.' || chars[i]=='\'') { // You can add other chars here
+                found = false;
+            }
+        }
+        return String.valueOf(chars);
+    }
+
 
 }
 

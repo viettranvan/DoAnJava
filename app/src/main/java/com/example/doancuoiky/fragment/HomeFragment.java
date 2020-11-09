@@ -95,13 +95,13 @@ public class HomeFragment extends Fragment {
             productNew = new ArrayList<>();
         }
 
-        if(GlobalVariable.arrarProduct.size() > 6){
+        if(GlobalVariable.arrayProduct.size() > 6){
             for(int i = 0 ;i < 6;i++){
-                productNew.add(GlobalVariable.arrarProduct.get(i));
+                productNew.add(GlobalVariable.arrayProduct.get(i));
             }
         }
         else{
-            productNew = GlobalVariable.arrarProduct;
+            productNew = GlobalVariable.arrayProduct;
         }
 
         productNewAdapter = new ProductNewAdapter(getContext(), productNew);

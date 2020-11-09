@@ -131,8 +131,8 @@ public class CartAdapter extends BaseAdapter{
             public void onClick(View view) {
                 String id = GlobalVariable.arrayCart.get(i).getID();
                 int idProduct = 0;
-                for(int index = 0;index < GlobalVariable.arrarProduct.size();index++){
-                    if(GlobalVariable.arrarProduct.get(index).getProductID().equals(id)){
+                for(int index = 0;index < GlobalVariable.arrayProduct.size();index++){
+                    if(GlobalVariable.arrayProduct.get(index).getProductID().equals(id)){
                         Log.d("TAG1", "index = " + id );
                         idProduct = index;
                         break;

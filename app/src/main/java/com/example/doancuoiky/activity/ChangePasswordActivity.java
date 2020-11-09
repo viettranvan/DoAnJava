@@ -1,7 +1,10 @@
 package com.example.doancuoiky.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.opengl.ETC1;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,8 +16,21 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
@@ -210,5 +226,82 @@ public class ChangePasswordActivity extends AppCompatActivity {
             setErrorConfirmPassword();
         }
     }
+
+//    private void onChangePassword(){
+//        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_SIGN_UP,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            JSONObject object = new JSONObject(response);
+//                            JSONObject result = object.getJSONObject("result");
+//
+//                            int code = result.getInt("code");
+//                            if(code == 0){
+//
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(ChangePasswordActivity.this);
+//
+//                                builder.setTitle("Thông báo");
+//                                builder.setMessage("Đăng ký thành công, đăng nhập ngay");
+//
+//                                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialogInterface, int i) {
+//                                        Intent intent = new Intent(ChangePasswordActivity.this,LoginActivity.class);
+//                                        startActivity(intent);
+//                                        finish();
+//                                    }
+//                                });
+//
+//                                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                                    }
+//                                });
+//                                builder.show();
+//
+//                            }
+//                            else{
+//                                Toast.makeText(ChangePasswordActivity.this, "Email hoặc tên đăng nhập đã tồn tại",
+//                                        Toast.LENGTH_LONG).show();
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            Toast.makeText(ChangePasswordActivity.this, "error => " + e.toString(), Toast.LENGTH_SHORT).show();
+//
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(ChangePasswordActivity.this, "Email hoặc tên đăng nhập đã tồn tại",
+//                        Toast.LENGTH_LONG).show();
+//            }
+//        }){
+//
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError
+//            {
+//                Map<String, String>  params = new HashMap<String, String>();
+//                params.put("Authorization", GlobalVariable.TOKEN);
+//
+////                params.put("email", edtEmail.getText().toString().trim());
+////                params.put("loginname", edtUsername.getText().toString().trim());
+////                params.put("username", validateNameFirstUpperCase(edtFullName.getText().toString().trim()));
+////                params.put("phone_number", edtPhoneNumber.getText().toString().trim());
+////                params.put("userpassword", edtPassword.getText().toString().trim());
+////                params.put("gender", _gender);
+//
+//                return params;
+//            }
+//
+//        };
+//
+//        RequestQueue queue = Volley.newRequestQueue(ChangePasswordActivity.this);
+//
+//        queue.add(request);
+//
+//    }
 
 }

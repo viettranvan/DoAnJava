@@ -75,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     _email = edtEmail.getText().toString().trim();
                     _username = edtUsername.getText().toString().trim();
-                    _name = validateNameFirstUpperCase(edtFullName.getText().toString().trim()) ;
+                    _name = GlobalVariable.validateNameFirstUpperCase(edtFullName.getText().toString().trim()) ;
                     _phone = edtPhoneNumber.getText().toString().trim();
                     _password = edtPassword.getText().toString().trim();
                     _confirmPassword = edtConfirmPassword.getText().toString().trim();
@@ -108,7 +108,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void validation() {
         validateEmail();
@@ -235,19 +234,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private String validateNameFirstUpperCase(String string){
-        char[] chars = string.toLowerCase().toCharArray();
-        boolean found = false;
-        for (int i = 0; i < chars.length; i++) {
-            if (!found && Character.isLetter(chars[i])) {
-                chars[i] = Character.toUpperCase(chars[i]);
-                found = true;
-            } else if (Character.isWhitespace(chars[i]) || chars[i]=='.' || chars[i]=='\'') { // You can add other chars here
-                found = false;
-            }
-        }
-        return String.valueOf(chars);
-    }
+
 
     // Kiểm tra độ dài nhập ở edittext có hợp lệ
     private boolean checkData(){
@@ -397,10 +384,9 @@ public class SignUpActivity extends AppCompatActivity {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("email", edtEmail.getText().toString().trim());
                 params.put("loginname", edtUsername.getText().toString().trim());
-                params.put("username", validateNameFirstUpperCase(edtFullName.getText().toString().trim()));
+                params.put("username", GlobalVariable.validateNameFirstUpperCase(edtFullName.getText().toString().trim()));
                 params.put("phone_number", edtPhoneNumber.getText().toString().trim());
                 params.put("userpassword", edtPassword.getText().toString().trim());
-
                 params.put("gender", _gender);
 
                 return params;

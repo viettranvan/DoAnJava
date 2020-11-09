@@ -71,12 +71,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         Intent i = getIntent();
         int pos = i.getIntExtra("productDetail",0);
 
-        tvProductName.setText(GlobalVariable.arrarProduct.get(pos).getProductName());
+        tvProductName.setText(GlobalVariable.arrayProduct.get(pos).getProductName());
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        tvProductPrice.setText(decimalFormat.format(GlobalVariable.arrarProduct.get(pos).getProductPrice())  + " đ");
+        tvProductPrice.setText(decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice())  + " đ");
 
-        tvDescription.setText(GlobalVariable.arrarProduct.get(pos).getProductDescription());
+        tvDescription.setText(GlobalVariable.arrayProduct.get(pos).getProductDescription());
 
     }
 
@@ -167,11 +167,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         int pos = i.getIntExtra("productDetail",0);
 
         List<Photo> list = new ArrayList<>();
-        list.add(new Photo(GlobalVariable.arrarProduct.get(pos).getProductImage()));
+        list.add(new Photo(GlobalVariable.arrayProduct.get(pos).getProductImage()));
         list.add(new Photo(R.drawable.vivo_banner_resize));
-        list.add(new Photo(GlobalVariable.arrarProduct.get(pos).getProductImage()));
+        list.add(new Photo(GlobalVariable.arrayProduct.get(pos).getProductImage()));
         list.add(new Photo(R.drawable.samsum_banner_resize));
-        list.add(new Photo(GlobalVariable.arrarProduct.get(pos).getProductImage()));
+        list.add(new Photo(GlobalVariable.arrayProduct.get(pos).getProductImage()));
         list.add(new Photo(R.drawable.xiaomi_banner_resize));
 
         return list;

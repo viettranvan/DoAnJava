@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,10 @@ import com.example.doancuoiky.adapter.ProductAdapter;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.activity.MainActivity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 
 public class ProductFragment extends Fragment  {
 
@@ -33,6 +38,7 @@ public class ProductFragment extends Fragment  {
     private MainActivity mainActivity;
     private ProductAdapter productAdapter;
     private Spinner sortSpinner;
+    ArrayList<Product> mArrayProduct;
 
     @Nullable
     @Override
@@ -45,8 +51,17 @@ public class ProductFragment extends Fragment  {
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Toast.makeText(getContext(), "aaa" + adapterView.getItemAtPosition(i).toString(), Toast.LENGTH_SHORT).show();
+                switch(i){
+                    case 0:
+                        noSort();
+                        break;
+                    case 1:
+                        ascendingSortPrice();
+                        break;
+                    case 2:
+                        descendingSortPrice();
+                        break;
+                }
             }
 
             @Override
@@ -60,7 +75,7 @@ public class ProductFragment extends Fragment  {
         rcvProduct.setLayoutManager(linearLayoutManager);
 
         productAdapter = new ProductAdapter();
-        productAdapter.setData(GlobalVariable.arrarProduct, new ProductAdapter.IClickAddToCartListener() {
+        productAdapter.setData(mArrayProduct, new ProductAdapter.IClickAddToCartListener() {
             @Override
             public void onClickAddToCart(final ImageView imgAddToCart, final Product product) {
                 AnimationUtil.translateAnimation(mainActivity.getViewAnimation(), imgAddToCart, mainActivity.getViewEndAnimation(), new Animation.AnimationListener() {
@@ -108,6 +123,47 @@ public class ProductFragment extends Fragment  {
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.sort));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(adapter);
+
+        if(mArrayProduct == null){
+            mArrayProduct = new ArrayList<>();
+            mArrayProduct.addAll(GlobalVariable.arrayProduct);
+        }
+
+        Collections.sort(mArrayProduct, new Comparator<Product>() {
+            @Override
+            public int compare(Product product1, Product product2) {
+                return product1.getProductName().compareTo(product2.getProductName());
+            }
+        });
+
     }
 
+    // khong sap xep
+    private void noSort(){
+        mArrayProduct.clear();
+        mArrayProduct.addAll(GlobalVariable.arrayProduct);
+        productAdapter.notifyDataSetChanged();
+    }
+
+    // sap xep giam dan theo gia
+    private void descendingSortPrice(){
+        Collections.sort(mArrayProduct, new Comparator<Product>() {
+            @Override
+            public int compare(Product product1, Product product2) {
+                return Integer.compare(product2.getProductPrice(), product1.getProductPrice());
+            }
+        });
+        productAdapter.notifyDataSetChanged();
+    }
+
+    // sap xep tang dan theo gia
+    private void ascendingSortPrice(){
+        Collections.sort(mArrayProduct, new Comparator<Product>() {
+            @Override
+            public int compare(Product product1, Product product2) {
+                return Integer.compare(product1.getProductPrice(), product2.getProductPrice());
+            }
+        });
+        productAdapter.notifyDataSetChanged();
+    }
 }

@@ -73,8 +73,8 @@ public class CartFragment extends Fragment  {
                 mainActivity.setCountProductInCart(0);
                 cartAdapter.notifyDataSetChanged();
                 // trả lại trạng thái enebal cho tất cả button thêm trong Product Fragment
-                for(int i = 0;i < GlobalVariable.arrarProduct.size();i++){
-                    product = GlobalVariable.arrarProduct.get(i);
+                for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
+                    product = GlobalVariable.arrayProduct.get(i);
                     product.setAddToCart(false);
                 }
             }
@@ -96,9 +96,9 @@ public class CartFragment extends Fragment  {
                         // trả lại trạng thái enebal cho button thêm giỏ hàng -> Fragment Product
                         // (đang duyệt dựa trên tên sản phẩm) -> đổi lại id sau này
                         String name = GlobalVariable.arrayCart.get(index).getName();
-                        for(int k = 0 ;k < GlobalVariable.arrarProduct.size();k ++){
-                            if(GlobalVariable.arrarProduct.get(k).getProductName().equals(name)){
-                                product = GlobalVariable.arrarProduct.get(k);
+                        for(int k = 0 ;k < GlobalVariable.arrayProduct.size();k ++){
+                            if(GlobalVariable.arrayProduct.get(k).getProductName().equals(name)){
+                                product = GlobalVariable.arrayProduct.get(k);
                                 product.setAddToCart(false);
                             }
                         }

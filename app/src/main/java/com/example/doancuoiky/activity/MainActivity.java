@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         anhXa();
 
+        initData();
+
         setUpViewPager(); /*chuyển trang bằng cách click vào icon hoặc vuốt*/
 
         actionToolBar(); // toolbar, mở drawer menu
@@ -121,6 +123,64 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         checkLogin();
     }
 
+    private void initData() {
+        if(GlobalVariable.arrayCart != null){
+
+        }else{
+            GlobalVariable.arrayCart = new ArrayList<>();
+
+//            GlobalVariable.arrayCart.add(new Cart("00a","001","test","4gb","small",100000,R.drawable.meow,1));
+        }
+
+        if(GlobalVariable.arrayProfile != null){
+
+        }
+        else{
+            GlobalVariable.arrayProfile = new ArrayList<>();
+
+        }
+
+        if(GlobalVariable.arrayProduct != null){
+
+        }else{
+            GlobalVariable.arrayProduct = new ArrayList<>();
+            GlobalVariable.arrayProduct.add(new Product("001","001","Điện thoại realme",
+                    getString(R.string.mota),"4gb-64gb",4000000,R.drawable.realme_banner_resize));
+            GlobalVariable.arrayProduct.add(new Product("002","001","Điện thoại iphone XR",
+                    getString(R.string.mota),"4gb-64gb",10000000,R.drawable.iphone));
+            GlobalVariable.arrayProduct.add(new Product("003","001","Điện thoại samsung",
+                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.samsum_banner_resize));
+            GlobalVariable.arrayProduct.add(new Product("004","002","Laptop Asus",
+                    getString(R.string.mota),"4gb-64gb",10500500,R.drawable.laptop_asus));
+            GlobalVariable.arrayProduct.add(new Product("005","002","Laptop dell",
+                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.laptop_dell));
+            GlobalVariable.arrayProduct.add(new Product("006","001","Điện thoại samsung",
+                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.meow));
+            GlobalVariable.arrayProduct.add(new Product("007","002","Laptop Asus",
+                    getString(R.string.mota),"4gb-64gb",10500500,R.mipmap.ic_launcher));
+            GlobalVariable.arrayProduct.add(new Product("008","002","Laptop dell",
+                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.iphone1));
+        }
+
+//        if(GlobalVariable.arrayMobile == null){
+//            GlobalVariable.arrayMobile = new ArrayList<>();
+//            for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
+//                if(GlobalVariable.arrayProduct.get(i).getProductTypeID().equals("001")){
+//                    GlobalVariable.arrayMobile.add(GlobalVariable.arrayProduct.get(i));
+//                }
+//            }
+//        }
+//
+//        if(GlobalVariable.arrayLaptop== null){
+//            GlobalVariable.arrayLaptop = new ArrayList<>();
+//            for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
+//                if(GlobalVariable.arrayLaptop.get(i).getProductTypeID().equals("002")){
+//                    GlobalVariable.arrayLaptop.add(GlobalVariable.arrayProduct.get(i));
+//                }
+//            }
+//        }
+    }
+
     private void setDataProfile() {
 
         if(GlobalVariable.isLogin){
@@ -146,6 +206,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         String avatar = data.getString("avatar");
                         String rate = data.getString("rate");
 
+                        if(address.length() == 0 || address.equals("null")){
+                            address = "";
+                        }
+                        if(citizen_identification.length() == 0 || citizen_identification.equals("null")){
+                            citizen_identification = "";
+                        }
+
                         GlobalVariable.arrayProfile.add(id_user);
                         GlobalVariable.arrayProfile.add(email);
                         GlobalVariable.arrayProfile.add(loginname);
@@ -164,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 .into(headerAvatar);
                         }
 
-                        Log.d("TAG1", "avatar: " +  GlobalVariable.arrayProfile.get(9));
                         headerName.setText(GlobalVariable.arrayProfile.get(3));
                         headerEmail.setText(GlobalVariable.arrayProfile.get(1));
 
@@ -203,7 +269,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             headerLoggedIn.setVisibility(View.VISIBLE);
             headerNotLoggedIn.setVisibility(View.GONE);
 
-
         }
         else{
             menu.findItem(R.id.nav_login).setVisible(true);
@@ -238,53 +303,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewAnimation = findViewById(R.id.view_animation);
         toolBarTitle = findViewById(R.id.tv_toolbar_title);
 
-
         headerView = menuNavigationView.getHeaderView(0);
         headerNotLoggedIn = headerView.findViewById(R.id.header_drawer_not_logged_in);
         headerLoggedIn = headerView.findViewById(R.id.header_drawer_logged_in);
         headerAvatar = headerView.findViewById(R.id.drawer_menu_avatar);
         headerName = headerView.findViewById(R.id.drawer_menu_name);
         headerEmail = headerView.findViewById(R.id.drawer_menu_email);
-
-//        headerName.setText("Your Text Here");
-
-        if(GlobalVariable.arrayCart != null){
-
-        }else{
-            GlobalVariable.arrayCart = new ArrayList<>();
-
-//            GlobalVariable.arrayCart.add(new Cart("00a","001","test","4gb","small",100000,R.drawable.meow,1));
-        }
-
-        if(GlobalVariable.arrayProfile != null){
-
-        }
-        else{
-            GlobalVariable.arrayProfile = new ArrayList<>();
-
-        }
-
-        if(GlobalVariable.arrarProduct != null){
-
-        }else{
-            GlobalVariable.arrarProduct = new ArrayList<>();
-            GlobalVariable.arrarProduct.add(new Product("001","001","Điện thoại realme",
-                    getString(R.string.mota),"4gb-64gb",4000000,R.drawable.realme_banner_resize));
-            GlobalVariable.arrarProduct.add(new Product("002","001","Điện thoại iphone XR",
-                    getString(R.string.mota),"4gb-64gb",10000000,R.drawable.iphone));
-            GlobalVariable.arrarProduct.add(new Product("003","001","Điện thoại samsung",
-                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.samsum_banner_resize));
-            GlobalVariable.arrarProduct.add(new Product("004","002","Laptop Asus",
-                    getString(R.string.mota),"4gb-64gb",10500500,R.drawable.laptop_asus));
-            GlobalVariable.arrarProduct.add(new Product("005","002","Laptop dell",
-                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.laptop_dell));
-            GlobalVariable.arrarProduct.add(new Product("006","001","Điện thoại samsung",
-                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.meow));
-            GlobalVariable.arrarProduct.add(new Product("007","002","Laptop Asus",
-                    getString(R.string.mota),"4gb-64gb",10500500,R.mipmap.ic_launcher));
-            GlobalVariable.arrarProduct.add(new Product("008","002","Laptop dell",
-                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.iphone1));
-        }
 
     }
 

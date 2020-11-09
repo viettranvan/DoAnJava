@@ -64,7 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/meow" />
+                        android:src="@drawable/no_avatar" />
 
                     <ImageView
                         android:id="@+id/img_open_folder"
@@ -131,8 +131,7 @@
                                     android:imeOptions="actionNext"
                                     android:minWidth="320dp"
                                     android:minHeight="45dp"
-                                    android:singleLine="true"
-                                    android:text="@string/name" />
+                                    android:singleLine="true"/>
                             </com.google.android.material.textfield.TextInputLayout>
                         </androidx.cardview.widget.CardView>
 
@@ -193,8 +192,7 @@
                                 android:enabled="false"
                                 android:imeOptions="actionNext"
                                 android:minWidth="320dp"
-                                android:minHeight="45dp"
-                                android:text="@string/sample_email" />
+                                android:minHeight="45dp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
                     </androidx.cardview.widget.CardView>
@@ -247,9 +245,9 @@
                             android:drawableStart="@drawable/icon_date_18"
                             android:drawablePadding="12dp"
                             android:gravity="center_vertical"
+                            android:text="@string/birthday"
                             android:minWidth="320dp"
                             android:minHeight="45dp"
-                            android:text="@string/birthday"
                             android:textColor="@color/bg_black" />
 
                     </androidx.cardview.widget.CardView>
@@ -389,10 +387,10 @@
                                 android:drawableStart="@drawable/icon_credit_card_18"
                                 android:drawablePadding="12dp"
                                 android:imeOptions="actionNext"
+                                android:inputType="number"
                                 android:minWidth="320dp"
                                 android:minHeight="45dp"
-                                android:singleLine="true"
-                                android:text="@string/cmnd" />
+                                android:singleLine="true"/>
                         </com.google.android.material.textfield.TextInputLayout>
                     </androidx.cardview.widget.CardView>
 
@@ -451,10 +449,10 @@
                                 android:drawableStart="@drawable/icon_phone_18"
                                 android:drawablePadding="12dp"
                                 android:imeOptions="actionNext"
+                                android:inputType="number"
                                 android:minWidth="320dp"
                                 android:minHeight="45dp"
-                                android:singleLine="true"
-                                android:text="@string/phone" />
+                                android:singleLine="true" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </androidx.cardview.widget.CardView>
 
