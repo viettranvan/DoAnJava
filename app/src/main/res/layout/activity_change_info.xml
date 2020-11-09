@@ -321,13 +321,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
-                                    android:text="Nam" />
+                                    android:text="@string/male" />
 
                                 <RadioButton
                                     android:id="@+id/rd_gender_female_change_info"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Nữ" />
+                                    android:text="@string/female" />
                             </RadioGroup>
                         </LinearLayout>
 

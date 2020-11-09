@@ -180,6 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("loginTrue", true);
                         GlobalVariable.TOKEN = token;
                         startActivity(intent);
+                        finish();
                     }
 
 

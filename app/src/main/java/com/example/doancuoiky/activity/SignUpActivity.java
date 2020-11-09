@@ -14,12 +14,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -31,7 +43,10 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean isValidEmail = false;
     private boolean isValidPhone = false;
 
+    RadioButton rdMale,rdFemale;
+
     String _email, _username, _name, _phone, _password, _confirmPassword;
+    String _gender = "0";
 
 
     @Override
@@ -42,6 +57,8 @@ public class SignUpActivity extends AppCompatActivity {
         anhXa();
 
         validation();
+
+        radioButtonClick();
 
         goBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,26 +72,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if(checkData()){
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
-//
-//                    builder.setTitle("Thông báo");
-//                    builder.setMessage("Đăng ký thành công, đăng nhập ngay");
-//
-//                    builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
-//                            startActivity(intent);
-//                        }
-//                    });
-//
-//                    builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                        }
-//                    });
-//                    builder.show();
+
                     _email = edtEmail.getText().toString().trim();
                     _username = edtUsername.getText().toString().trim();
                     _name = validateNameFirstUpperCase(edtFullName.getText().toString().trim()) ;
@@ -86,16 +84,7 @@ public class SignUpActivity extends AppCompatActivity {
                         edtConfirmPassword.setError("Mật khẩu không trùng khớp");
                     }
                     else{
-                        Toast.makeText(SignUpActivity.this, "success", Toast.LENGTH_SHORT).show();
-
-                        Log.d("DATA1",
-                                "abc:" + _email + "\n" +
-                                        _username + "\n" +
-                                        _name + "\n" +
-                                        _phone + "\n" +
-                                        _password + "\n" +
-                                        _confirmPassword + "\n"
-                        );
+                        onSignUp();
                     }
                 }
                 else {
@@ -105,6 +94,20 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    private void radioButtonClick() {
+        rdMale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                _gender = "0";
+            }
+        });
+        rdFemale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                _gender = "1";
+            }
+        });
+    }
 
 
     private void validation() {
@@ -124,6 +127,8 @@ public class SignUpActivity extends AppCompatActivity {
         edtPhoneNumber = findViewById(R.id.edt_phone_sign_up);
         edtPassword= findViewById(R.id.edt_password_sign_up);
         edtConfirmPassword= findViewById(R.id.edt_confirm_password_sign_up);
+        rdFemale = findViewById(R.id.rd_gender_female_sign_up);
+        rdMale = findViewById(R.id.rd_gender_male_sign_up);
         progressBar = findViewById(R.id.progressBar_check_password);
 
         edtPassword.addTextChangedListener(new TextWatcher() {
@@ -315,7 +320,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-
     private void checkError() {
         if(!isValidEmail){
             setErrorEmail();
@@ -332,6 +336,81 @@ public class SignUpActivity extends AppCompatActivity {
         if(edtFullName.getText().toString().trim().length() == 0){
             setErrorFullName();
         }
+    }
+
+    private void onSignUp(){
+        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_SIGN_UP,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            JSONObject result = object.getJSONObject("result");
+
+                            int code = result.getInt("code");
+                            if(code == 0){
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
+
+                                builder.setTitle("Thông báo");
+                                builder.setMessage("Đăng ký thành công, đăng nhập ngay");
+
+                                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent(SignUpActivity.this,LoginActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+
+                                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    }
+                                });
+                                builder.show();
+
+                            }
+                            else{
+                                Toast.makeText(SignUpActivity.this, "Email hoặc tên đăng nhập đã tồn tại",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(SignUpActivity.this, "error => " + e.toString(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(SignUpActivity.this, "Email hoặc tên đăng nhập đã tồn tại",
+                        Toast.LENGTH_LONG).show();
+            }
+        }){
+
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("email", edtEmail.getText().toString().trim());
+                params.put("loginname", edtUsername.getText().toString().trim());
+                params.put("username", validateNameFirstUpperCase(edtFullName.getText().toString().trim()));
+                params.put("phone_number", edtPhoneNumber.getText().toString().trim());
+                params.put("userpassword", edtPassword.getText().toString().trim());
+
+                params.put("gender", _gender);
+
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
+
+        queue.add(request);
+
     }
 }
 

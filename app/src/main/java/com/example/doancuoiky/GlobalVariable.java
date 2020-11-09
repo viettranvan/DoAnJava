@@ -39,12 +39,13 @@ public class GlobalVariable {
                                 "$";
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    public static final String PHONE_PATTERN  = "0[0-9]{9}";
+    public static final String PHONE_PATTERN  = "0[0-9]{9,10}";
 
 
-    public static final String LOGIN_URL = "http://192.168.2.105:5000/api/login";
-    public static final String USER_INFO_URL = "http://192.168.2.105:5000/api/user";
-
+    private static final String localhost = "http://192.168.2.105:5000/";
+    public static final String LOGIN_URL = localhost + "api/login";
+    public static final String USER_INFO_URL = localhost + "api/user";
+    public static final String USER_SIGN_UP = localhost + "api/user";
 
 }
 
