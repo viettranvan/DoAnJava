@@ -42,4 +42,9 @@ dependencies {
     //Circular ImageView Library dependency
     implementation 'de.hdodenhof:circleimageview:3.0.1'
 
+
+    implementation 'com.android.volley:volley:1.1.1'
+    // thu vien load anh tu url
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
 }

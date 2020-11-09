@@ -128,19 +128,15 @@ public class SignUpActivity extends AppCompatActivity {
 
         edtPassword.addTextChangedListener(new TextWatcher() {
 
-
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 if(charSequence.length() > 0){
-
                     progressBar.setVisibility(View.VISIBLE);
-
                 }
                 else{
                     progressBar.setVisibility(View.GONE);

@@ -14,10 +14,21 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
@@ -39,13 +50,11 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                intent.putExtra("loginTrue", true);
-//                startActivity(intent);
+
 
                 if(checkData()){
-                    Toast.makeText(LoginActivity.this, textInputUsername.getText().toString() + "\n" +
-                            textInputPassword.getText().toString(), Toast.LENGTH_SHORT).show();
+                    onLogin();
+
                 }
                 else {
                     setError();
@@ -142,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
         if (textInputPassword.getText().toString().length() <= 0) {
             textInputPassword.setError("Vui lòng nhập mật khẩu");
         } else if (textInputPassword.getText().toString().length() > 0 &&
-                textInputPassword.getText().toString().length() < 6) {
+                textInputPassword.getText().toString().length() < 8) {
             textInputPassword.setError("Mật khẩu phải chứa ít nhất 8 ký tự bao gồm chữ thường, " +
                     "chữ hoa và ký tự đặc biệt");
         } else {
@@ -150,4 +159,58 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void onLogin(){
+        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.LOGIN_URL,
+                new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONObject result = object.getJSONObject("result");
+
+                    int code = result.getInt("code");
+                    if(code == 1){
+                        Toast.makeText(LoginActivity.this, "lỗi đăng nhập", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        JSONObject data = object.getJSONObject("data");
+                        String token = data.getString("token");
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("loginTrue", true);
+                        GlobalVariable.TOKEN = token;
+                        startActivity(intent);
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(LoginActivity.this, "error => " + e.toString(), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác!",
+                        Toast.LENGTH_LONG).show();
+            }
+        }){
+
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("loginname", textInputUsername.getText().toString().trim());
+                params.put("userpassword", textInputPassword.getText().toString().trim());
+
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+
+        queue.add(request);
+
+    }
 }

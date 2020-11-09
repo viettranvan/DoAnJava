@@ -145,6 +145,8 @@
     <string name="share">Hỗ trợ</string>
     <string name="rate">Đánh giá</string>
     <string name="communicate">Cộng đồng</string>
+    <string name="text_require_login">Bạn chưa đăng nhập</string>
+
 
     <!-- in search fragment -->
     <string name="text_history_search">Lịch Sử tìm kiếm</string>

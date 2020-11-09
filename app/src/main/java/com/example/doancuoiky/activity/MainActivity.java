@@ -14,16 +14,25 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
@@ -35,8 +44,14 @@ import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Product;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.goToCartOnClickListener {
 
@@ -54,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private View viewEndAnimation;
     private ImageView viewAnimation;
 
+    private View headerView;
+    private LinearLayout headerNotLoggedIn,headerLoggedIn;
+    private ImageView headerAvatar;
+    private TextView headerName,headerEmail;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setUpViewPager(); /*chuyển trang bằng cách click vào icon hoặc vuốt*/
 
         actionToolBar(); // toolbar, mở drawer menu
-
-        checkLogin();
-
 
         menuNavigationView.setNavigationItemSelectedListener(this);
 
@@ -97,6 +115,82 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 checkLogin();
             }
         }
+
+        setDataProfile();
+
+        checkLogin();
+    }
+
+    private void setDataProfile() {
+
+        if(GlobalVariable.isLogin){
+
+            RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+            StringRequest request = new StringRequest(Request.Method.GET, GlobalVariable.USER_INFO_URL,
+                    new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject data = object.getJSONObject("data");
+
+                        String id_user = data.getString("id_user");
+                        String email = data.getString("email");
+                        String loginname = data.getString("loginname");
+                        String username = data.getString("username");
+                        String address = data.getString("address");
+                        String citizen_identification = data.getString("citizen_identification");
+                        String phone_number = data.getString("phone_number");
+                        String gender = data.getString("gender");
+                        String acc_created = data.getString("acc_created");
+                        String avatar = data.getString("avatar");
+                        String rate = data.getString("rate");
+
+                        GlobalVariable.arrayProfile.add(id_user);
+                        GlobalVariable.arrayProfile.add(email);
+                        GlobalVariable.arrayProfile.add(loginname);
+                        GlobalVariable.arrayProfile.add(username);
+                        GlobalVariable.arrayProfile.add(address);
+                        GlobalVariable.arrayProfile.add(citizen_identification);
+                        GlobalVariable.arrayProfile.add(phone_number);
+                        GlobalVariable.arrayProfile.add(gender);
+                        GlobalVariable.arrayProfile.add(acc_created);
+                        GlobalVariable.arrayProfile.add(avatar);
+                        GlobalVariable.arrayProfile.add(rate);
+
+                        if(GlobalVariable.arrayProfile.get(9).length() > 0){
+                            Picasso.with(MainActivity.this)
+                                .load(GlobalVariable.arrayProfile.get(9))
+                                .into(headerAvatar);
+                        }
+
+                        Log.d("TAG1", "avatar: " +  GlobalVariable.arrayProfile.get(9));
+                        headerName.setText(GlobalVariable.arrayProfile.get(3));
+                        headerEmail.setText(GlobalVariable.arrayProfile.get(1));
+
+                    } catch (JSONException e) {
+                        Log.d("TAG1", "error1 => "  + "\n");
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("TAG1", "error => " + error.toString() + "\n");
+
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", GlobalVariable.TOKEN);
+                    return params;
+                }
+            };
+
+            queue.add(request);
+
+        }
     }
 
     private void checkLogin() {
@@ -106,11 +200,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             menu.findItem(R.id.nav_login).setVisible(false);
             menu.findItem(R.id.nav_logout).setVisible(true); // hiện logout
             menu.findItem(R.id.nav_profile).setVisible(true); // hiện profile
+            headerLoggedIn.setVisibility(View.VISIBLE);
+            headerNotLoggedIn.setVisibility(View.GONE);
+
+
         }
         else{
             menu.findItem(R.id.nav_login).setVisible(true);
             menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
             menu.findItem(R.id.nav_profile).setVisible(false); // ẩn profile
+            headerLoggedIn.setVisibility(View.GONE);
+            headerNotLoggedIn.setVisibility(View.VISIBLE);
         }
     }
 
@@ -138,12 +238,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewAnimation = findViewById(R.id.view_animation);
         toolBarTitle = findViewById(R.id.tv_toolbar_title);
 
+
+        headerView = menuNavigationView.getHeaderView(0);
+        headerNotLoggedIn = headerView.findViewById(R.id.header_drawer_not_logged_in);
+        headerLoggedIn = headerView.findViewById(R.id.header_drawer_logged_in);
+        headerAvatar = headerView.findViewById(R.id.drawer_menu_avatar);
+        headerName = headerView.findViewById(R.id.drawer_menu_name);
+        headerEmail = headerView.findViewById(R.id.drawer_menu_email);
+
+//        headerName.setText("Your Text Here");
+
         if(GlobalVariable.arrayCart != null){
 
         }else{
             GlobalVariable.arrayCart = new ArrayList<>();
 
 //            GlobalVariable.arrayCart.add(new Cart("00a","001","test","4gb","small",100000,R.drawable.meow,1));
+        }
+
+        if(GlobalVariable.arrayProfile != null){
+
+        }
+        else{
+            GlobalVariable.arrayProfile = new ArrayList<>();
+
         }
 
         if(GlobalVariable.arrarProduct != null){
@@ -250,7 +368,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this,"mobile",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_share:
-                Toast.makeText(this,"share: " + GlobalVariable.isLogin ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"share: " + GlobalVariable.TOKEN ,Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_rate:
+                Toast.makeText(this,"rate: " + GlobalVariable.arrayProfile.size() ,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_laptop:
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -270,6 +391,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_logout:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 GlobalVariable.isLogin = false;
+                GlobalVariable.TOKEN = null;
+                GlobalVariable.arrayProfile.clear();
                 checkLogin();
 
                 finish();

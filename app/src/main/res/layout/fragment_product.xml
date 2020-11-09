@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:weightSum="10"
+        android:weightSum="11"
         android:background="@color/white">
 
         <LinearLayout
@@ -37,7 +37,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:background="@color/bg_green_light"
             android:gravity="end"
             android:orientation="horizontal"
