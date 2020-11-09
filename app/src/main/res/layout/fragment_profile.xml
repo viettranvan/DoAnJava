@@ -23,12 +23,12 @@
                 android:layout_marginBottom="10dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/img_avatar"
+                    android:id="@+id/img_avatar_profile_fragment"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/meow" />
+                    android:src="@drawable/no_avatar" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -176,11 +176,10 @@
 
                         <TextView
                             android:layout_weight="8"
-                            android:id="@+id/tv_name"
+                            android:id="@+id/tv_name_profile_fragment"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/name"
                             android:textSize="18sp"
                             android:textColor="@color/bg_black_light"/>
                     </LinearLayout>
@@ -217,11 +216,10 @@
 
                         <TextView
                             android:layout_weight="8"
-                            android:id="@+id/tv_email"
+                            android:id="@+id/tv_email_profile_fragment"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/email"
                             android:textSize="18sp"
                             android:textColor="@color/bg_black_light"/>
                     </LinearLayout>
@@ -257,7 +255,7 @@
 
                         <TextView
                             android:layout_weight="8"
-                            android:id="@+id/tv_birthday"
+                            android:id="@+id/tv_birthday_profile_fragment"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
@@ -299,11 +297,10 @@
 
                         <TextView
                             android:layout_weight="8"
-                            android:id="@+id/tv_gender"
+                            android:id="@+id/tv_gender_profile_fragment"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/gender"
                             android:textSize="18sp"
                             android:textColor="@color/bg_black_light"/>
                     </LinearLayout>
@@ -339,11 +336,10 @@
 
                         <TextView
                             android:layout_weight="8"
-                            android:id="@+id/tv_identification_card"
+                            android:id="@+id/tv_citizen_identification_profile_fragment"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/cmnd"
                             android:textSize="18sp"
                             android:textColor="@color/bg_black_light"/>
                     </LinearLayout>
@@ -380,11 +376,10 @@
 
                         <TextView
                             android:layout_weight="8"
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address_profile_fragment"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/address"
                             android:textSize="18sp"
                             android:textColor="@color/bg_black_light"/>
                     </LinearLayout>
@@ -421,11 +416,10 @@
 
                         <TextView
                             android:layout_weight="8"
-                            android:id="@+id/tv_phone_number"
+                            android:id="@+id/tv_phone_number_profile_fragment"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/phone"
                             android:textSize="18sp"
                             android:textColor="@color/bg_black_light"/>
                     </LinearLayout>

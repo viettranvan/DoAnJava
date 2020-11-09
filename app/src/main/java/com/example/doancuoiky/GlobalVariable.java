@@ -16,6 +16,17 @@ public class GlobalVariable {
 
     public static String TOKEN = null;
     public static ArrayList<String> arrayProfile;
+    public static final int INDEX_ID_USER       = 0;
+    public static final int INDEX_EMAIL         = 1;
+    public static final int INDEX_LOGIN_NAME    = 2;
+    public static final int INDEX_USER_NAME     = 3;
+    public static final int INDEX_ADDRESS       = 4;
+    public static final int INDEX_CITIZEN_IDENTIFICATION = 5;
+    public static final int INDEX_PHONE_NUMBER  = 6;
+    public static final int INDEX_GENDER        = 7;
+    public static final int INDEX_ACC_CREATE    = 8;
+    public static final int INDEX_AVATAR        = 9;
+    public static final int INDEX_RATE          = 10;
 
     public static final String PASSWORD_PATTERN = "^" +
                                 "(?=.*[0-9])" +         //at least 1 digit
@@ -33,18 +44,7 @@ public class GlobalVariable {
 
     public static final String LOGIN_URL = "http://192.168.2.105:5000/api/login";
     public static final String USER_INFO_URL = "http://192.168.2.105:5000/api/user";
+
+
 }
 
-    /** index arrayProfile
-     * id_user      - 0
-     * email        - 1
-     * loginname    - 2
-     * username     - 3
-     * address      - 4
-     * citizen_identification - 5
-     * phone_number - 6
-     * gender       - 7
-     * acc_created  - 8
-     * avatar       - 9
-     * rate         -10
-     * */
