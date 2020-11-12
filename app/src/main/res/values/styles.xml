@@ -11,6 +11,13 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="TextButtonInRating" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">#27A304</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Button_layout" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/bg_blue_corner_30</item>
         <item name="android:minWidth">200dp</item>

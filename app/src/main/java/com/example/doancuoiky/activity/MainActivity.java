@@ -1,6 +1,7 @@
 package com.example.doancuoiky.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -12,6 +13,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.gsm.GsmCellLocation;
@@ -19,10 +22,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
@@ -266,14 +272,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             menu.findItem(R.id.nav_login).setVisible(false);
             menu.findItem(R.id.nav_logout).setVisible(true); // hiện logout
             menu.findItem(R.id.nav_profile).setVisible(true); // hiện profile
+            menu.findItem(R.id.nav_rate).setVisible(true); // hiện rate
             headerLoggedIn.setVisibility(View.VISIBLE);
             headerNotLoggedIn.setVisibility(View.GONE);
-
         }
         else{
             menu.findItem(R.id.nav_login).setVisible(true);
             menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
             menu.findItem(R.id.nav_profile).setVisible(false); // ẩn profile
+            menu.findItem(R.id.nav_rate).setVisible(false); // ẩn rate
             headerLoggedIn.setVisibility(View.GONE);
             headerNotLoggedIn.setVisibility(View.VISIBLE);
         }
@@ -385,17 +392,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case R.id.nav_home:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                ahBottomNavigation.setCurrentItem(0);
+                break;
             case R.id.nav_mobile:
 //                CartFragment cartFragment = new CartFragment();
 //                loadFragment(cartFragment);
 //                drawerLayout.closeDrawer(GravityCompat.START);
                 Toast.makeText(this,"mobile",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_share:
-                Toast.makeText(this,"share: " + GlobalVariable.TOKEN ,Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_rate:
-                Toast.makeText(this,"rate: " + GlobalVariable.arrayProfile.size() ,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_laptop:
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -422,8 +427,112 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
                 startActivity(new Intent(this,MainActivity.class));
                 break;
+            case R.id.nav_share:
+                Intent intentSupport = new Intent(MainActivity.this,SupportActivity.class);
+                startActivity(intentSupport);
+                break;
+            case R.id.nav_rate:
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    DialogAppRate();
+                break;
+
         }
         return true;
+    }
+
+    private void DialogAppRate() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_app_rate);
+
+        Button btnExit = dialog.findViewById(R.id.btn_exit_app_rating);
+        Button btnSubmit = dialog.findViewById(R.id.btn_submit_app_rating);
+        final RatingBar ratingBar = dialog.findViewById(R.id.rating_bar_app_name);
+
+        String strRating = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_RATE);
+        if(strRating.length() == 0 || strRating.equals("null")){
+            strRating = "0";
+        }
+        int currentRating = Integer.parseInt(strRating);
+        ratingBar.setRating(currentRating);
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int rating = (int) ratingBar.getRating();
+                if(rating == 0){
+                    Toast.makeText(MainActivity.this, "Vui lòng chọn số sao bạn muốn đánh giá", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    int ratingINT = (int) ratingBar.getRating();
+                    updateAppRating(String.valueOf(ratingINT), dialog);
+                }
+            }
+        });
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void updateAppRating(final String _rate, final Dialog dialog) {
+        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_UPDATE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            JSONObject result = object.getJSONObject("result");
+
+                            int code = result.getInt("code");
+                            if(code == 0){
+                                Toast.makeText(MainActivity.this, "Cám ơn về đánh giá của bạn", Toast.LENGTH_SHORT).show();
+                                GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_RATE,_rate);
+                                dialog.dismiss();
+                            }
+                            else{
+                                Toast.makeText(MainActivity.this, "Cập nhật thất bại",
+                                        Toast.LENGTH_LONG).show();
+                                Log.d("TAG1", "error1: ");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(MainActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "Cập nhật thất bại",
+                        Toast.LENGTH_LONG).show();
+
+            }
+        }){
+
+            @Override
+            protected Map<String, String> getParams()
+            {
+
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("email",GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_EMAIL));
+                params.put("rate", _rate);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", GlobalVariable.TOKEN);
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+
+        queue.add(request);
     }
 
     public void loadFragment(Fragment fragment){

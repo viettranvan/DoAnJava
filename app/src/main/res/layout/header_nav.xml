@@ -53,7 +53,7 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:contentDescription="@string/header_avatar"
-            android:src="@drawable/no_avatar" />s
+            android:src="@drawable/no_avatar" />
 
         <TextView
             android:id="@+id/drawer_menu_name"
@@ -123,14 +123,14 @@
             android:text="@string/text_require_login"
             android:gravity="center"
             android:padding="5dp"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:textColor="@color/bg_black_light"
             android:layout_marginBottom="5dp"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:src="@drawable/cat_using_cellphone"/>
+            android:src="@drawable/welcome"/>
 
     </LinearLayout>
 

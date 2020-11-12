@@ -149,6 +149,12 @@
     <string name="communicate">Cộng đồng</string>
     <string name="text_require_login">Bạn chưa đăng nhập, Đăng nhập ngay và trải nghiệm mua sắm cũng MOLA</string>
 
+    <!-- in app rating -->
+    <string name="text_app_rating">Đánh giá ứng dụng</string>
+    <string name="btn_exit_rating">Để sau</string>
+    <string name="btn_submit_rating">Đồng ý</string>
+
+
 
     <!-- in search fragment -->
     <string name="text_history_search">Lịch Sử tìm kiếm</string>
@@ -162,7 +168,7 @@
     <string name="mota">OPPO A5 (2020) 128GB là chiếc smartphone mới ra
         mắt của thương hiệu OPPO nhận nhiệm vụ đánh chiếm phân khúc giá
         rẻ/tầm trung với rất nhiều điểm nhấn đáng giá.</string>
-    
+
     <!-- in order -->
     <string name="text_order_id">ID đơn hàng:</string>
     <string name="text_order_date">Thời gian đặt:</string>
@@ -194,6 +200,13 @@
     <string name="feedback_from_customer">Khách hàng nhận xét</string>
     <string name="text_show_all">Xem tất cả</string>
 
+    <!-- In support screen -->
+    <string name="title_support">Hỗ trợ</string>
+    <string name="title_contact">Nếu bạn có bất cứ thắc mắc gì, vui lòng liên hệ: </string>
+    <string name="school_address">280 An Dương Vương, phường 4, Quận 5, Thành phố Hồ Chí Minh</string>
+    <string name="email_contact">viettranvan2k@gmail.com</string>
+    <string name="phone_contact">(+84) 394848858</string>
+    <string name="message_contact">(+84) 394848858</string>
 
 
 </resources>
