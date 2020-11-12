@@ -66,7 +66,6 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
         anhXa();
         setOnClick();
-
     }
 
     private void setOnClick() {

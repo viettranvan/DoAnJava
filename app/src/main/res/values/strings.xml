@@ -17,7 +17,7 @@
     <string name="nav_header_email">name@gmail.com</string>
 
     <!--    toolbar-->
-    <string name="title_toolbar">Trang chính</string>
+    <string name="title_toolbar">Trang chủ</string>
 
     <!-- Image -->
     <string name="iamge">image</string>
@@ -155,7 +155,6 @@
     <string name="btn_submit_rating">Đồng ý</string>
 
 
-
     <!-- in search fragment -->
     <string name="text_history_search">Lịch Sử tìm kiếm</string>
     <string name="text_delete">Xóa</string>
@@ -189,6 +188,23 @@
     <string name="text_price_decrease">Giá giảm dần</string>
     <string name="text_filter">Lọc</string>
 
+    <!-- in dialog filter -->
+    <string name="title_dialog_filter">Chọn tiêu chí muốn lọc</string>
+    <string name="title_product_type">Loại sản phẩm</string>
+    <string name="title_product_price">Khoảng giá</string>
+    <string name="text_all_product">Toàn bộ</string>
+    <string name="text_mobile_product">Điện thoại</string>
+    <string name="text_laptop_product">Laptop</string>
+    <string name="text_filter_price_type1">Dưới 5 triệu</string>
+    <string name="text_filter_price_type2">5 – 10 triệu</string>
+    <string name="text_filter_price_type3">10 – 20 triệu</string>
+    <string name="text_filter_price_type4">Trên 20 triệu</string>
+    <string name="text_cancel">Hủy</string>
+    <string name="text_filter_by">Lọc theo:</string>
+    <string name="text_no_result_return">Không có kết quả nào phù hợp</string>
+
+
+
     <string-array name="sort">
         <item>Không sắp xếp</item>
         <item>Giá tăng dần</item>
@@ -207,6 +223,8 @@
     <string name="email_contact">viettranvan2k@gmail.com</string>
     <string name="phone_contact">(+84) 394848858</string>
     <string name="message_contact">(+84) 394848858</string>
+
+
 
 
 </resources>

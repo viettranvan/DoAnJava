@@ -46,7 +46,9 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.ViewPagerAdapter;
+import com.example.doancuoiky.fragment.CartFragment;
 import com.example.doancuoiky.fragment.HomeFragment;
+import com.example.doancuoiky.fragment.ProductFragment;
 import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Product;
 import com.google.android.material.navigation.NavigationView;
@@ -58,6 +60,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.goToCartOnClickListener {
 
@@ -168,23 +171,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     getString(R.string.mota),"4gb-64gb",9000000,R.drawable.iphone1));
         }
 
-//        if(GlobalVariable.arrayMobile == null){
-//            GlobalVariable.arrayMobile = new ArrayList<>();
-//            for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
-//                if(GlobalVariable.arrayProduct.get(i).getProductTypeID().equals("001")){
-//                    GlobalVariable.arrayMobile.add(GlobalVariable.arrayProduct.get(i));
-//                }
-//            }
-//        }
-//
-//        if(GlobalVariable.arrayLaptop== null){
-//            GlobalVariable.arrayLaptop = new ArrayList<>();
-//            for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
-//                if(GlobalVariable.arrayLaptop.get(i).getProductTypeID().equals("002")){
-//                    GlobalVariable.arrayLaptop.add(GlobalVariable.arrayProduct.get(i));
-//                }
-//            }
-//        }
+        if (GlobalVariable.arrayMobile == null) {
+            GlobalVariable.arrayMobile = new ArrayList<>();
+            int size = GlobalVariable.arrayProduct.size();
+            for(int i = 0;i < size;i++){
+                if (GlobalVariable.arrayProduct.get(i).getProductTypeID().equals("001")) {
+                    GlobalVariable.arrayMobile.add(GlobalVariable.arrayProduct.get(i));
+                }
+            }
+
+        }
+        if (GlobalVariable.arrayLaptop == null) {
+            GlobalVariable.arrayLaptop = new ArrayList<>();
+            int size = GlobalVariable.arrayProduct.size();
+            for(int i = 0;i < size;i++){
+                if (GlobalVariable.arrayProduct.get(i).getProductTypeID().equals("002")) {
+                    GlobalVariable.arrayLaptop.add(GlobalVariable.arrayProduct.get(i));
+                }
+            }
+        }
+
     }
 
     private void setDataProfile() {
@@ -288,8 +294,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void actionToolBar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolBarTitle.setText("Trang chủ");
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolBarTitle.setText(getString(R.string.title_toolbar)); // trang chủ
         toolbar.setNavigationIcon(R.drawable.ic_action_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,9 +359,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // chuyen fragment bang cach vuot
         ahBottomNavigationViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
@@ -363,9 +367,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) {}
         });
     }
 
@@ -397,13 +399,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ahBottomNavigation.setCurrentItem(0);
                 break;
             case R.id.nav_mobile:
-//                CartFragment cartFragment = new CartFragment();
-//                loadFragment(cartFragment);
-//                drawerLayout.closeDrawer(GravityCompat.START);
-                Toast.makeText(this,"mobile",Toast.LENGTH_SHORT).show();
+                ProductFragment.showAllMobileProduct();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                ahBottomNavigation.setCurrentItem(1);
                 break;
             case R.id.nav_laptop:
                 drawerLayout.closeDrawer(GravityCompat.START);
+                ProductFragment.showAllLaptopProduct();
                 ahBottomNavigation.setCurrentItem(1);
                 break;
 
@@ -435,7 +437,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     drawerLayout.closeDrawer(GravityCompat.START);
                     DialogAppRate();
                 break;
-
         }
         return true;
     }
