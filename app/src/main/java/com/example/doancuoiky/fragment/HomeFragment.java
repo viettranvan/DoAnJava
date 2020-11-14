@@ -34,6 +34,7 @@ import com.example.doancuoiky.modal.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -66,10 +67,10 @@ public class HomeFragment extends Fragment {
 
         productNewAdapter.onGotoDetail(new ProductNewAdapter.IClickGotoProductDetail() {
             @Override
-            public void onClickGotoDetail(int index) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), ProductDetailActivity.class);
+            public void onClickGotoDetail(String idProduct) {
+                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(), ProductDetailActivity.class);
 //                intent.putExtra("productDetail",index);
-                intent.putExtra("productDetail",index);
+                intent.putExtra("productDetail",idProduct);
                 startActivity(intent);
             }
         });
@@ -109,7 +110,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         recyclerView.setAdapter(productNewAdapter);
 
-
     }
 
     private List<Photo> getListPhoto(){
@@ -134,10 +134,8 @@ public class HomeFragment extends Fragment {
     // su kien click icon gio hang tren thanh toolbar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.ic_cart_toolbar:
-                mGoToCart.onCartIconClickListener();
-                break;
+        if (item.getItemId() == R.id.ic_cart_toolbar) {
+            mGoToCart.onCartIconClickListener();
         }
         return super.onOptionsItemSelected(item);
     }

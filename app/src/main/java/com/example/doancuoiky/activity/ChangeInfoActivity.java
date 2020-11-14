@@ -4,17 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,9 +25,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,12 +34,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.time.Year;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,13 +51,14 @@ public class ChangeInfoActivity extends AppCompatActivity {
     private ImageView goBackChangeInfo;
     private RadioButton male,female;
     private Button update;
-    private TextView birthday;
+    private TextView tvBirthday;
     private EditText edtFullName, edtEmail, edtIdentify, edtPhoneNumber, edtAddress;
     String _name,_email,_citizen,_phone,_address,_gender,_birthday;
     private ImageView avatar, openFile;
+    public static ArrayList<String> arrayListAvatar;
+    int REQUEST_CODE_AVATAR = 123;
+    String avatarImageName;
 
-    private static final int IMAGE_PICK_CODE = 1000;
-    private static final int PERMISSION_CODE = 1001;
 
 
     @Override
@@ -68,6 +70,19 @@ public class ChangeInfoActivity extends AppCompatActivity {
         setOnClick();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CODE_AVATAR && resultCode == RESULT_OK && data != null){
+            avatarImageName = data.getStringExtra("imageSelected");
+
+            String PACKAGE_NAME = getApplicationContext().getPackageName();
+            int idImg = getResources().getIdentifier(PACKAGE_NAME + ":drawable/" + avatarImageName, null, null);
+            avatar.setImageResource(idImg);
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void setOnClick() {
         goBackChangeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +91,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
             }
         });
 
-        birthday.setOnClickListener(new View.OnClickListener() {
+        tvBirthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDateDialog();
@@ -86,21 +101,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         openFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //check runtime permission
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
-                        // permission not granted, request it
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        //show pop up
-                        requestPermissions(permissions,PERMISSION_CODE);
-                    }else{
-                        // permission already granted
-                        pickImageFromGallery();
-                    }
-                }else{
-                    // system os is less then marshmallow
-                    pickImageFromGallery();
-                }
+                startActivityForResult( new Intent(ChangeInfoActivity.this,ListAvatarActivity.class),REQUEST_CODE_AVATAR);
             }
         });
 
@@ -129,40 +130,6 @@ public class ChangeInfoActivity extends AppCompatActivity {
         });
     }
 
-    private void pickImageFromGallery() {
-        // intent to pick image
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, IMAGE_PICK_CODE);
-    }
-
-    // handle result for runtime permission
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case PERMISSION_CODE:{
-                if(grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    // permission was granted
-                    pickImageFromGallery();
-                }
-                else{
-                    // permission was denied
-                    Toast.makeText(this, "Vui lòng cấp quyền...", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-    // handle result for pick image
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            // set image to image view
-            avatar.setImageURI(data.getData());
-        }
-    }
 
     private void goToMainActivity() {
         Intent intent = new Intent(ChangeInfoActivity.this,MainActivity.class);
@@ -171,20 +138,34 @@ public class ChangeInfoActivity extends AppCompatActivity {
     }
 
     private void showDateDialog() {
+        String getDate = GlobalVariable.formatDateInVN(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_BIRTHDAY));
 
-        Calendar calendar = Calendar.getInstance();
+        int YEAR = Integer.parseInt(getDate.substring(6, 10));
+        int MONTH = Integer.parseInt(getDate.substring(3, 5)) - 1; // tháng render từ 0-11
+        int DATE = Integer.parseInt(getDate.substring(0, 2));
 
-        int YEAR = calendar.get(Calendar.YEAR);
-        int MONTH = calendar.get(Calendar.MONTH); // tháng render từ 0-11
-        int DATE = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dateOfMonth) {
-                String strDate = dateOfMonth + "/" + (month+1) + "/" + year;
-                birthday.setText(strDate);
+                String strDay,strMonth;
+                if((month+1) < 10 ){
+                    strMonth = "0" + (month+1);
+                }else{
+                    strMonth = "" + (month+1);
+                }
+
+                if(dateOfMonth < 10){
+                    strDay = "0" + dateOfMonth;
+                }else{
+                    strDay = "" + dateOfMonth;
+                }
+
+                String strDate = strDay + "/" + strMonth + "/" + year;
+
+                tvBirthday.setText(strDate);
             }
-        }, YEAR,MONTH , DATE);
+        }, YEAR, MONTH , DATE);
 
         datePickerDialog.show();
     }
@@ -194,7 +175,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         male = findViewById(R.id.rd_gender_male_change_info);
         female = findViewById(R.id.rd_gender_female_change_info);
         update = findViewById(R.id.btn_update_change_info);
-        birthday = findViewById(R.id.tv_birthday_change_info);
+        tvBirthday = findViewById(R.id.tv_birthday_change_info);
         edtFullName = findViewById(R.id.edt_username_change_info);
         edtEmail = findViewById(R.id.edt_email_change_info);
         edtIdentify = findViewById(R.id.edt_identification_card_change_info);
@@ -203,14 +184,15 @@ public class ChangeInfoActivity extends AppCompatActivity {
         avatar = findViewById(R.id.img_avatar_change_info);
         openFile = findViewById(R.id.img_open_folder);
 
+        String[] listAvatarName = getResources().getStringArray(R.array.list_avatar);
+        arrayListAvatar = new ArrayList<>(Arrays.asList(listAvatarName));
+
+        avatar.setImageResource(R.drawable.no_avatar); //700046
+
         edtFullName.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_USER_NAME));
         edtEmail.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_EMAIL));
         edtIdentify.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_CITIZEN_IDENTIFICATION));
-
-        if(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_CITIZEN_IDENTIFICATION).length() > 0
-        && !GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_CITIZEN_IDENTIFICATION).equals("null")){
-
-        }
+        tvBirthday.setText(GlobalVariable.formatDateInVN(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_BIRTHDAY)));
         edtPhoneNumber.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_PHONE_NUMBER));
         edtAddress.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS));
 
@@ -223,16 +205,14 @@ public class ChangeInfoActivity extends AppCompatActivity {
             male.setChecked(false);
             female.setChecked(true);
         }
-
         getDataInfo();
-
 
     }
 
     private void getDataInfo() {
         _name = edtFullName.getText().toString();
         _email = edtEmail.getText().toString();
-        _birthday = formatDate(birthday.getText().toString());
+        _birthday = formatDateDatabase(tvBirthday.getText().toString()); // format date theo dinh dang database
         if(male.isChecked()){
             _gender = "0";
         }else{
@@ -263,7 +243,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
                                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        setDataAraayProfile();
+                                        setDataArrayProfile();
                                         goToMainActivity();
                                         finish();
                                     }
@@ -302,7 +282,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 getDataInfo();
-                Map<String, String>  params = new HashMap<String, String>();
+                Map<String, String>  params = new HashMap<>();
                 params.put("username",GlobalVariable.validateNameFirstUpperCase(_name));
                 params.put("email", _email);
                 params.put("birthday", _birthday);
@@ -310,41 +290,64 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 params.put("citizen_identification", _citizen);
                 params.put("phone_number", _phone);
                 params.put("address", _address);
-
                 return params;
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+            public Map<String, String> getHeaders()  {
+                Map<String, String> params = new HashMap<>();
                 params.put("Authorization", GlobalVariable.TOKEN);
                 return params;
             }
         };
-
         RequestQueue queue = Volley.newRequestQueue(ChangeInfoActivity.this);
 
         queue.add(request);
-
     }
 
-    private void setDataAraayProfile() {
+    private void setDataArrayProfile() {
         getDataInfo();
         GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_USER_NAME,_name);
         GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_ADDRESS,_address);
         GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_CITIZEN_IDENTIFICATION, _citizen);
         GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_PHONE_NUMBER,_phone);
         GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_GENDER,_gender);
-//        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_BIRTHDAY,_birthday);
+
+        int int_year, int_month, int_day;
+        String day, month, year;
+        int_year = Integer.parseInt(_birthday.substring(0, 4));
+        int_month = Integer.parseInt(_birthday.substring(5, 7));
+        int_day = Integer.parseInt(_birthday.substring(8, 10));
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, int_day);
+        cal.set(Calendar.MONTH, int_month - 1);
+        cal.set(Calendar.YEAR, int_year);
+        cal.add(Calendar.DAY_OF_MONTH, -1);  // giảm lên 1 ngày
+
+        if(cal.get(Calendar.DAY_OF_MONTH) < 10){
+            day = "0" + cal.get(Calendar.DAY_OF_MONTH);
+        }else{
+            day = "" + cal.get(Calendar.DAY_OF_MONTH);
+        }
+
+        if((cal.get(Calendar.MONTH) + 1) < 10){
+            month = "0" + (cal.get(Calendar.MONTH) + 1);
+        }else{
+            month = "" + (cal.get(Calendar.MONTH) + 1);
+        }
+        year    = "" + cal.get(Calendar.YEAR);
+
+        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_BIRTHDAY,year + "/" + month + "/" + day);
     }
 
     // doi lai cho dung dinh dang cua database yyyy-mm-dd
-    private String formatDate(String date){
-        String  year    = date.substring(6,10);
+    private String formatDateDatabase(String date){
+        String  year    = date.substring(6, 10);
         String month    = date.substring(3, 5);
-        String day      = date.substring(0,2);
-        String result = year + "-" + month + "-" +day;
+        String day      = date.substring(0, 2);
 
-        return result;
+        return year + "-" + month + "-" + day;
     }
+
 }

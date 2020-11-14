@@ -1,6 +1,5 @@
 package com.example.doancuoiky.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,7 @@ import com.example.doancuoiky.modal.Product;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class ProductNewAdapter extends RecyclerView.Adapter<ProductNewAdapter.ItemHolder> {
+public class ProductSearchAdapter extends RecyclerView.Adapter<ProductSearchAdapter.ItemHolder> {
 
     private IClickGotoProductDetail iClickGotoProductDetail;
 
@@ -32,57 +31,57 @@ public class ProductNewAdapter extends RecyclerView.Adapter<ProductNewAdapter.It
     }
 
     Context context;
-    ArrayList<Product> arrayProductNew;
-    ItemHolder itemHolder;
+    ArrayList<Product> arrayProductSearch;
 
-    public ProductNewAdapter(Context context, ArrayList<Product> arrayProductNew) {
+
+    public ProductSearchAdapter(Context context, ArrayList<Product> arrayProductSearch) {
         this.context = context;
-        this.arrayProductNew = arrayProductNew;
+        this.arrayProductSearch = arrayProductSearch;
     }
 
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        @SuppressLint("InflateParams") View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product_new,null);
-        itemHolder = new ItemHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product_search,null);
+        ItemHolder itemHolder = new ItemHolder(view);
 
         return itemHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, final int position){
-        Product productNew = arrayProductNew.get(position);
+        Product productNew = arrayProductSearch.get(position);
 
         holder.tvProductName.setText(productNew.getProductName());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        String _price = "Giá: " + decimalFormat.format(productNew.getProductPrice())+ " đ";
-        holder.tvProductPrice.setText(_price);
+        String _format_price = "Giá: " + decimalFormat.format(productNew.getProductPrice())+ " đ";
+        holder.tvProductPrice.setText(_format_price);
 
         holder.imgProduct.setImageResource(productNew.getProductImage());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iClickGotoProductDetail.onClickGotoDetail(arrayProductNew.get(position).getProductID());
+                iClickGotoProductDetail.onClickGotoDetail(arrayProductSearch.get(position).getProductID());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return arrayProductNew.size();
+        return arrayProductSearch.size();
     }
 
-    public static class ItemHolder extends RecyclerView.ViewHolder{
+    public class ItemHolder extends RecyclerView.ViewHolder{
         public ImageView imgProduct;
         public TextView tvProductName, tvProductDescription, tvProductPrice;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
-            imgProduct = itemView.findViewById(R.id.img_product_image_product_new);
-            tvProductName = itemView.findViewById(R.id.tv_product_name_product_new);
-            tvProductDescription = itemView.findViewById(R.id.tv_product_description_product_new);
-            tvProductPrice = itemView.findViewById(R.id.tv_product_price_product_new);
+            imgProduct = itemView.findViewById(R.id.img_product_image_product_search);
+            tvProductName = itemView.findViewById(R.id.tv_product_name_product_search);
+            tvProductDescription = itemView.findViewById(R.id.tv_product_description_product_search);
+            tvProductPrice = itemView.findViewById(R.id.tv_product_price_product_search);
         }
     }
 }

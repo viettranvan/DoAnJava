@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,12 +38,10 @@ public class ProductDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
     private ViewPager viewPager;
     private CircleIndicator circleIndicator;
-    private PhotoAdapter photoAdapter;
     private Button addToCart;
+    private int pos = 0;
+    ArrayAdapter adapter;
 
-    private List<Photo> mListPhoto;
-
-    private ListView description;
     ArrayList<String> arrayDescription;
 
     @Override
@@ -68,18 +67,29 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        Intent i = getIntent();
-        int pos = i.getIntExtra("productDetail",0);
+        Intent intent = getIntent();
+//        String id = i.getIntExtra("productDetail",0);
+        String idProduct = intent.getStringExtra("productDetail");
+
+        for(int ii = 0;ii < GlobalVariable.arrayProduct.size();ii++){
+            if(GlobalVariable.arrayProduct.get(ii).getProductID().equals(idProduct)){
+                pos = ii;
+                break;
+            }
+        }
+        setPhotoAdapter();
 
         tvProductName.setText(GlobalVariable.arrayProduct.get(pos).getProductName());
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        tvProductPrice.setText(decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice())  + " đ");
+        String _price = decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice())  + " đ";
+        tvProductPrice.setText(_price);
 
         tvDescription.setText(GlobalVariable.arrayProduct.get(pos).getProductDescription());
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void anhXa() {
         tvProductName = findViewById(R.id.product_detail_name);
         tvProductPrice = findViewById(R.id.product_detail_price);
@@ -90,7 +100,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         addToCart = findViewById(R.id.btn_add_product_to_cart);
         tvDescription = findViewById(R.id.tv_description_detail_activity);
 
-        description = findViewById(R.id.lv_description);
+        ListView description = findViewById(R.id.lv_description);
 
         description.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -116,15 +126,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         addTempData();
 
 
-        ArrayAdapter adapter = new ArrayAdapter(ProductDetailActivity.this,android.R.layout.simple_list_item_1,arrayDescription);
+        adapter = new ArrayAdapter(ProductDetailActivity.this,android.R.layout.simple_list_item_1,arrayDescription);
         description.setAdapter(adapter);
-
-        mListPhoto = getListPhoto();
-        photoAdapter = new PhotoAdapter(this,mListPhoto);
-        viewPager.setAdapter(photoAdapter);
-
-        circleIndicator.setViewPager(viewPager);
-        photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
     }
 
@@ -161,17 +164,22 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void setPhotoAdapter(){
+        List<Photo> mListPhoto = getListPhoto(pos);
+        PhotoAdapter photoAdapter = new PhotoAdapter(this, mListPhoto);
+        viewPager.setAdapter(photoAdapter);
+        circleIndicator.setViewPager(viewPager);
+        photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
+    }
 
-    private List<Photo> getListPhoto(){
-        Intent i = getIntent();
-        int pos = i.getIntExtra("productDetail",0);
+    private List<Photo> getListPhoto(int index){
 
         List<Photo> list = new ArrayList<>();
-        list.add(new Photo(GlobalVariable.arrayProduct.get(pos).getProductImage()));
+        list.add(new Photo(GlobalVariable.arrayProduct.get(index).getProductImage()));
         list.add(new Photo(R.drawable.vivo_banner_resize));
-        list.add(new Photo(GlobalVariable.arrayProduct.get(pos).getProductImage()));
+        list.add(new Photo(GlobalVariable.arrayProduct.get(index).getProductImage()));
         list.add(new Photo(R.drawable.samsum_banner_resize));
-        list.add(new Photo(GlobalVariable.arrayProduct.get(pos).getProductImage()));
+        list.add(new Photo(GlobalVariable.arrayProduct.get(index).getProductImage()));
         list.add(new Photo(R.drawable.xiaomi_banner_resize));
 
         return list;
@@ -189,15 +197,14 @@ public class ProductDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch(item.getItemId()){
-            case R.id.ic_cart_toolbar:   //this item has your app icon
-                Intent intent = new Intent(ProductDetailActivity.this,MainActivity.class);
-                intent.putExtra("gotoCart","cart");
+        if (item.getItemId() == R.id.ic_cart_toolbar) {   //this item has your app icon
+            Intent intent = new Intent(ProductDetailActivity.this, MainActivity.class);
+            intent.putExtra("gotoCart", "cart");
 
-                startActivity(intent);
-                return true;
-            default: return super.onOptionsItemSelected(item);
+            startActivity(intent);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
 
     }
 

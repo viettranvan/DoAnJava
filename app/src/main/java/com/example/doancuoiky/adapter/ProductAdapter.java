@@ -1,7 +1,6 @@
 package com.example.doancuoiky.adapter;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.activity.ProductDetailActivity;
 import com.example.doancuoiky.modal.Product;
 import com.example.doancuoiky.R;
@@ -56,7 +55,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvProductDescription.setText(product.getProductDescription());
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.tvProductPrice.setText(decimalFormat .format(product.getProductPrice()) +" đ");
+        String _price = decimalFormat .format(product.getProductPrice()) +" đ";
+        holder.tvProductPrice.setText(_price);
 
         if(product.isAddToCart()){
             holder.imgAddToCart.setBackgroundResource(R.drawable.bg_gray_corner_6);
@@ -81,9 +81,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View view) {
 
-
                 Intent intent = new Intent(view.getContext(),ProductDetailActivity.class);
-                intent.putExtra("productDetail",position);
+                intent.putExtra("productDetail", GlobalVariable.arrayProduct.get(position).getProductID());
                 view.getContext().startActivity(intent);
             }
         });

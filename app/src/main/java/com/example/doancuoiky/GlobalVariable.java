@@ -5,6 +5,7 @@ import com.example.doancuoiky.modal.Order;
 import com.example.doancuoiky.modal.Product;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class GlobalVariable {
@@ -51,8 +52,13 @@ public class GlobalVariable {
     public static final String USER_INFO_URL = localhost + "api/user";
     public static final String USER_SIGN_UP = localhost + "api/user";
     public static final String USER_UPDATE = localhost + "api/update-user";
+    public static final String USER_UPDATE_AVATAR = localhost + "api/upload-avatar";
 
 
+
+
+
+    // Global Function
     public static String  validateNameFirstUpperCase(String string){
         char[] chars = string.toLowerCase().toCharArray();
         boolean found = false;
@@ -67,6 +73,36 @@ public class GlobalVariable {
         return String.valueOf(chars);
     }
 
+    // format date theo định dạng ngày tháng của VN dd-MM-YYYY
+    public static String formatDateInVN(String date) {
 
+        String day, month, year;
+        int int_year, int_month, int_day;
+
+        int_year = Integer.parseInt(date.substring(0, 4));
+        int_month = Integer.parseInt(date.substring(5, 7));
+        int_day = Integer.parseInt(date.substring(8, 10));
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, int_day);
+        cal.set(Calendar.MONTH, int_month - 1);
+        cal.set(Calendar.YEAR, int_year);
+        cal.add(Calendar.DAY_OF_MONTH, 1);  // tăng lên 1 ngày
+
+        if(cal.get(Calendar.DAY_OF_MONTH) < 10){
+            day = "0" + cal.get(Calendar.DAY_OF_MONTH);
+        }else{
+            day = "" + cal.get(Calendar.DAY_OF_MONTH);
+        }
+
+        if((cal.get(Calendar.MONTH) + 1) < 10){
+            month = "0" + (cal.get(Calendar.MONTH) + 1);
+        }else{
+            month = "" + (cal.get(Calendar.MONTH) + 1);
+        }
+        year    = "" + cal.get(Calendar.YEAR);
+
+        return day + "/" + month + "/" + year;
+    }
 }
 

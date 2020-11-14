@@ -16,8 +16,12 @@
     <string name="nav_header_name">Name</string>
     <string name="nav_header_email">name@gmail.com</string>
 
-    <!--    toolbar-->
-    <string name="title_toolbar">Trang chủ</string>
+    <!--    toolbar -->
+    <string name="title_toolbar_home">Trang chủ</string>
+    <string name="title_toolbar_product">Danh mục sản phẩm</string>
+    <string name="title_toolbar_search">Tìm kiếm</string>
+    <string name="title_toolbar_cart">Giỏ hàng</string>
+    <string name="title_toolbar_profile">Thông tin cá nhân</string>
 
     <!-- Image -->
     <string name="iamge">image</string>
@@ -53,7 +57,7 @@
 
     <string name="name">Trần Văn Việt</string>
     <string name="email">viettranvan2k@gmail.com</string>
-    <string name="birthday">02-10-2000</string>
+    <string name="birthday">02–10–2000</string>
     <string name="gender">Nam</string>
     <string name="cmnd">2417701**</string>
     <string name="address">Đăk Lăk</string>
@@ -204,7 +208,6 @@
     <string name="text_no_result_return">Không có kết quả nào phù hợp</string>
 
 
-
     <string-array name="sort">
         <item>Không sắp xếp</item>
         <item>Giá tăng dần</item>
@@ -224,7 +227,23 @@
     <string name="phone_contact">(+84) 394848858</string>
     <string name="message_contact">(+84) 394848858</string>
 
-
+    <string-array name="list_avatar">
+        <item>avatar_001</item>
+        <item>avatar_002</item>
+        <item>avatar_003</item>
+        <item>avatar_004</item>
+        <item>avatar_005</item>
+        <item>avatar_006</item>
+        <item>avatar_007</item>
+        <item>avatar_008</item>
+        <item>avatar_009</item>
+        <item>avatar_010</item>
+        <item>avatar_011</item>
+        <item>avatar_012</item>
+        <item>avatar_013</item>
+        <item>avatar_014</item>
+        <item>avatar_015</item>
+    </string-array>
 
 
 </resources>

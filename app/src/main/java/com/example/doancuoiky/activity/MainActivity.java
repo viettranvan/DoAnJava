@@ -1,7 +1,6 @@
 package com.example.doancuoiky.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -12,12 +11,9 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,14 +21,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -46,10 +39,8 @@ import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.ViewPagerAdapter;
-import com.example.doancuoiky.fragment.CartFragment;
 import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.fragment.ProductFragment;
-import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Product;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
@@ -68,17 +59,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private NavigationView menuNavigationView;
     private long backPressedTime;
-    private ListView listView;
     private Toast mToast;
     private AHBottomNavigation ahBottomNavigation;
     private AHBottomNavigationViewPager ahBottomNavigationViewPager;
-    private ViewPagerAdapter adapter;
     private TextView toolBarTitle;
 
     private View viewEndAnimation;
     private ImageView viewAnimation;
 
-    private View headerView;
     private LinearLayout headerNotLoggedIn,headerLoggedIn;
     private ImageView headerAvatar;
     private TextView headerName,headerEmail;
@@ -121,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ahBottomNavigation.setCurrentItem(3);
             }
 
-            if(getIntent().getExtras().getBoolean("loginTrue") == true){
+            if(Objects.requireNonNull(getIntent().getExtras()).getBoolean("loginTrue")){
                 GlobalVariable.isLogin = true;
                 checkLogin();
             }
@@ -133,25 +121,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initData() {
-        if(GlobalVariable.arrayCart != null){
 
-        }else{
+        if(GlobalVariable.arrayCart == null){
             GlobalVariable.arrayCart = new ArrayList<>();
-
 //            GlobalVariable.arrayCart.add(new Cart("00a","001","test","4gb","small",100000,R.drawable.meow,1));
         }
 
-        if(GlobalVariable.arrayProfile != null){
 
-        }
-        else{
+        if(GlobalVariable.arrayProfile == null){
             GlobalVariable.arrayProfile = new ArrayList<>();
-
         }
 
-        if(GlobalVariable.arrayProduct != null){
-
-        }else{
+        if(GlobalVariable.arrayProduct == null){
             GlobalVariable.arrayProduct = new ArrayList<>();
             GlobalVariable.arrayProduct.add(new Product("001","001","Điện thoại realme",
                     getString(R.string.mota),"4gb-64gb",4000000,R.drawable.realme_banner_resize));
@@ -217,12 +198,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         String acc_created = data.getString("acc_created");
                         String avatar = data.getString("avatar");
                         String rate = data.getString("rate");
+                        String birthday = data.getString("birthday");
 
+                        Log.d("TAG11", "onResponse: " + avatar);
+
+                        // validate data thành rỗng nếu data trống hoặc null
                         if(address.length() == 0 || address.equals("null")){
                             address = "";
                         }
                         if(citizen_identification.length() == 0 || citizen_identification.equals("null")){
                             citizen_identification = "";
+                        }
+                        if(phone_number.length() == 0 || phone_number.equals("null")){
+                            phone_number = "";
+                        }
+                        if(gender.length() == 0 || gender.equals("null")){
+                            gender = "";
+                        }
+                        if(rate.length() == 0 || rate.equals("null")){
+                            rate = "";
+                        }
+                        if(birthday.length() == 0 || birthday.equals("null")){
+                            birthday = "";
                         }
 
                         GlobalVariable.arrayProfile.add(id_user);
@@ -236,12 +233,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         GlobalVariable.arrayProfile.add(acc_created);
                         GlobalVariable.arrayProfile.add(avatar);
                         GlobalVariable.arrayProfile.add(rate);
+                        GlobalVariable.arrayProfile.add(birthday);
 
-                        if(GlobalVariable.arrayProfile.get(9).length() > 0){
-                            Picasso.with(MainActivity.this)
-                                .load(GlobalVariable.arrayProfile.get(9))
-                                .into(headerAvatar);
-                        }
+
+                        String imageName = "no_avatar";
+                        String PACKAGE_NAME = getApplicationContext().getPackageName();
+                        int imgID = getResources().getIdentifier(PACKAGE_NAME + ":drawable/" + imageName, null, null);
+                        headerAvatar.setImageResource(imgID);
 
                         headerName.setText(GlobalVariable.arrayProfile.get(3));
                         headerEmail.setText(GlobalVariable.arrayProfile.get(1));
@@ -259,13 +257,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }){
                 @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<String, String>();
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<>();
                     params.put("Authorization", GlobalVariable.TOKEN);
                     return params;
                 }
             };
-
             queue.add(request);
 
         }
@@ -295,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void actionToolBar() {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        toolBarTitle.setText(getString(R.string.title_toolbar)); // trang chủ
+        toolBarTitle.setText(getString(R.string.title_toolbar_home)); // trang chủ
         toolbar.setNavigationIcon(R.drawable.ic_action_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,14 +306,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         menuNavigationView = findViewById(R.id.navigation_view);
-        listView = findViewById(R.id.listview);
         ahBottomNavigation  = findViewById(R.id.AHBottomNavigation);
         ahBottomNavigationViewPager = findViewById(R.id.AHBottomNavigationViewPager);
         viewEndAnimation = findViewById(R.id.view_end_animation);
         viewAnimation = findViewById(R.id.view_animation);
         toolBarTitle = findViewById(R.id.tv_toolbar_title);
 
-        headerView = menuNavigationView.getHeaderView(0);
+        View headerView = menuNavigationView.getHeaderView(0);
         headerNotLoggedIn = headerView.findViewById(R.id.header_drawer_not_logged_in);
         headerLoggedIn = headerView.findViewById(R.id.header_drawer_logged_in);
         headerAvatar = headerView.findViewById(R.id.drawer_menu_avatar);
@@ -327,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // bottom tab
     private void setUpViewPager(){
-        adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         ahBottomNavigationViewPager.setAdapter(adapter);
         ahBottomNavigationViewPager.setPagingEnabled(true);
 
@@ -424,6 +420,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 GlobalVariable.isLogin = false;
                 GlobalVariable.TOKEN = null;
                 GlobalVariable.arrayProfile.clear();
+                GlobalVariable.arrayProfile = null;
                 checkLogin();
 
                 finish();
@@ -517,15 +514,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             protected Map<String, String> getParams()
             {
 
-                Map<String, String>  params = new HashMap<String, String>();
+                Map<String, String>  params = new HashMap<>();
                 params.put("email",GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_EMAIL));
                 params.put("rate", _rate);
                 return params;
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
                 params.put("Authorization", GlobalVariable.TOKEN);
                 return params;
             }
@@ -565,24 +562,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (position){
             case 0:
                 setSupportActionBar(toolbar);
-                toolBarTitle.setText("Trang chủ");
+                toolBarTitle.setText(getString(R.string.title_toolbar_home)); // trang chủ
                 break;
             case 1:
                 setSupportActionBar(toolbar);
-                toolBarTitle.setText("Danh mục sản phẩm");
+                toolBarTitle.setText(getString(R.string.title_toolbar_product)); // danh mục sản phẩm
                 break;
             case 2:
                 setSupportActionBar(toolbar);
-                toolBarTitle.setText("Tìm kiếm");
+                toolBarTitle.setText(getString(R.string.title_toolbar_search)); // tìm kiếm
 
                 break;
             case 3:
                 setSupportActionBar(toolbar);
-                toolBarTitle.setText("Giỏ hàng");
+                toolBarTitle.setText(getString(R.string.title_toolbar_cart)); // giỏ hàng
                 break;
             case 4:
                 setSupportActionBar(toolbar);
-                toolBarTitle.setText("Thông tin cá nhân");
+                toolBarTitle.setText(getString(R.string.title_toolbar_profile)); // thông tin cá nhân
                 break;
         }
         toolbar.setNavigationIcon(R.drawable.ic_action_menu);

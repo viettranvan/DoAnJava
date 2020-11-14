@@ -1,10 +1,8 @@
 package com.example.doancuoiky.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +10,13 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.viewpager.widget.PagerAdapter;
 
-import com.bumptech.glide.Glide;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
-import com.example.doancuoiky.activity.MainActivity;
 import com.example.doancuoiky.activity.ProductDetailActivity;
 import com.example.doancuoiky.fragment.CartFragment;
-import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.modal.Cart;
-import com.example.doancuoiky.modal.Photo;
-import com.example.doancuoiky.modal.Product;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -54,6 +43,7 @@ public class CartAdapter extends BaseAdapter{
     ImageView imgCartProduct;
 
 
+
     // constructor
     public CartAdapter(Context context,int layout, List<Cart> cartList){
         myContext = context;
@@ -76,6 +66,7 @@ public class CartAdapter extends BaseAdapter{
         return 0;
     }
 
+    @SuppressLint("ViewHolder")
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         final LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -91,13 +82,13 @@ public class CartAdapter extends BaseAdapter{
             public void onClick(View view) {
                 int currentCount = arrayCart.get(i).getCount();
 
-                if(currentCount <= 1){
-                }
-                else{
+                if(currentCount > 1){
                     currentCount -= 1;
                 }
+
                 GlobalVariable.arrayCart.get(i).setCount(currentCount);
-                cartProductCount.setText(arrayCart.get(i).getCount() +  "");
+                String _count_minus = arrayCart.get(i).getCount() +  "";
+                cartProductCount.setText(_count_minus);
                 CartFragment.updateTotalPrice();
                 notifyDataSetChanged();
 
@@ -112,7 +103,8 @@ public class CartAdapter extends BaseAdapter{
                 int currentCount = arrayCart.get(i).getCount();
                 currentCount += 1;
                 GlobalVariable.arrayCart.get(i).setCount(currentCount);
-                cartProductCount.setText(arrayCart.get(i).getCount() + "");
+                String _count_plus = arrayCart.get(i).getCount() + "";
+                cartProductCount.setText(_count_plus);
                 CartFragment.updateTotalPrice();
                 notifyDataSetChanged();
             }
@@ -130,17 +122,9 @@ public class CartAdapter extends BaseAdapter{
             @Override
             public void onClick(View view) {
                 String id = GlobalVariable.arrayCart.get(i).getID();
-                int idProduct = 0;
-                for(int index = 0;index < GlobalVariable.arrayProduct.size();index++){
-                    if(GlobalVariable.arrayProduct.get(index).getProductID().equals(id)){
-                        Log.d("TAG1", "index = " + id );
-                        idProduct = index;
-                        break;
-                    }
-                }
 
                 Intent intent = new Intent(view.getContext(), ProductDetailActivity.class);
-                intent.putExtra("productDetail",idProduct);
+                intent.putExtra("productDetail",id);
                 view.getContext().startActivity(intent);
             }
         });
@@ -165,9 +149,11 @@ public class CartAdapter extends BaseAdapter{
         cartProductDescription.setText(arrayCart.get(i).getDescription());
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        cartProductPrice.setText(decimalFormat.format(arrayCart.get(i).getPrice()) + " đ");
+        String _price = decimalFormat.format(arrayCart.get(i).getPrice()) + " đ";
+        cartProductPrice.setText(_price);
 
-        cartProductCount.setText(arrayCart.get(i).getCount() + "");
+        String _count = arrayCart.get(i).getCount() + "";
+        cartProductCount.setText(_count);
         imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
 
         int currentCount = arrayCart.get(i).getCount();

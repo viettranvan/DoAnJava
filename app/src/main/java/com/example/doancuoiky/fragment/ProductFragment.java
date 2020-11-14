@@ -1,8 +1,8 @@
 package com.example.doancuoiky.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.collection.ArraySet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,11 +40,11 @@ import java.util.Objects;
 
 public class ProductFragment extends Fragment  {
 
-
     private RecyclerView rcvProduct;
     private TextView noticeNoDataReturn;
     private View mView;
     private MainActivity mainActivity;
+    @SuppressLint("StaticFieldLeak")
     static private ProductAdapter productAdapter;
     private Spinner sortSpinner;
     static ArrayList<Product> mArrayProduct;
@@ -56,7 +53,6 @@ public class ProductFragment extends Fragment  {
     Dialog dialog ;
     TextView tvFilterType,tvFilterPrice;
     CardView cvFilterType,cvFilterPrice;
-
 
     private RadioButton rdAllProduct,rdMobile,rdLaptop,rdPriceType1,rdPriceType2,rdPriceType3,rdPriceType4;
     private Button btnCancel,btnSubmit;
@@ -81,7 +77,6 @@ public class ProductFragment extends Fragment  {
                 dialogAnhXa(dialog);
 
                 dialogSetOnClick(dialog);
-
 
                 dialog.show();
             }
@@ -396,7 +391,8 @@ public class ProductFragment extends Fragment  {
         productAdapter.setData(mArrayProduct, new ProductAdapter.IClickAddToCartListener() {
             @Override
             public void onClickAddToCart(final ImageView imgAddToCart, final Product product) {
-                AnimationUtil.translateAnimation(mainActivity.getViewAnimation(), imgAddToCart, mainActivity.getViewEndAnimation(), new Animation.AnimationListener() {
+                AnimationUtil.translateAnimation(mainActivity.getViewAnimation(), imgAddToCart,
+                        mainActivity.getViewEndAnimation(), new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
                         product.setAddToCart(true);
@@ -442,7 +438,7 @@ public class ProductFragment extends Fragment  {
         cvFilterPrice = mView.findViewById(R.id.cv_filter_price);
         noticeNoDataReturn = mView.findViewById(R.id.tv_no_data_return);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()),
                 android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.sort));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(adapter);

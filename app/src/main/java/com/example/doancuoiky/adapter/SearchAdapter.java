@@ -30,7 +30,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         this.iClickOnCopyKeySearch = listener;
     }
 
-    Context myContex;
+    Context myContext;
     int myLayout;
     List<Search> arraySearchData;
     ImageView ivCopy;
@@ -38,12 +38,11 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
     List<Search> filterList;
 
     public SearchAdapter(Context context,int layout,List<Search> array){
-        myContex = context;
+        myContext = context;
         myLayout = layout;
         arraySearchData = array;
         this.filterList = array;
     }
-
 
     @Override
     public int getCount() {
@@ -63,7 +62,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
-        LayoutInflater inflater = (LayoutInflater) myContex.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(myLayout,null);
 
         // anhs xa va gan gia tri
@@ -109,7 +108,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
                 List<Search> filters = new ArrayList<>();
 
                 for(int i = 0;i < filterList.size();i++){
-                    if(filterList.get(i).getTitle().contains(searchStr)){
+                    if(filterList.get(i).getTitle().toLowerCase().contains(searchStr)){
                         Search s = new Search(filterList.get(i).getTitle());
                         filters.add(s);
                     }
