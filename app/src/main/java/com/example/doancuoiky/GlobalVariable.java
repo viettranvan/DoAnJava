@@ -50,11 +50,10 @@ public class GlobalVariable {
     private static final String localhost = "http://192.168.2.105:5000/";
     public static final String LOGIN_URL = localhost + "api/login";
     public static final String USER_INFO_URL = localhost + "api/user";
-    public static final String USER_SIGN_UP = localhost + "api/user";
-    public static final String USER_UPDATE = localhost + "api/update-user";
-    public static final String USER_UPDATE_AVATAR = localhost + "api/upload-avatar";
-
-
+    public static final String USER_SIGN_UP_URL = localhost + "api/user";
+    public static final String USER_UPDATE_URL = localhost + "api/update-user";
+    public static final String USER_CHANGE_PASSWORD_URL = localhost + "api/change-password";
+    public static final String PRODUCT_IMAGE_URL = localhost + "api/products-img";
 
 
 

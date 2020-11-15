@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onResponse(String response) {
                     try {
+
                         JSONObject object = new JSONObject(response);
                         JSONObject data = object.getJSONObject("data");
 
@@ -200,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         String rate = data.getString("rate");
                         String birthday = data.getString("birthday");
 
-                        Log.d("TAG11", "onResponse: " + avatar);
 
                         // validate data thành rỗng nếu data trống hoặc null
                         if(address.length() == 0 || address.equals("null")){
@@ -221,6 +221,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if(birthday.length() == 0 || birthday.equals("null")){
                             birthday = "";
                         }
+                        if(avatar.length() == 0 || avatar.equals("null")){
+                            avatar = "";
+                        }
 
                         GlobalVariable.arrayProfile.add(id_user);
                         GlobalVariable.arrayProfile.add(email);
@@ -235,17 +238,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         GlobalVariable.arrayProfile.add(rate);
                         GlobalVariable.arrayProfile.add(birthday);
 
-
-                        String imageName = "no_avatar";
-                        String PACKAGE_NAME = getApplicationContext().getPackageName();
-                        int imgID = getResources().getIdentifier(PACKAGE_NAME + ":drawable/" + imageName, null, null);
-                        headerAvatar.setImageResource(imgID);
+                        if(avatar.length() > 0){
+                            String PACKAGE_NAME = getApplicationContext().getPackageName();
+                            int imgID = getResources().getIdentifier(PACKAGE_NAME + ":drawable/" + avatar,
+                                    null, null);
+                            headerAvatar.setImageResource(imgID);
+                        }
 
                         headerName.setText(GlobalVariable.arrayProfile.get(3));
                         headerEmail.setText(GlobalVariable.arrayProfile.get(1));
 
                     } catch (JSONException e) {
-                        Log.d("TAG1", "error1 => "  + "\n");
                         e.printStackTrace();
                     }
                 }
@@ -477,7 +480,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void updateAppRating(final String _rate, final Dialog dialog) {
-        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_UPDATE,
+        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_UPDATE_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

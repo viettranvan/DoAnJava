@@ -35,7 +35,7 @@ import java.util.Map;
 public class ChangePasswordActivity extends AppCompatActivity {
 
     private ImageView goBackChangPassword;
-    private EditText edtCurrentPassword, edtNewPassword, edtConfirmPassword;
+    private EditText edtEmail,edtUsername,edtCurrentPassword, edtNewPassword, edtConfirmPassword;
     private Button btnConfirmChangePassword;
     private ProgressBar progressBar;
 
@@ -63,7 +63,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 String confirm = edtConfirmPassword.getText().toString().trim();
                 if (checkData()) {
                     if (edtNewPassword.getText().toString().trim().equals(confirm)) {
-                        Toast.makeText(ChangePasswordActivity.this, "success", Toast.LENGTH_SHORT).show();
+                        onChangePassword();
                     } else {
                         edtConfirmPassword.setError("Mật khẩu không trùng khớp");
                     }
@@ -90,10 +90,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     private void anhXa() {
         goBackChangPassword = findViewById(R.id.iv_back_change_password);
+        edtEmail = findViewById(R.id.edt_email_change_password);
+        edtUsername = findViewById(R.id.edt_username_change_password);
         edtCurrentPassword = findViewById(R.id.edt_current_password_change_password);
         edtNewPassword = findViewById(R.id.edt_new_password_change_password);
         edtConfirmPassword = findViewById(R.id.edt_confirm_password_change_password);
         btnConfirmChangePassword = findViewById(R.id.btn_sign_up_change_password);
+
+        edtEmail.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_EMAIL));
+        edtUsername.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_USER_NAME));
 
         progressBar = findViewById(R.id.progressBar_check_password_change_password);
 
@@ -169,7 +174,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void validateConfirmPassword() {
-        edtNewPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        edtConfirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
@@ -227,81 +232,67 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }
     }
 
-//    private void onChangePassword(){
-//        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_SIGN_UP,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject object = new JSONObject(response);
-//                            JSONObject result = object.getJSONObject("result");
-//
-//                            int code = result.getInt("code");
-//                            if(code == 0){
-//
-//                                AlertDialog.Builder builder = new AlertDialog.Builder(ChangePasswordActivity.this);
-//
-//                                builder.setTitle("Thông báo");
-//                                builder.setMessage("Đăng ký thành công, đăng nhập ngay");
-//
-//                                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialogInterface, int i) {
-//                                        Intent intent = new Intent(ChangePasswordActivity.this,LoginActivity.class);
-//                                        startActivity(intent);
-//                                        finish();
-//                                    }
-//                                });
-//
-//                                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                    }
-//                                });
-//                                builder.show();
-//
-//                            }
-//                            else{
-//                                Toast.makeText(ChangePasswordActivity.this, "Email hoặc tên đăng nhập đã tồn tại",
-//                                        Toast.LENGTH_LONG).show();
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                            Toast.makeText(ChangePasswordActivity.this, "error => " + e.toString(), Toast.LENGTH_SHORT).show();
-//
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(ChangePasswordActivity.this, "Email hoặc tên đăng nhập đã tồn tại",
-//                        Toast.LENGTH_LONG).show();
-//            }
-//        }){
-//
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError
-//            {
-//                Map<String, String>  params = new HashMap<String, String>();
-//                params.put("Authorization", GlobalVariable.TOKEN);
-//
-////                params.put("email", edtEmail.getText().toString().trim());
-////                params.put("loginname", edtUsername.getText().toString().trim());
-////                params.put("username", validateNameFirstUpperCase(edtFullName.getText().toString().trim()));
-////                params.put("phone_number", edtPhoneNumber.getText().toString().trim());
-////                params.put("userpassword", edtPassword.getText().toString().trim());
-////                params.put("gender", _gender);
-//
-//                return params;
-//            }
-//
-//        };
-//
-//        RequestQueue queue = Volley.newRequestQueue(ChangePasswordActivity.this);
-//
-//        queue.add(request);
-//
-//    }
+    private void onChangePassword(){
+        StringRequest request = new StringRequest(StringRequest.Method.POST, GlobalVariable.USER_CHANGE_PASSWORD_URL,
+                new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONObject result = object.getJSONObject("result");
+                    int code = Integer.parseInt(result.getString("code"));
+                    if(code == 0){
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ChangePasswordActivity.this);
+
+                        builder.setTitle("Thông báo");
+                        builder.setMessage("Cập nhật thành công");
+
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(ChangePasswordActivity.this,MainActivity.class);
+                                intent.putExtra("gotoProfile","profile");
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+
+                        builder.show();
+
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(ChangePasswordActivity.this, "fail1", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ChangePasswordActivity.this, "Mật khẩu hiện tại không chính xác", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams()  {
+                String _currentPassword = edtCurrentPassword.getText().toString().trim();
+                String _newPassword = edtNewPassword.getText().toString().trim();
+
+                Map<String, String> params = new HashMap<>();
+                params.put("userpassword",_currentPassword);
+                params.put("newpassword",_newPassword);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization",GlobalVariable.TOKEN);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ChangePasswordActivity.this);
+        queue.add(request);
+
+    }
 
 }

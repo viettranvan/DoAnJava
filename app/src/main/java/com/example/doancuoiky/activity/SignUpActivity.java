@@ -326,7 +326,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void onSignUp(){
-        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_SIGN_UP,
+        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_SIGN_UP_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

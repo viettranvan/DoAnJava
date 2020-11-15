@@ -38,7 +38,7 @@ import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
-    private LinearLayout addAddress, changeInfo, changePassword, profileContainer, toggleProfile;
+    private LinearLayout changeInfo, changePassword, profileContainer, toggleProfile;
     private boolean isExpand = true; // biến check xem profile là expand hay collapse
     private ImageView imgToggleProfile;
     private ImageView imgAvatar;
@@ -75,8 +75,14 @@ public class ProfileFragment extends Fragment {
             String address = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS);
             String phone = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_PHONE_NUMBER);
             String birthday = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_BIRTHDAY);
+            String avatar = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR);
 
-
+            if(avatar.length() > 0){
+                String PACKAGE_NAME = Objects.requireNonNull(getContext()).getPackageName();
+                int avatarName = getResources().getIdentifier(PACKAGE_NAME + ":drawable/" + avatar,
+                        null,null);
+                imgAvatar.setImageResource(avatarName);
+            }
             titleName.setText(name);
             titleEmail.setText(email);
 
@@ -100,7 +106,9 @@ public class ProfileFragment extends Fragment {
             textAddress.setText(address);
             textPhone.setText(phone);
 
-            textBirthday.setText(GlobalVariable.formatDateInVN(birthday));
+            if(birthday.length() > 0){
+                textBirthday.setText(GlobalVariable.formatDateInVN(birthday));
+            }
         }
     }
 
@@ -171,13 +179,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        addAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "Chuyển đến trang thêm địa chỉ", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         changeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -228,7 +229,6 @@ public class ProfileFragment extends Fragment {
 
     private void anhXa(View view) {
 
-        addAddress = view.findViewById(R.id.add_address);
         changeInfo = view.findViewById(R.id.change_info);
         changePassword = view.findViewById(R.id.change_password);
         profileContainer = view.findViewById(R.id.layout_profile_container);
@@ -257,11 +257,13 @@ public class ProfileFragment extends Fragment {
         gotoShippingOrder = view.findViewById(R.id.layout_oder_shipping_profile_fragment);
         gotoSuccessOrder = view.findViewById(R.id.layout_oder_success_profile_fragment);
 
-        String imageName = "no_avatar"; //  this is image file name
-        String PACKAGE_NAME = Objects.requireNonNull(getContext()).getPackageName();
-        int imgId = getResources().getIdentifier(PACKAGE_NAME+":drawable/" + imageName , null, null);
+//        String imageName = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR).; //  this is image file name
+//        String PACKAGE_NAME = Objects.requireNonNull(getContext()).getPackageName();
+//        int imgId = getResources().getIdentifier(PACKAGE_NAME+":drawable/" + imageName ,
+//                null, null);
+//
+//        imgAvatar.setImageResource(imgId);
 
-        imgAvatar.setImageResource(imgId);
 
     }
 

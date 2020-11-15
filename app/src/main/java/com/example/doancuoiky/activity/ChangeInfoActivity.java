@@ -53,12 +53,11 @@ public class ChangeInfoActivity extends AppCompatActivity {
     private Button update;
     private TextView tvBirthday;
     private EditText edtFullName, edtEmail, edtIdentify, edtPhoneNumber, edtAddress;
-    String _name,_email,_citizen,_phone,_address,_gender,_birthday;
+    String _name,_email,_citizen,_phone,_address,_gender,_birthday,_avatar;
     private ImageView avatar, openFile;
     public static ArrayList<String> arrayListAvatar;
     int REQUEST_CODE_AVATAR = 123;
-    String avatarImageName;
-
+    String avatarImageName = "";
 
 
     @Override
@@ -76,7 +75,8 @@ public class ChangeInfoActivity extends AppCompatActivity {
             avatarImageName = data.getStringExtra("imageSelected");
 
             String PACKAGE_NAME = getApplicationContext().getPackageName();
-            int idImg = getResources().getIdentifier(PACKAGE_NAME + ":drawable/" + avatarImageName, null, null);
+            int idImg = getResources().getIdentifier(PACKAGE_NAME + ":drawable/" + avatarImageName,
+                    null, null);
             avatar.setImageResource(idImg);
         }
 
@@ -101,21 +101,8 @@ public class ChangeInfoActivity extends AppCompatActivity {
         openFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult( new Intent(ChangeInfoActivity.this,ListAvatarActivity.class),REQUEST_CODE_AVATAR);
-            }
-        });
-
-        male.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(ChangeInfoActivity.this,male.getText(),Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        female.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(ChangeInfoActivity.this,female.getText(),Toast.LENGTH_SHORT).show();
+                startActivityForResult( new Intent(ChangeInfoActivity.this,ListAvatarActivity.class),
+                        REQUEST_CODE_AVATAR);
             }
         });
 
@@ -129,7 +116,6 @@ public class ChangeInfoActivity extends AppCompatActivity {
             
         });
     }
-
 
     private void goToMainActivity() {
         Intent intent = new Intent(ChangeInfoActivity.this,MainActivity.class);
@@ -187,7 +173,15 @@ public class ChangeInfoActivity extends AppCompatActivity {
         String[] listAvatarName = getResources().getStringArray(R.array.list_avatar);
         arrayListAvatar = new ArrayList<>(Arrays.asList(listAvatarName));
 
-        avatar.setImageResource(R.drawable.no_avatar); //700046
+        if(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR).length() > 0){
+
+            String avatarName = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR);
+
+            String PACKAGE_NAME = getApplicationContext().getPackageName();
+            int idImg = getResources().getIdentifier(PACKAGE_NAME + ":drawable/" + avatarName,
+                    null, null);
+            avatar.setImageResource(idImg);
+        }
 
         edtFullName.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_USER_NAME));
         edtEmail.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_EMAIL));
@@ -221,10 +215,15 @@ public class ChangeInfoActivity extends AppCompatActivity {
         _citizen = edtIdentify.getText().toString();
         _phone = edtPhoneNumber.getText().toString();
         _address = edtAddress.getText().toString();
+        if(avatarImageName.length() == 0){
+            _avatar = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR);
+        }else{
+            _avatar = avatarImageName;
+        }
     }
 
     private void onChangeInfo(){
-        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_UPDATE,
+        StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_UPDATE_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -290,6 +289,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 params.put("citizen_identification", _citizen);
                 params.put("phone_number", _phone);
                 params.put("address", _address);
+                params.put("avatar",_avatar);
                 return params;
             }
 
@@ -307,11 +307,12 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
     private void setDataArrayProfile() {
         getDataInfo();
-        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_USER_NAME,_name);
+        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_USER_NAME,GlobalVariable.validateNameFirstUpperCase(_name));
         GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_ADDRESS,_address);
         GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_CITIZEN_IDENTIFICATION, _citizen);
         GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_PHONE_NUMBER,_phone);
         GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_GENDER,_gender);
+        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_AVATAR,_avatar);
 
         int int_year, int_month, int_day;
         String day, month, year;
