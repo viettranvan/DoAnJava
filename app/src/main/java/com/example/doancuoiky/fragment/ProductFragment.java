@@ -1,7 +1,10 @@
 package com.example.doancuoiky.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doancuoiky.AnimationUtil;
 import com.example.doancuoiky.GlobalVariable;
+import com.example.doancuoiky.activity.LoginActivity;
 import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Product;
 import com.example.doancuoiky.adapter.ProductAdapter;
@@ -77,7 +81,6 @@ public class ProductFragment extends Fragment  {
                 dialogAnhXa(dialog);
 
                 dialogSetOnClick(dialog);
-
                 dialog.show();
             }
         });
@@ -395,22 +398,41 @@ public class ProductFragment extends Fragment  {
                         mainActivity.getViewEndAnimation(), new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        product.setAddToCart(true);
-                        imgAddToCart.setBackgroundResource(R.drawable.bg_gray_corner_6);
-                        productAdapter.notifyDataSetChanged();
+                        if(!GlobalVariable.isLogin){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("Thông báo");
+                            builder.setMessage("Bạn chưa đăng nhập, đăng nhập ngay");
 
-                        String id = product.getProductID();
-                        String typeId = product.getProductTypeID();
-                        String name = product.getProductName();
-                        String description = product.getProductDescription();
-                        int price = product.getProductPrice();
-                        String image = product.getProductImage();
+                            builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    startActivity(new Intent(Objects.requireNonNull(getActivity()).getApplication(), LoginActivity.class));
+                                }
+                            });
+                            builder.setNegativeButton("Để sau", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {}
+                            });
 
-                        Cart cart = new Cart(id,typeId,name,description,price,image,1);
-                        GlobalVariable.arrayCart.add(cart);
+                            builder.show();
+                        }else{
+                            product.setAddToCart(true);
+                            imgAddToCart.setBackgroundResource(R.drawable.bg_gray_corner_6);
+                            productAdapter.notifyDataSetChanged();
 
-                        // tăng số lượng sản phẩm giỏ hàng lên 1
-                        mainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
+                            String id = product.getProductID();
+                            String typeId = product.getProductTypeID();
+                            String name = product.getProductName();
+                            String description = product.getProductDescription();
+                            int price = product.getProductPrice();
+                            String image = product.getProductImage();
+
+                            Cart cart = new Cart(id,typeId,name,description,price,image,1);
+                            GlobalVariable.arrayCart.add(cart);
+
+                            // tăng số lượng sản phẩm giỏ hàng lên 1
+                            MainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
+                        }
                     }
 
                     @Override

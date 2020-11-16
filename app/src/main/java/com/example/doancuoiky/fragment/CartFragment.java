@@ -1,6 +1,7 @@
 package com.example.doancuoiky.fragment;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +10,11 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +40,7 @@ import com.example.doancuoiky.modal.Product;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 
 import me.relex.circleindicator.CircleIndicator;
@@ -47,8 +51,8 @@ public class CartFragment extends Fragment  {
     private Button btnOder;
     private TextView tvNotice;
     public static TextView tvTotal;
-    private MainActivity mainActivity;
     private Product product;
+    String receiveAddress = "";
 
     ListView lvCart;
     public static CartAdapter cartAdapter;
@@ -67,18 +71,56 @@ public class CartFragment extends Fragment  {
         btnOder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GlobalVariable.arrayCart.clear();
-                checkData();
-                Toast.makeText(getActivity(),"tiến hành đặt hàng " + GlobalVariable.arrayCart.size(),Toast.LENGTH_SHORT).show();
-                mainActivity.setCountProductInCart(0);
-                cartAdapter.notifyDataSetChanged();
-                // trả lại trạng thái enebal cho tất cả button thêm trong Product Fragment
-                for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
-                    product = GlobalVariable.arrayProduct.get(i);
-                    product.setAddToCart(false);
+                String address = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS);
+                if(address.length() == 0 || address.equals("null")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Thông báo");
+                    builder.setMessage("Vui lòng nhập địa chỉ nhận hàng");
+                    builder.setPositiveButton("Nhập địa chỉ", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            DialogInputReceiveAddress();
+                        }
+                    });
+
+                    builder.show();
+
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Thông báo");
+                    builder.setTitle("Bạn có muốn giao hàng đến địa chỉ này: " +
+                            GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS) + " ?");
+                    builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(getContext(), "address => " +  GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    builder.setNegativeButton("Địa chỉ khác", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            DialogInputReceiveAddress();
+                            Toast.makeText(getContext(), "address => " + receiveAddress, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    builder.show();
                 }
+
+//                GlobalVariable.arrayCart.clear();
+//                checkData();
+//                Toast.makeText(getActivity(),"tiến hành đặt hàng " + GlobalVariable.arrayCart.size(),Toast.LENGTH_SHORT).show();
+//                MainActivity.setCountProductInCart(0);
+//                cartAdapter.notifyDataSetChanged();
+//                // trả lại trạng thái enebal cho tất cả button thêm trong Product Fragment
+//                for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
+//                    product = GlobalVariable.arrayProduct.get(i);
+//                    product.setAddToCart(false);
+//                }
             }
         });
+
 
         cartAdapter.onDelete(new CartAdapter.IClickOnDeleteProductInCart() {
             @Override
@@ -106,7 +148,7 @@ public class CartFragment extends Fragment  {
                         GlobalVariable.arrayCart.remove(index);
                         cartAdapter.notifyDataSetChanged();
                         Toast.makeText(getContext(),"Xóa thành công",Toast.LENGTH_SHORT).show();
-                        mainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
+                        MainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
                         checkData();
 
                         updateTotalPrice();
@@ -149,10 +191,8 @@ public class CartFragment extends Fragment  {
         tvTotal = view.findViewById(R.id.tv_total);
         lvCart = view.findViewById(R.id.lv_cart);
 
-        mainActivity = (MainActivity) getActivity();
         if(GlobalVariable.arrayCart.size() > 0) {
-            assert mainActivity != null;
-            mainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
+            MainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
         }
         updateTotalPrice();
         cartAdapter = new CartAdapter(getContext(),R.layout.item_cart,GlobalVariable.arrayCart);
@@ -168,6 +208,24 @@ public class CartFragment extends Fragment  {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String _price = decimalFormat.format(total) + "đ";
         tvTotal.setText(_price);
+    }
+
+    private void DialogInputReceiveAddress() {
+        final Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
+        dialog.setContentView(R.layout.dialog_address);
+
+        Button btnSubmit = dialog.findViewById(R.id.btn_submit_address);
+        final EditText edtAddress = dialog.findViewById(R.id.edt_input_address);
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               receiveAddress = edtAddress.getText().toString();
+               dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
 }

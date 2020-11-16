@@ -106,7 +106,9 @@ public class ProfileFragment extends Fragment {
             textAddress.setText(address);
             textPhone.setText(phone);
 
-            if(birthday.length() > 0){
+            if(birthday.length() == 0 || birthday.equals("null")){
+                textBirthday.setText("");
+            }else {
                 textBirthday.setText(GlobalVariable.formatDateInVN(birthday));
             }
         }
@@ -282,7 +284,5 @@ public class ProfileFragment extends Fragment {
             profileIconNext.setVisibility(View.VISIBLE);
         }
     }
-
-
 
 }

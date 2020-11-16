@@ -43,17 +43,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ChangeInfoActivity extends AppCompatActivity {
 
     private ImageView goBackChangeInfo;
-    private RadioButton male,female;
+    private RadioButton male, female;
     private Button update;
     private TextView tvBirthday;
     private EditText edtFullName, edtEmail, edtIdentify, edtPhoneNumber, edtAddress;
-    String _name,_email,_citizen,_phone,_address,_gender,_birthday,_avatar;
+    String _name, _email, _citizen, _phone, _address, _gender, _birthday, _avatar;
     private ImageView avatar, openFile;
     public static ArrayList<String> arrayListAvatar;
     int REQUEST_CODE_AVATAR = 123;
@@ -71,7 +72,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == REQUEST_CODE_AVATAR && resultCode == RESULT_OK && data != null){
+        if (requestCode == REQUEST_CODE_AVATAR && resultCode == RESULT_OK && data != null) {
             avatarImageName = data.getStringExtra("imageSelected");
 
             String PACKAGE_NAME = getApplicationContext().getPackageName();
@@ -101,7 +102,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         openFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult( new Intent(ChangeInfoActivity.this,ListAvatarActivity.class),
+                startActivityForResult(new Intent(ChangeInfoActivity.this, ListAvatarActivity.class),
                         REQUEST_CODE_AVATAR);
             }
         });
@@ -113,37 +114,44 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 getDataInfo();
                 onChangeInfo();
             }
-            
+
         });
     }
 
     private void goToMainActivity() {
-        Intent intent = new Intent(ChangeInfoActivity.this,MainActivity.class);
-                intent.putExtra("gotoProfile","profile");
+        Intent intent = new Intent(ChangeInfoActivity.this, MainActivity.class);
+        intent.putExtra("gotoProfile", "profile");
         startActivity(intent);
     }
 
     private void showDateDialog() {
-        String getDate = GlobalVariable.formatDateInVN(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_BIRTHDAY));
-
-        int YEAR = Integer.parseInt(getDate.substring(6, 10));
-        int MONTH = Integer.parseInt(getDate.substring(3, 5)) - 1; // tháng render từ 0-11
-        int DATE = Integer.parseInt(getDate.substring(0, 2));
-
+        Calendar calendar = Calendar.getInstance();
+        String getDate = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_BIRTHDAY);
+        int YEAR , MONTH , DATE ;
+        if(getDate.length() > 0){
+            getDate = GlobalVariable.formatDateInVN(getDate);
+            YEAR = Integer.parseInt(getDate.substring(6, 10));
+            MONTH = Integer.parseInt(getDate.substring(3, 5)) - 1; // tháng render từ 0-11
+            DATE = Integer.parseInt(getDate.substring(0, 2));
+        }else {
+            YEAR = calendar.get(Calendar.YEAR);
+            MONTH = calendar.get(Calendar.MONTH);
+            DATE = calendar.get(Calendar.DAY_OF_MONTH);
+        }
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dateOfMonth) {
-                String strDay,strMonth;
-                if((month+1) < 10 ){
-                    strMonth = "0" + (month+1);
-                }else{
-                    strMonth = "" + (month+1);
+                String strDay, strMonth;
+                if ((month + 1) < 10) {
+                    strMonth = "0" + (month + 1);
+                } else {
+                    strMonth = "" + (month + 1);
                 }
 
-                if(dateOfMonth < 10){
+                if (dateOfMonth < 10) {
                     strDay = "0" + dateOfMonth;
-                }else{
+                } else {
                     strDay = "" + dateOfMonth;
                 }
 
@@ -151,7 +159,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
                 tvBirthday.setText(strDate);
             }
-        }, YEAR, MONTH , DATE);
+        }, YEAR, MONTH, DATE);
 
         datePickerDialog.show();
     }
@@ -173,7 +181,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         String[] listAvatarName = getResources().getStringArray(R.array.list_avatar);
         arrayListAvatar = new ArrayList<>(Arrays.asList(listAvatarName));
 
-        if(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR).length() > 0){
+        if (GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR).length() > 0) {
 
             String avatarName = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR);
 
@@ -186,19 +194,26 @@ public class ChangeInfoActivity extends AppCompatActivity {
         edtFullName.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_USER_NAME));
         edtEmail.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_EMAIL));
         edtIdentify.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_CITIZEN_IDENTIFICATION));
-        tvBirthday.setText(GlobalVariable.formatDateInVN(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_BIRTHDAY)));
+        String getBirthday = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_BIRTHDAY);
+
+        if (getBirthday.length() == 0) {
+            tvBirthday.setText("");
+        } else {
+            tvBirthday.setText(GlobalVariable.formatDateInVN(getBirthday));
+        }
+
         edtPhoneNumber.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_PHONE_NUMBER));
         edtAddress.setText(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS));
 
-        if(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_GENDER).length() == 0 ||
-                GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_GENDER).equals("0")){
+        if (GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_GENDER).length() == 0 ||
+                GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_GENDER).equals("0")) {
             male.setChecked(true);
             female.setChecked(false);
-        }
-        else{
+        } else {
             male.setChecked(false);
             female.setChecked(true);
         }
+
         getDataInfo();
 
     }
@@ -206,23 +221,30 @@ public class ChangeInfoActivity extends AppCompatActivity {
     private void getDataInfo() {
         _name = edtFullName.getText().toString();
         _email = edtEmail.getText().toString();
-        _birthday = formatDateDatabase(tvBirthday.getText().toString()); // format date theo dinh dang database
-        if(male.isChecked()){
+
+        if (tvBirthday.getText().toString().length() == 0) {
+            _birthday = "";
+        } else {
+            _birthday = formatDateDatabase(tvBirthday.getText().toString()); // format date theo dinh dang database
+        }
+
+        if (male.isChecked()) {
             _gender = "0";
-        }else{
+        } else {
             _gender = "1";
         }
         _citizen = edtIdentify.getText().toString();
         _phone = edtPhoneNumber.getText().toString();
         _address = edtAddress.getText().toString();
-        if(avatarImageName.length() == 0){
+        if (avatarImageName.length() == 0) {
             _avatar = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR);
-        }else{
+        } else {
             _avatar = avatarImageName;
         }
     }
 
-    private void onChangeInfo(){
+    private void onChangeInfo() {
+
         StringRequest request = new StringRequest(Request.Method.POST, GlobalVariable.USER_UPDATE_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -251,6 +273,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
                                 builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        Log.d("TAGBIRTH", "onClick: " + _birthday);
                                     }
                                 });
                                 builder.show();
@@ -307,46 +330,21 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
     private void setDataArrayProfile() {
         getDataInfo();
-        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_USER_NAME,GlobalVariable.validateNameFirstUpperCase(_name));
-        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_ADDRESS,_address);
+        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_USER_NAME, GlobalVariable.validateNameFirstUpperCase(_name));
+        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_ADDRESS, _address);
         GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_CITIZEN_IDENTIFICATION, _citizen);
-        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_PHONE_NUMBER,_phone);
-        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_GENDER,_gender);
-        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_AVATAR,_avatar);
+        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_PHONE_NUMBER, _phone);
+        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_GENDER, _gender);
+        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_AVATAR, _avatar);
 
-        int int_year, int_month, int_day;
-        String day, month, year;
-        int_year = Integer.parseInt(_birthday.substring(0, 4));
-        int_month = Integer.parseInt(_birthday.substring(5, 7));
-        int_day = Integer.parseInt(_birthday.substring(8, 10));
-
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, int_day);
-        cal.set(Calendar.MONTH, int_month - 1);
-        cal.set(Calendar.YEAR, int_year);
-        cal.add(Calendar.DAY_OF_MONTH, -1);  // giảm lên 1 ngày
-
-        if(cal.get(Calendar.DAY_OF_MONTH) < 10){
-            day = "0" + cal.get(Calendar.DAY_OF_MONTH);
-        }else{
-            day = "" + cal.get(Calendar.DAY_OF_MONTH);
-        }
-
-        if((cal.get(Calendar.MONTH) + 1) < 10){
-            month = "0" + (cal.get(Calendar.MONTH) + 1);
-        }else{
-            month = "" + (cal.get(Calendar.MONTH) + 1);
-        }
-        year    = "" + cal.get(Calendar.YEAR);
-
-        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_BIRTHDAY,year + "/" + month + "/" + day);
+        GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_BIRTHDAY, _birthday);
     }
 
     // doi lai cho dung dinh dang cua database yyyy-mm-dd
-    private String formatDateDatabase(String date){
-        String  year    = date.substring(6, 10);
-        String month    = date.substring(3, 5);
-        String day      = date.substring(0, 2);
+    private String formatDateDatabase(String date) {
+        String year = date.substring(6, 10);
+        String month = date.substring(3, 5);
+        String day = date.substring(0, 2);
 
         return year + "-" + month + "-" + day;
     }

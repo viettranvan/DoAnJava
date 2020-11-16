@@ -158,6 +158,8 @@
     <string name="btn_exit_rating">Để sau</string>
     <string name="btn_submit_rating">Đồng ý</string>
 
+    <!-- dialog address -->
+    <string name="text_dialog_address">Nhập địa chỉ nhận hàng</string>
 
     <!-- in search fragment -->
     <string name="text_history_search">Lịch Sử tìm kiếm</string>

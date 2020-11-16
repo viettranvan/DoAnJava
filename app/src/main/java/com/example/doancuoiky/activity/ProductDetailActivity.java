@@ -1,11 +1,13 @@
 package com.example.doancuoiky.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,7 +56,7 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    private TextView tvProductName,tvProductPrice, tvDescription;
+    private TextView tvProductName, tvProductPrice, tvDescription;
     private ImageView goBack;
     Toolbar toolbar;
     private ViewPager viewPager;
@@ -84,12 +86,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
 
-
         Intent intent = getIntent();
         String idProduct = intent.getStringExtra("productDetail");
 
-        for(int ii = 0;ii < GlobalVariable.arrayProduct.size();ii++){
-            if(GlobalVariable.arrayProduct.get(ii).getProductID().equals(idProduct)){
+        for (int ii = 0; ii < GlobalVariable.arrayProduct.size(); ii++) {
+            if (GlobalVariable.arrayProduct.get(ii).getProductID().equals(idProduct)) {
                 pos = ii;
                 break;
             }
@@ -98,42 +99,62 @@ public class ProductDetailActivity extends AppCompatActivity {
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // them vao gio hang
-                GlobalVariable.arrayProduct.get(pos).setAddToCart(true);
-                ProductFragment.productAdapter.notifyDataSetChanged();
+                if (!GlobalVariable.isLogin) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ProductDetailActivity.this);
+                    builder.setTitle("Thông báo");
+                    builder.setMessage("Bạn chưa đăng nhập, đăng nhập ngay ?");
 
-                String id = GlobalVariable.arrayProduct.get(pos).getProductID();
-                String typeId = GlobalVariable.arrayProduct.get(pos).getProductTypeID();
-                String name = GlobalVariable.arrayProduct.get(pos).getProductName();
-                String description = GlobalVariable.arrayProduct.get(pos).getProductDescription();
-                int price = GlobalVariable.arrayProduct.get(pos).getProductPrice();
-                String image = GlobalVariable.arrayProduct.get(pos).getProductImage();
+                    builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(ProductDetailActivity.this, LoginActivity.class));
+                        }
+                    });
 
-                if(GlobalVariable.arrayCart.size() > 0){
-                    for(int i = 0;i < GlobalVariable.arrayCart.size();i++){
-                        if(GlobalVariable.arrayCart.get(i).getID().equals(id)){
-                            indexProductInCart = i;
-                            break;
+                    builder.setNegativeButton("Để sau", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {}
+                    });
+
+                    builder.show();
+                } else {
+                    // them vao gio hang
+                    GlobalVariable.arrayProduct.get(pos).setAddToCart(true);
+                    ProductFragment.productAdapter.notifyDataSetChanged();
+
+                    String id = GlobalVariable.arrayProduct.get(pos).getProductID();
+                    String typeId = GlobalVariable.arrayProduct.get(pos).getProductTypeID();
+                    String name = GlobalVariable.arrayProduct.get(pos).getProductName();
+                    String description = GlobalVariable.arrayProduct.get(pos).getProductDescription();
+                    int price = GlobalVariable.arrayProduct.get(pos).getProductPrice();
+                    String image = GlobalVariable.arrayProduct.get(pos).getProductImage();
+
+                    if (GlobalVariable.arrayCart.size() > 0) {
+                        for (int i = 0; i < GlobalVariable.arrayCart.size(); i++) {
+                            if (GlobalVariable.arrayCart.get(i).getID().equals(id)) {
+                                indexProductInCart = i;
+                                break;
+                            }
                         }
                     }
-                }
+                    if (indexProductInCart == -1) {
+                        Cart cart = new Cart(id, typeId, name, description, price, image, 1);
+                        GlobalVariable.arrayCart.add(cart);
+                        MainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
+                    } else {
+                        Cart cart = GlobalVariable.arrayCart.get(indexProductInCart);
 
-                if(indexProductInCart == -1){
-                    Cart cart = new Cart(id,typeId,name,description,price,image,1);
-                    GlobalVariable.arrayCart.add(cart);
-                    MainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
-                }else{
-                    Cart cart = GlobalVariable.arrayCart.get(indexProductInCart);
-
-                    int newCount = cart.getCount();
-                    if(cart.getCount() < 10){
-                        newCount += 1;
+                        int newCount = cart.getCount();
+                        if (cart.getCount() < 10) {
+                            newCount += 1;
+                        }
+                        GlobalVariable.arrayCart.set(indexProductInCart, new Cart(id, typeId, name, description, price, image, newCount));
+                        CartFragment.updateTotalPrice();
+                        CartFragment.cartAdapter.notifyDataSetChanged();
                     }
-                    GlobalVariable.arrayCart.set(indexProductInCart,new Cart(id,typeId,name,description,price,image,newCount));
-                    CartFragment.updateTotalPrice();
-                    CartFragment.cartAdapter.notifyDataSetChanged();
+                    Toast.makeText(ProductDetailActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+
                 }
-                Toast.makeText(ProductDetailActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -144,7 +165,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvProductName.setText(GlobalVariable.arrayProduct.get(pos).getProductName());
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        String _price = decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice())  + " đ";
+        String _price = decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice()) + " đ";
         tvProductPrice.setText(_price);
 
         tvDescription.setText(GlobalVariable.arrayProduct.get(pos).getProductDescription());
@@ -198,19 +219,19 @@ public class ProductDetailActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     JSONArray data = object.getJSONArray("data");
                     int position = 0;
-                    for(int index = 0;index < data.length();index++){
+                    for (int index = 0; index < data.length(); index++) {
                         JSONObject result = (JSONObject) data.get(index);
                         String id = result.getString("id_product");
-                        if(idProduct.equals(id)){
+                        if (idProduct.equals(id)) {
                             position = index;
                         }
                     }
                     JSONObject result = (JSONObject) data.get(position);
                     JSONArray specifications = result.getJSONArray("specifications");
-                    for(int i = 0;i < specifications.length();i++){
+                    for (int i = 0; i < specifications.length(); i++) {
                         arraySpecifications.add(specifications.get(i).toString());
                     }
-                    adapter = new ArrayAdapter(ProductDetailActivity.this,android.R.layout.simple_list_item_1,arraySpecifications);
+                    adapter = new ArrayAdapter(ProductDetailActivity.this, android.R.layout.simple_list_item_1, arraySpecifications);
                     description.setAdapter(adapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -228,7 +249,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
 
-    private void setPhotoAdapter(final String idProduct){
+    private void setPhotoAdapter(final String idProduct) {
         final ArrayList<PhotoProduct> imgss = new ArrayList<>();
         StringRequest request = new StringRequest(StringRequest.Method.POST, GlobalVariable.PRODUCT_IMAGE_URL,
                 new Response.Listener<String>() {
@@ -237,7 +258,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         try {
                             JSONObject object = new JSONObject(response);
                             JSONArray data = object.getJSONArray("data");
-                            for(int i = 0;i < data.length();i++){
+                            for (int i = 0; i < data.length(); i++) {
                                 JSONObject img = (JSONObject) data.get(i);
                                 String image = img.getString("image");
                                 imgss.add(new PhotoProduct(image));
@@ -259,11 +280,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d("DATA1", "error2: " + error.toString());
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String,String> params = new HashMap<>();
-                params.put("productID",idProduct);
+                Map<String, String> params = new HashMap<>();
+                params.put("productID", idProduct);
                 return params;
             }
         };
@@ -278,7 +299,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     // them icon gio hang vao thanh toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.cart,menu);
+        getMenuInflater().inflate(R.menu.cart, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
