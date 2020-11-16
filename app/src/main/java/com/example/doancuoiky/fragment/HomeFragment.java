@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
     private goToCartOnClickListener mGoToCart;
     private RecyclerView recyclerView;
     private ArrayList<Product> productNew;
+    private MainActivity mainActivity;
 
     ProductNewAdapter productNewAdapter;
 
@@ -65,12 +66,14 @@ public class HomeFragment extends Fragment {
 
         anhXa(view);
 
+
         productNewAdapter.onGotoDetail(new ProductNewAdapter.IClickGotoProductDetail() {
             @Override
             public void onClickGotoDetail(String idProduct) {
                 Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(), ProductDetailActivity.class);
 //                intent.putExtra("productDetail",index);
                 intent.putExtra("productDetail",idProduct);
+
                 startActivity(intent);
             }
         });
@@ -84,6 +87,7 @@ public class HomeFragment extends Fragment {
         viewPager = view.findViewById(R.id.view_pager_photo);
         circleIndicator = view.findViewById(R.id.circle_indicator);
         recyclerView = view.findViewById(R.id.rcv_product_new_home_fragment);
+        mainActivity = (MainActivity) getActivity();
 
         mListPhoto = getListPhoto();
         photoAdapter = new PhotoAdapter(getContext(),mListPhoto);

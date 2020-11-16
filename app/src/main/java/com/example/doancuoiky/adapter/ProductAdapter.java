@@ -16,6 +16,7 @@ import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.activity.ProductDetailActivity;
 import com.example.doancuoiky.modal.Product;
 import com.example.doancuoiky.R;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -50,7 +51,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         if(product == null){
             return;
         }
-        holder.imgProduct.setImageResource(product.getProductImage());
+
+        Picasso.get()
+                .load(product.getProductImage())
+                .into(holder.imgProduct);
+//        holder.imgProduct.setImageResource(product.getProductImage());
         holder.tvProductName.setText(product.getProductName());
         holder.tvProductDescription.setText(product.getProductDescription());
 

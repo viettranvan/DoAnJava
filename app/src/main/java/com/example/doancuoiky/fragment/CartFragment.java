@@ -46,12 +46,12 @@ public class CartFragment extends Fragment  {
     private LinearLayout oderContainer;
     private Button btnOder;
     private TextView tvNotice;
-    private static TextView tvTotal;
+    public static TextView tvTotal;
     private MainActivity mainActivity;
     private Product product;
 
     ListView lvCart;
-    CartAdapter cartAdapter;
+    public static CartAdapter cartAdapter;
 
     @Nullable
     @Override
@@ -150,7 +150,10 @@ public class CartFragment extends Fragment  {
         lvCart = view.findViewById(R.id.lv_cart);
 
         mainActivity = (MainActivity) getActivity();
-
+        if(GlobalVariable.arrayCart.size() > 0) {
+            assert mainActivity != null;
+            mainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
+        }
         updateTotalPrice();
         cartAdapter = new CartAdapter(getContext(),R.layout.item_cart,GlobalVariable.arrayCart);
         lvCart.setAdapter(cartAdapter);
@@ -163,7 +166,8 @@ public class CartFragment extends Fragment  {
             total += GlobalVariable.arrayCart.get(i).getPrice() * count;
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        tvTotal.setText(decimalFormat.format(total) + "đ");
+        String _price = decimalFormat.format(total) + "đ";
+        tvTotal.setText(_price);
     }
 
 }

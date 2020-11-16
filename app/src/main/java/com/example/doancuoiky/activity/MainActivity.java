@@ -2,6 +2,7 @@ package com.example.doancuoiky.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.solver.GoalRow;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,8 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,15 +45,18 @@ import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.ViewPagerAdapter;
 import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.fragment.ProductFragment;
+import com.example.doancuoiky.modal.PhotoProduct;
 import com.example.doancuoiky.modal.Product;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -60,16 +67,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView menuNavigationView;
     private long backPressedTime;
     private Toast mToast;
-    private AHBottomNavigation ahBottomNavigation;
+    private static AHBottomNavigation ahBottomNavigation;
     private AHBottomNavigationViewPager ahBottomNavigationViewPager;
     private TextView toolBarTitle;
 
     private View viewEndAnimation;
     private ImageView viewAnimation;
 
-    private LinearLayout headerNotLoggedIn,headerLoggedIn;
+    private LinearLayout headerNotLoggedIn, headerLoggedIn;
     private ImageView headerAvatar;
-    private TextView headerName,headerEmail;
+    private TextView headerName, headerEmail;
+
 
 
     @Override
@@ -77,9 +85,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initData();
+
+
         anhXa();
 
-        initData();
+
 
         setUpViewPager(); /*chuyển trang bằng cách click vào icon hoặc vuốt*/
 
@@ -87,18 +98,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         menuNavigationView.setNavigationItemSelectedListener(this);
 
-        if(GlobalVariable.arrayCart.size() > 0){
+        if (GlobalVariable.arrayCart.size() > 0) {
             setCountProductInCart(GlobalVariable.arrayCart.size());
         }
 
-        if(getIntent().getExtras() != null){
+        if (getIntent().getExtras() != null) {
 
             Intent intent = getIntent();
 
             // chuyen den man hinh profile
             String toProfile = intent.getStringExtra("gotoProfile");
             if (toProfile != null && toProfile.contentEquals("profile")) {
-                GlobalVariable.isLogin=true;
+                GlobalVariable.isLogin = true;
                 checkLogin();
                 ahBottomNavigation.setCurrentItem(4);
             }
@@ -109,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ahBottomNavigation.setCurrentItem(3);
             }
 
-            if(Objects.requireNonNull(getIntent().getExtras()).getBoolean("loginTrue")){
+            if (Objects.requireNonNull(getIntent().getExtras()).getBoolean("loginTrue")) {
                 GlobalVariable.isLogin = true;
                 checkLogin();
             }
@@ -122,41 +133,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void initData() {
 
-        if(GlobalVariable.arrayCart == null){
+        if (GlobalVariable.arrayCart == null) {
             GlobalVariable.arrayCart = new ArrayList<>();
 //            GlobalVariable.arrayCart.add(new Cart("00a","001","test","4gb","small",100000,R.drawable.meow,1));
         }
 
 
-        if(GlobalVariable.arrayProfile == null){
+        if (GlobalVariable.arrayProfile == null) {
             GlobalVariable.arrayProfile = new ArrayList<>();
         }
 
-        if(GlobalVariable.arrayProduct == null){
+        if (GlobalVariable.arrayProduct == null) {
             GlobalVariable.arrayProduct = new ArrayList<>();
-            GlobalVariable.arrayProduct.add(new Product("001","001","Điện thoại realme",
-                    getString(R.string.mota),"4gb-64gb",4000000,R.drawable.realme_banner_resize));
-            GlobalVariable.arrayProduct.add(new Product("002","001","Điện thoại iphone XR",
-                    getString(R.string.mota),"4gb-64gb",10000000,R.drawable.iphone));
-            GlobalVariable.arrayProduct.add(new Product("003","001","Điện thoại samsung",
-                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.samsum_banner_resize));
-            GlobalVariable.arrayProduct.add(new Product("004","002","Laptop Asus",
-                    getString(R.string.mota),"4gb-64gb",10500500,R.drawable.laptop_asus));
-            GlobalVariable.arrayProduct.add(new Product("005","002","Laptop dell",
-                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.laptop_dell));
-            GlobalVariable.arrayProduct.add(new Product("006","001","Điện thoại samsung",
-                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.meow));
-            GlobalVariable.arrayProduct.add(new Product("007","002","Laptop Asus",
-                    getString(R.string.mota),"4gb-64gb",10500500,R.mipmap.ic_launcher));
-            GlobalVariable.arrayProduct.add(new Product("008","002","Laptop dell",
-                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.iphone1));
         }
+
+//            GlobalVariable.arrayProduct.add(new Product("001","001","Điện thoại realme",
+//                    getString(R.string.mota),"4gb-64gb",4000000,R.drawable.realme_banner_resize));
+//            GlobalVariable.arrayProduct.add(new Product("002","001","Điện thoại iphone XR",
+//                    getString(R.string.mota),"4gb-64gb",10000000,R.drawable.iphone));
+//            GlobalVariable.arrayProduct.add(new Product("003","001","Điện thoại samsung",
+//                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.samsum_banner_resize));
+//            GlobalVariable.arrayProduct.add(new Product("004","002","Laptop Asus",
+//                    getString(R.string.mota),"4gb-64gb",10500500,R.drawable.laptop_asus));
+//            GlobalVariable.arrayProduct.add(new Product("005","002","Laptop dell",
+//                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.laptop_dell));
+//            GlobalVariable.arrayProduct.add(new Product("006","001","Điện thoại samsung",
+//                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.meow));
+//            GlobalVariable.arrayProduct.add(new Product("007","002","Laptop Asus",
+//                    getString(R.string.mota),"4gb-64gb",10500500,R.mipmap.ic_launcher));
+//            GlobalVariable.arrayProduct.add(new Product("008","002","Laptop dell",
+//                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.iphone1));
 
         if (GlobalVariable.arrayMobile == null) {
             GlobalVariable.arrayMobile = new ArrayList<>();
             int size = GlobalVariable.arrayProduct.size();
-            for(int i = 0;i < size;i++){
-                if (GlobalVariable.arrayProduct.get(i).getProductTypeID().equals("001")) {
+            for (int i = 0; i < size; i++) {
+                if (GlobalVariable.arrayProduct.get(i).getProductTypeID().equals("phone")) {
                     GlobalVariable.arrayMobile.add(GlobalVariable.arrayProduct.get(i));
                 }
             }
@@ -165,100 +177,98 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (GlobalVariable.arrayLaptop == null) {
             GlobalVariable.arrayLaptop = new ArrayList<>();
             int size = GlobalVariable.arrayProduct.size();
-            for(int i = 0;i < size;i++){
-                if (GlobalVariable.arrayProduct.get(i).getProductTypeID().equals("002")) {
+            for (int i = 0; i < size; i++) {
+                if (GlobalVariable.arrayProduct.get(i).getProductTypeID().equals("laptop")) {
                     GlobalVariable.arrayLaptop.add(GlobalVariable.arrayProduct.get(i));
                 }
             }
         }
-
     }
 
     private void setDataProfile() {
 
-        if(GlobalVariable.isLogin){
+        if (GlobalVariable.isLogin) {
 
             RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
             StringRequest request = new StringRequest(Request.Method.GET, GlobalVariable.USER_INFO_URL,
                     new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
 
-                        JSONObject object = new JSONObject(response);
-                        JSONObject data = object.getJSONObject("data");
+                                JSONObject object = new JSONObject(response);
+                                JSONObject data = object.getJSONObject("data");
 
-                        String id_user = data.getString("id_user");
-                        String email = data.getString("email");
-                        String loginname = data.getString("loginname");
-                        String username = data.getString("username");
-                        String address = data.getString("address");
-                        String citizen_identification = data.getString("citizen_identification");
-                        String phone_number = data.getString("phone_number");
-                        String gender = data.getString("gender");
-                        String acc_created = data.getString("acc_created");
-                        String avatar = data.getString("avatar");
-                        String rate = data.getString("rate");
-                        String birthday = data.getString("birthday");
+                                String id_user = data.getString("id_user");
+                                String email = data.getString("email");
+                                String loginname = data.getString("loginname");
+                                String username = data.getString("username");
+                                String address = data.getString("address");
+                                String citizen_identification = data.getString("citizen_identification");
+                                String phone_number = data.getString("phone_number");
+                                String gender = data.getString("gender");
+                                String acc_created = data.getString("acc_created");
+                                String avatar = data.getString("avatar");
+                                String rate = data.getString("rate");
+                                String birthday = data.getString("birthday");
 
+                                // validate data thành rỗng nếu data trống hoặc null
+                                if (address.length() == 0 || address.equals("null")) {
+                                    address = "";
+                                }
+                                if (citizen_identification.length() == 0 || citizen_identification.equals("null")) {
+                                    citizen_identification = "";
+                                }
+                                if (phone_number.length() == 0 || phone_number.equals("null")) {
+                                    phone_number = "";
+                                }
+                                if (gender.length() == 0 || gender.equals("null")) {
+                                    gender = "";
+                                }
+                                if (rate.length() == 0 || rate.equals("null")) {
+                                    rate = "";
+                                }
+                                if (birthday.length() == 0 || birthday.equals("null")) {
+                                    birthday = "";
+                                }
+                                if (avatar.length() == 0 || avatar.equals("null")) {
+                                    avatar = "";
+                                }
 
-                        // validate data thành rỗng nếu data trống hoặc null
-                        if(address.length() == 0 || address.equals("null")){
-                            address = "";
-                        }
-                        if(citizen_identification.length() == 0 || citizen_identification.equals("null")){
-                            citizen_identification = "";
-                        }
-                        if(phone_number.length() == 0 || phone_number.equals("null")){
-                            phone_number = "";
-                        }
-                        if(gender.length() == 0 || gender.equals("null")){
-                            gender = "";
-                        }
-                        if(rate.length() == 0 || rate.equals("null")){
-                            rate = "";
-                        }
-                        if(birthday.length() == 0 || birthday.equals("null")){
-                            birthday = "";
-                        }
-                        if(avatar.length() == 0 || avatar.equals("null")){
-                            avatar = "";
-                        }
+                                GlobalVariable.arrayProfile.add(id_user);
+                                GlobalVariable.arrayProfile.add(email);
+                                GlobalVariable.arrayProfile.add(loginname);
+                                GlobalVariable.arrayProfile.add(username);
+                                GlobalVariable.arrayProfile.add(address);
+                                GlobalVariable.arrayProfile.add(citizen_identification);
+                                GlobalVariable.arrayProfile.add(phone_number);
+                                GlobalVariable.arrayProfile.add(gender);
+                                GlobalVariable.arrayProfile.add(acc_created);
+                                GlobalVariable.arrayProfile.add(avatar);
+                                GlobalVariable.arrayProfile.add(rate);
+                                GlobalVariable.arrayProfile.add(birthday);
 
-                        GlobalVariable.arrayProfile.add(id_user);
-                        GlobalVariable.arrayProfile.add(email);
-                        GlobalVariable.arrayProfile.add(loginname);
-                        GlobalVariable.arrayProfile.add(username);
-                        GlobalVariable.arrayProfile.add(address);
-                        GlobalVariable.arrayProfile.add(citizen_identification);
-                        GlobalVariable.arrayProfile.add(phone_number);
-                        GlobalVariable.arrayProfile.add(gender);
-                        GlobalVariable.arrayProfile.add(acc_created);
-                        GlobalVariable.arrayProfile.add(avatar);
-                        GlobalVariable.arrayProfile.add(rate);
-                        GlobalVariable.arrayProfile.add(birthday);
+                                if (avatar.length() > 0) {
+                                    String PACKAGE_NAME = getApplicationContext().getPackageName();
+                                    int imgID = getResources().getIdentifier(PACKAGE_NAME + ":drawable/" + avatar,
+                                            null, null);
+                                    headerAvatar.setImageResource(imgID);
+                                }
 
-                        if(avatar.length() > 0){
-                            String PACKAGE_NAME = getApplicationContext().getPackageName();
-                            int imgID = getResources().getIdentifier(PACKAGE_NAME + ":drawable/" + avatar,
-                                    null, null);
-                            headerAvatar.setImageResource(imgID);
+                                headerName.setText(GlobalVariable.arrayProfile.get(3));
+                                headerEmail.setText(GlobalVariable.arrayProfile.get(1));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-
-                        headerName.setText(GlobalVariable.arrayProfile.get(3));
-                        headerEmail.setText(GlobalVariable.arrayProfile.get(1));
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
+                    }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.d("TAG1", "error => " + error.toString() + "\n");
 
                 }
-            }){
+            }) {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String> params = new HashMap<>();
@@ -274,15 +284,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void checkLogin() {
         Menu menu = menuNavigationView.getMenu();
 
-        if(GlobalVariable.isLogin){
+        if (GlobalVariable.isLogin) {
             menu.findItem(R.id.nav_login).setVisible(false);
             menu.findItem(R.id.nav_logout).setVisible(true); // hiện logout
             menu.findItem(R.id.nav_profile).setVisible(true); // hiện profile
             menu.findItem(R.id.nav_rate).setVisible(true); // hiện rate
             headerLoggedIn.setVisibility(View.VISIBLE);
             headerNotLoggedIn.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             menu.findItem(R.id.nav_login).setVisible(true);
             menu.findItem(R.id.nav_logout).setVisible(false); // ẩn logout
             menu.findItem(R.id.nav_profile).setVisible(false); // ẩn profile
@@ -309,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         menuNavigationView = findViewById(R.id.navigation_view);
-        ahBottomNavigation  = findViewById(R.id.AHBottomNavigation);
+        ahBottomNavigation = findViewById(R.id.AHBottomNavigation);
         ahBottomNavigationViewPager = findViewById(R.id.AHBottomNavigationViewPager);
         viewEndAnimation = findViewById(R.id.view_end_animation);
         viewAnimation = findViewById(R.id.view_animation);
@@ -325,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // bottom tab
-    private void setUpViewPager(){
+    private void setUpViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         ahBottomNavigationViewPager.setAdapter(adapter);
         ahBottomNavigationViewPager.setPagingEnabled(true);
@@ -358,7 +367,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // chuyen fragment bang cach vuot
         ahBottomNavigationViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
             public void onPageSelected(int position) {
@@ -366,23 +376,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+            }
         });
     }
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else{
-            if(backPressedTime + 2000 > System.currentTimeMillis()){
+        } else {
+            if (backPressedTime + 2000 > System.currentTimeMillis()) {
                 mToast.cancel();
                 super.onBackPressed();
                 return;
-            }
-            else{
-                mToast = Toast.makeText(MainActivity.this,"Nhấn back thêm 1 lần nữa để thoát",Toast.LENGTH_SHORT);
+            } else {
+                mToast = Toast.makeText(MainActivity.this, "Nhấn back thêm 1 lần nữa để thoát", Toast.LENGTH_SHORT);
                 mToast.show();
             }
             backPressedTime = System.currentTimeMillis();
@@ -392,7 +401,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // su kien khi item trong drawer menu dc click
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_home:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 ahBottomNavigation.setCurrentItem(0);
@@ -409,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_login:
-                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
 //                Toast.makeText(MainActivity.this,"login",Toast.LENGTH_SHORT).show();
                 break;
@@ -427,15 +436,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 checkLogin();
 
                 finish();
-                startActivity(new Intent(this,MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.nav_share:
-                Intent intentSupport = new Intent(MainActivity.this,SupportActivity.class);
+                Intent intentSupport = new Intent(MainActivity.this, SupportActivity.class);
                 startActivity(intentSupport);
                 break;
             case R.id.nav_rate:
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    DialogAppRate();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                DialogAppRate();
                 break;
         }
         return true;
@@ -450,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final RatingBar ratingBar = dialog.findViewById(R.id.rating_bar_app_name);
 
         String strRating = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_RATE);
-        if(strRating.length() == 0 || strRating.equals("null")){
+        if (strRating.length() == 0 || strRating.equals("null")) {
             strRating = "0";
         }
         int currentRating = Integer.parseInt(strRating);
@@ -460,10 +469,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 int rating = (int) ratingBar.getRating();
-                if(rating == 0){
+                if (rating == 0) {
                     Toast.makeText(MainActivity.this, "Vui lòng chọn số sao bạn muốn đánh giá", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     int ratingINT = (int) ratingBar.getRating();
                     updateAppRating(String.valueOf(ratingINT), dialog);
                 }
@@ -489,12 +497,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             JSONObject result = object.getJSONObject("result");
 
                             int code = result.getInt("code");
-                            if(code == 0){
+                            if (code == 0) {
                                 Toast.makeText(MainActivity.this, "Cám ơn về đánh giá của bạn", Toast.LENGTH_SHORT).show();
-                                GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_RATE,_rate);
+                                GlobalVariable.arrayProfile.set(GlobalVariable.INDEX_RATE, _rate);
                                 dialog.dismiss();
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(MainActivity.this, "Cập nhật thất bại",
                                         Toast.LENGTH_LONG).show();
                                 Log.d("TAG1", "error1: ");
@@ -511,14 +518,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Toast.LENGTH_LONG).show();
 
             }
-        }){
+        }) {
 
             @Override
-            protected Map<String, String> getParams()
-            {
-
-                Map<String, String>  params = new HashMap<>();
-                params.put("email",GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_EMAIL));
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_EMAIL));
+                params.put("username", GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_USER_NAME));
                 params.put("rate", _rate);
                 return params;
             }
@@ -536,10 +542,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         queue.add(request);
     }
 
-    public void loadFragment(Fragment fragment){
+    public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.main_activity,fragment)
+                .replace(R.id.main_activity, fragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
     }
@@ -552,17 +558,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return viewAnimation;
     }
 
-    public void setCountProductInCart(int count){
+    public static void setCountProductInCart(int count) {
         AHNotification notification = new AHNotification.Builder()
                 .setText(String.valueOf(count))
-                .setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.bg_red))
-                .setTextColor(ContextCompat.getColor(MainActivity.this, R.color.white))
                 .build();
         ahBottomNavigation.setNotification(notification, 3);
     }
 
-    private void setToolbarTitle(int position){
-        switch (position){
+    private void setToolbarTitle(int position) {
+        switch (position) {
             case 0:
                 setSupportActionBar(toolbar);
                 toolBarTitle.setText(getString(R.string.title_toolbar_home)); // trang chủ

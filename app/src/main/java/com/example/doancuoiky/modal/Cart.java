@@ -12,18 +12,16 @@ public class Cart {
     private String TypeID;
     private String name;
     private String description;
-    private String specifications; // thong so ky thuat
     private int price;
-    private int cartProductImg;
+    private String cartProductImg;
     private int count;
 
-    public Cart(String ID, String typeID, String name, String description, String specifications,
-                int price, int cartProductImg, int count) {
+    public Cart(String ID, String typeID, String name, String description,
+                int price, String cartProductImg, int count) {
         this.ID = ID;
         TypeID = typeID;
         this.name = name;
         this.description = description;
-        this.specifications = specifications;
         this.price = price;
         this.cartProductImg = cartProductImg;
         this.count = count;
@@ -61,13 +59,6 @@ public class Cart {
         this.description = description;
     }
 
-    public String getSpecifications() {
-        return specifications;
-    }
-
-    public void setSpecifications(String specifications) {
-        this.specifications = specifications;
-    }
 
     public int getPrice() {
         return price;
@@ -77,11 +68,11 @@ public class Cart {
         this.price = price;
     }
 
-    public int getCartProductImg() {
+    public String getCartProductImg() {
         return cartProductImg;
     }
 
-    public void setCartProductImg(int cartProductImg) {
+    public void setCartProductImg(String cartProductImg) {
         this.cartProductImg = cartProductImg;
     }
 

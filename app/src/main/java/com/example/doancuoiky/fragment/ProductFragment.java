@@ -45,7 +45,7 @@ public class ProductFragment extends Fragment  {
     private View mView;
     private MainActivity mainActivity;
     @SuppressLint("StaticFieldLeak")
-    static private ProductAdapter productAdapter;
+    static public ProductAdapter productAdapter;
     private Spinner sortSpinner;
     static ArrayList<Product> mArrayProduct;
     LinearLayout filter;
@@ -403,11 +403,10 @@ public class ProductFragment extends Fragment  {
                         String typeId = product.getProductTypeID();
                         String name = product.getProductName();
                         String description = product.getProductDescription();
-                        String specifications = product.getSpecifications();
                         int price = product.getProductPrice();
-                        int image = product.getProductImage();
+                        String image = product.getProductImage();
 
-                        Cart cart = new Cart(id,typeId,name,description,specifications,price,image,1);
+                        Cart cart = new Cart(id,typeId,name,description,price,image,1);
                         GlobalVariable.arrayCart.add(cart);
 
                         // tăng số lượng sản phẩm giỏ hàng lên 1

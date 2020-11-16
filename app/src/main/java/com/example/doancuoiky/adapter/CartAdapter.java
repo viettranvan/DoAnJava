@@ -17,6 +17,7 @@ import com.example.doancuoiky.R;
 import com.example.doancuoiky.activity.ProductDetailActivity;
 import com.example.doancuoiky.fragment.CartFragment;
 import com.example.doancuoiky.modal.Cart;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -154,7 +155,10 @@ public class CartAdapter extends BaseAdapter{
 
         String _count = arrayCart.get(i).getCount() + "";
         cartProductCount.setText(_count);
-        imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
+        Picasso.get()
+                .load(arrayCart.get(i).getCartProductImg())
+                .into(imgCartProduct);
+//        imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
 
         int currentCount = arrayCart.get(i).getCount();
         if(currentCount <= 1){

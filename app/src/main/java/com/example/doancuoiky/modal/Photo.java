@@ -12,7 +12,4 @@ public class Photo {
         return resourceID;
     }
 
-    public void setResourceID(int resourceID) {
-        this.resourceID = resourceID;
-    }
 }

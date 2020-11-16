@@ -245,5 +245,9 @@
         <item>avatar_015</item>
     </string-array>
 
+    <!-- Splash screen -->
+    <string name="text_welcome_splash">Chào mừng bạn đến với MOLA</string>
+    <string name="btn_goto_login">Đăng nhập ngay</string>
+    <string name="btn_goto_main">Để sau</string>
 
 </resources>

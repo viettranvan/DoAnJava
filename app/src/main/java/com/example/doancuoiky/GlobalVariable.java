@@ -54,7 +54,7 @@ public class GlobalVariable {
     public static final String USER_UPDATE_URL = localhost + "api/update-user";
     public static final String USER_CHANGE_PASSWORD_URL = localhost + "api/change-password";
     public static final String PRODUCT_IMAGE_URL = localhost + "api/products-img";
-
+    public static final String PRODUCT_URL = localhost + "api/products";
 
 
     // Global Function

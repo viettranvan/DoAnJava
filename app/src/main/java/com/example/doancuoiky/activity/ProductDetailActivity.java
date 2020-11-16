@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -20,14 +21,34 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.PhotoAdapter;
+import com.example.doancuoiky.adapter.PhotoProductAdapter;
+import com.example.doancuoiky.adapter.ProductAdapter;
+import com.example.doancuoiky.fragment.CartFragment;
+import com.example.doancuoiky.fragment.ProductFragment;
+import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Photo;
+import com.example.doancuoiky.modal.PhotoProduct;
+import com.example.doancuoiky.modal.Product;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -40,9 +61,11 @@ public class ProductDetailActivity extends AppCompatActivity {
     private CircleIndicator circleIndicator;
     private Button addToCart;
     private int pos = 0;
-    ArrayAdapter adapter;
-
-    ArrayList<String> arrayDescription;
+    ArrayAdapter<Product> adapter;
+    ListView description;
+    ArrayList<String> arraySpecifications;
+    int indexProductInCart = -1;
+    MainActivity m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +83,9 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        addToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(ProductDetailActivity.this, "them vao gio hang" , Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
         Intent intent = getIntent();
-//        String id = i.getIntExtra("productDetail",0);
         String idProduct = intent.getStringExtra("productDetail");
 
         for(int ii = 0;ii < GlobalVariable.arrayProduct.size();ii++){
@@ -77,7 +94,52 @@ public class ProductDetailActivity extends AppCompatActivity {
                 break;
             }
         }
-        setPhotoAdapter();
+
+        addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // them vao gio hang
+                GlobalVariable.arrayProduct.get(pos).setAddToCart(true);
+                ProductFragment.productAdapter.notifyDataSetChanged();
+
+                String id = GlobalVariable.arrayProduct.get(pos).getProductID();
+                String typeId = GlobalVariable.arrayProduct.get(pos).getProductTypeID();
+                String name = GlobalVariable.arrayProduct.get(pos).getProductName();
+                String description = GlobalVariable.arrayProduct.get(pos).getProductDescription();
+                int price = GlobalVariable.arrayProduct.get(pos).getProductPrice();
+                String image = GlobalVariable.arrayProduct.get(pos).getProductImage();
+
+                if(GlobalVariable.arrayCart.size() > 0){
+                    for(int i = 0;i < GlobalVariable.arrayCart.size();i++){
+                        if(GlobalVariable.arrayCart.get(i).getID().equals(id)){
+                            indexProductInCart = i;
+                            break;
+                        }
+                    }
+                }
+
+                if(indexProductInCart == -1){
+                    Cart cart = new Cart(id,typeId,name,description,price,image,1);
+                    GlobalVariable.arrayCart.add(cart);
+                    MainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
+                }else{
+                    Cart cart = GlobalVariable.arrayCart.get(indexProductInCart);
+
+                    int newCount = cart.getCount();
+                    if(cart.getCount() < 10){
+                        newCount += 1;
+                    }
+                    GlobalVariable.arrayCart.set(indexProductInCart,new Cart(id,typeId,name,description,price,image,newCount));
+                    CartFragment.updateTotalPrice();
+                    CartFragment.cartAdapter.notifyDataSetChanged();
+                }
+                Toast.makeText(ProductDetailActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        setPhotoAdapter(GlobalVariable.arrayProduct.get(pos).getProductID());
+        setDataSpecifications(GlobalVariable.arrayProduct.get(pos).getProductID());
 
         tvProductName.setText(GlobalVariable.arrayProduct.get(pos).getProductName());
 
@@ -87,10 +149,12 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         tvDescription.setText(GlobalVariable.arrayProduct.get(pos).getProductDescription());
 
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void anhXa() {
+
         tvProductName = findViewById(R.id.product_detail_name);
         tvProductPrice = findViewById(R.id.product_detail_price);
         goBack = findViewById(R.id.iv_back_product_detail);
@@ -100,7 +164,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         addToCart = findViewById(R.id.btn_add_product_to_cart);
         tvDescription = findViewById(R.id.tv_description_detail_activity);
 
-        ListView description = findViewById(R.id.lv_description);
+        description = findViewById(R.id.lv_description);
 
         description.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -122,69 +186,94 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        arrayDescription = new ArrayList<>();
-        addTempData();
+    }
+
+    private void setDataSpecifications(final String idProduct) {
+        arraySpecifications = new ArrayList<>();
+
+        final StringRequest request = new StringRequest(StringRequest.Method.GET, GlobalVariable.PRODUCT_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONArray data = object.getJSONArray("data");
+                    int position = 0;
+                    for(int index = 0;index < data.length();index++){
+                        JSONObject result = (JSONObject) data.get(index);
+                        String id = result.getString("id_product");
+                        if(idProduct.equals(id)){
+                            position = index;
+                        }
+                    }
+                    JSONObject result = (JSONObject) data.get(position);
+                    JSONArray specifications = result.getJSONArray("specifications");
+                    for(int i = 0;i < specifications.length();i++){
+                        arraySpecifications.add(specifications.get(i).toString());
+                    }
+                    adapter = new ArrayAdapter(ProductDetailActivity.this,android.R.layout.simple_list_item_1,arraySpecifications);
+                    description.setAdapter(adapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(ProductDetailActivity.this);
+        queue.add(request);
+    }
 
 
-        adapter = new ArrayAdapter(ProductDetailActivity.this,android.R.layout.simple_list_item_1,arrayDescription);
-        description.setAdapter(adapter);
+    private void setPhotoAdapter(final String idProduct){
+        final ArrayList<PhotoProduct> imgss = new ArrayList<>();
+        StringRequest request = new StringRequest(StringRequest.Method.POST, GlobalVariable.PRODUCT_IMAGE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            JSONArray data = object.getJSONArray("data");
+                            for(int i = 0;i < data.length();i++){
+                                JSONObject img = (JSONObject) data.get(i);
+                                String image = img.getString("image");
+                                imgss.add(new PhotoProduct(image));
+                            }
+
+                            PhotoProductAdapter photoAdapter = new PhotoProductAdapter(ProductDetailActivity.this, imgss);
+                            viewPager.setAdapter(photoAdapter);
+                            circleIndicator.setViewPager(viewPager);
+                            photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("DATA1", "error1: " + e.toString());
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DATA1", "error2: " + error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> params = new HashMap<>();
+                params.put("productID",idProduct);
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(ProductDetailActivity.this);
+        queue.add(request);
+
 
     }
 
-    private void addTempData() {
-        if(arrayDescription != null && arrayDescription.size() == 0){
-            arrayDescription.add("Hãng sản xuất: Apple");
-            arrayDescription.add("Kích thước: 158.2 x 77.9 x 7.3 mm (6.23 x 3.07 x 0.29 in)");
-            arrayDescription.add("Trọng lượng: 192 g (6.77 oz)");
-            arrayDescription.add("Bộ nhớ đệm / Ram: 32 GB, 2 GB RAM");
-            arrayDescription.add("Bộ nhớ trong: 32 GB");
-            arrayDescription.add("Loại SIM: Nano-SIM");
-            arrayDescription.add("Loại màn hình: Cảm ứng điện dung LED-backlit IPS LCD, 16 triệu màu");
-            arrayDescription.add("Kích thước màn hình: 5.5 inches");
-            arrayDescription.add("Độ phân giải màn hình: 1080 x 1920 pixels");
-            arrayDescription.add("Hệ điều hành: iOS");
-            arrayDescription.add("Phiên bản hệ điều hành: 11");
-            arrayDescription.add("Chipset: Apple A9 APL1022");
-            arrayDescription.add("CPU: 2x 1.84 GHz Twister");
-            arrayDescription.add("GPU: PowerVR GT7600 (6 lõi đồ họa)");
-            arrayDescription.add("Khe cắm thẻ nhớ: Không");
-            arrayDescription.add("Camera sau: 12 MP (f/2.2, 29mm, 1/3\", 1.22 µm), tự động lấy nét nhận diện theo giai đoạn, OIS, LED flash kép (2 tone)");
-            arrayDescription.add("Camera trước: 5 MP (f/2.2, 31mm), 1080p@30fps, 720p@240fps, nhận diện khuôn mặt, HDR, panorama");
-            arrayDescription.add("Quay video: 2160p@30fps, 1080p@60fps, 1080p@120fps, 720p@240fps");
-            arrayDescription.add("3G: HSPA 42.2/5.76 Mbps, EV-DO Rev.A 3.1 Mbps");
-            arrayDescription.add("4G: LTE-A (2CA) Cat6 300/50 Mbps");
-            arrayDescription.add("WLAN: Wi-Fi 802.11 a/b/g/n/ac, dual-band, hotspot");
-            arrayDescription.add("Bluetooth: 4.2, A2DP, LE");
-            arrayDescription.add("GPS: A-GPS, GLONASS, GALILEO, QZSS");
-            arrayDescription.add("NFC: Yes");
-            arrayDescription.add("USB: 2.0");
-            arrayDescription.add("Cảm biến: Vân tay, gia tốc, la bàn, khoảng cách, con quay quy hồi, phong vũ biểu");
-            arrayDescription.add("Pin: Li-ion 2750 mA");
-
-        }
-    }
-
-    private void setPhotoAdapter(){
-        List<Photo> mListPhoto = getListPhoto(pos);
-        PhotoAdapter photoAdapter = new PhotoAdapter(this, mListPhoto);
-        viewPager.setAdapter(photoAdapter);
-        circleIndicator.setViewPager(viewPager);
-        photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
-    }
-
-    private List<Photo> getListPhoto(int index){
-
-        List<Photo> list = new ArrayList<>();
-        list.add(new Photo(GlobalVariable.arrayProduct.get(index).getProductImage()));
-        list.add(new Photo(R.drawable.vivo_banner_resize));
-        list.add(new Photo(GlobalVariable.arrayProduct.get(index).getProductImage()));
-        list.add(new Photo(R.drawable.samsum_banner_resize));
-        list.add(new Photo(GlobalVariable.arrayProduct.get(index).getProductImage()));
-        list.add(new Photo(R.drawable.xiaomi_banner_resize));
-
-        return list;
-
-    }
 
     // them icon gio hang vao thanh toolbar
     @Override
@@ -205,7 +294,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-
     }
 
 }

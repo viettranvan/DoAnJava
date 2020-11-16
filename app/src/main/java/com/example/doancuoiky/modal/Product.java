@@ -8,30 +8,27 @@ public class Product implements Serializable {
     private String productTypeID;
     private String productName;
     private String productDescription;
-    private String specifications; // thong so ky thuat
     private int productPrice;
-    private int productImage;
+    private String productImage;
     private int count;
     private boolean isAddToCart;
 
     public Product(String productID, String productTypeID, String productName,
-                   String productDescription, String specifications, int productPrice, int productImage) {
+                   String productDescription, int productPrice, String productImage) {
         this.productID = productID;
         this.productTypeID = productTypeID;
         this.productName = productName;
         this.productDescription = productDescription;
-        this.specifications = specifications;
         this.productPrice = productPrice;
         this.productImage = productImage;
     }
 
     public Product(String productID, String productTypeID, String productName, String productDescription,
-                   String specifications, int productPrice, int productImage, int count) {
+                   int productPrice, String productImage, int count) {
         this.productID = productID;
         this.productTypeID = productTypeID;
         this.productName = productName;
         this.productDescription = productDescription;
-        this.specifications = specifications;
         this.productPrice = productPrice;
         this.productImage = productImage;
         this.count = count;
@@ -89,13 +86,7 @@ public class Product implements Serializable {
         this.productDescription = productDescription;
     }
 
-    public String getSpecifications() {
-        return specifications;
-    }
 
-    public void setSpecifications(String specifications) {
-        this.specifications = specifications;
-    }
 
     public int getProductPrice() {
         return productPrice;
@@ -105,11 +96,11 @@ public class Product implements Serializable {
         this.productPrice = productPrice;
     }
 
-    public int getProductImage() {
+    public String getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(int productImage) {
+    public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 

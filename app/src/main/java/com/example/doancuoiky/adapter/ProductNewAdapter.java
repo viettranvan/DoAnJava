@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.modal.Product;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -58,7 +59,10 @@ public class ProductNewAdapter extends RecyclerView.Adapter<ProductNewAdapter.It
         String _price = "Giá: " + decimalFormat.format(productNew.getProductPrice())+ " đ";
         holder.tvProductPrice.setText(_price);
 
-        holder.imgProduct.setImageResource(productNew.getProductImage());
+        Picasso.get()
+                .load(productNew.getProductImage())
+                .into(holder.imgProduct);
+//        holder.imgProduct.setImageResource(productNew.getProductImage());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
