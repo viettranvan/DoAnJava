@@ -26,6 +26,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.activity.MainActivity;
@@ -37,9 +44,15 @@ import com.example.doancuoiky.modal.Order;
 import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.modal.Product;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Timer;
 
@@ -53,6 +66,7 @@ public class CartFragment extends Fragment  {
     public static TextView tvTotal;
     private Product product;
     String receiveAddress = "";
+
 
     ListView lvCart;
     public static CartAdapter cartAdapter;
@@ -71,7 +85,9 @@ public class CartFragment extends Fragment  {
         btnOder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String address = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS);
+
                 if(address.length() == 0 || address.equals("null")){
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle("Thông báo");
@@ -88,12 +104,13 @@ public class CartFragment extends Fragment  {
                 }else{
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle("Thông báo");
-                    builder.setTitle("Bạn có muốn giao hàng đến địa chỉ này: " +
-                            GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS) + " ?");
+                    builder.setMessage("Bạn có muốn giao hàng đến địa chỉ này ? \n" +
+                            GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS));
                     builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(getContext(), "address => " +  GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS), Toast.LENGTH_SHORT).show();
+                            onCreateBill(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS),
+                                    updateTotalPrice(),GlobalVariable.arrayCart);
                         }
                     });
 
@@ -101,23 +118,12 @@ public class CartFragment extends Fragment  {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             DialogInputReceiveAddress();
-                            Toast.makeText(getContext(), "address => " + receiveAddress, Toast.LENGTH_SHORT).show();
                         }
                     });
 
                     builder.show();
                 }
 
-//                GlobalVariable.arrayCart.clear();
-//                checkData();
-//                Toast.makeText(getActivity(),"tiến hành đặt hàng " + GlobalVariable.arrayCart.size(),Toast.LENGTH_SHORT).show();
-//                MainActivity.setCountProductInCart(0);
-//                cartAdapter.notifyDataSetChanged();
-//                // trả lại trạng thái enebal cho tất cả button thêm trong Product Fragment
-//                for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
-//                    product = GlobalVariable.arrayProduct.get(i);
-//                    product.setAddToCart(false);
-//                }
             }
         });
 
@@ -199,7 +205,7 @@ public class CartFragment extends Fragment  {
         lvCart.setAdapter(cartAdapter);
     }
 
-    public static void updateTotalPrice(){
+    public static String updateTotalPrice(){
         int total = 0;
         for(int i = 0;i < GlobalVariable.arrayCart.size();i++){
             int count = GlobalVariable.arrayCart.get(i).getCount();
@@ -207,7 +213,9 @@ public class CartFragment extends Fragment  {
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String _price = decimalFormat.format(total) + "đ";
+
         tvTotal.setText(_price);
+        return String.valueOf(total);
     }
 
     private void DialogInputReceiveAddress() {
@@ -221,11 +229,106 @@ public class CartFragment extends Fragment  {
             @Override
             public void onClick(View view) {
                receiveAddress = edtAddress.getText().toString();
-               dialog.dismiss();
+               AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+               builder.setTitle("Thông báo");
+               builder.setMessage("Xác nhận giao hàng đến địa:\n" + receiveAddress);
+
+               builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int i) {
+                       onCreateBill(receiveAddress,updateTotalPrice() ,GlobalVariable.arrayCart);
+
+                       dialog.dismiss();
+                   }
+               });
+               builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int i) {
+
+                   }
+               });
+
+               builder.show();
             }
         });
 
         dialog.show();
     }
 
+    private void onCreateBill(String addressDelivery,String total, ArrayList<Cart> carts){
+
+        //Create Main jSon object
+        JSONObject jsonParams = new JSONObject();
+
+        try {
+            //Add string params
+            jsonParams.put("address_delivery", addressDelivery);
+            jsonParams.put("total", total);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //Create json array for products
+        JSONArray array = new JSONArray();
+        for(int ii = 0;ii < carts.size(); ii++){
+            JSONObject objParams =  new JSONObject();
+            try {
+                objParams.put("id",carts.get(ii).getID());
+                objParams.put("quanlity",String.valueOf(carts.get(ii).getCount()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //Add the product to array
+            array.put(objParams);
+        }
+
+        //Add array to main json object
+        try {
+            jsonParams.put("products",array);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest json_request = new JsonObjectRequest(JsonObjectRequest.Method.POST, GlobalVariable.CREATE_BILL_URL, jsonParams, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONObject result = response.getJSONObject("result");
+                    int code = Integer.parseInt(result.getString("code"));
+                    if(code == 0){
+                        Toast.makeText(getContext(), "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+                        GlobalVariable.arrayCart.clear();
+                        checkData();
+                        MainActivity.setCountProductInCart(0);
+                        cartAdapter.notifyDataSetChanged();
+                        // trả lại trạng thái enebal cho tất cả button thêm trong Product Fragment
+                        for(int index = 0;index < GlobalVariable.arrayProduct.size();index++){
+                            product = GlobalVariable.arrayProduct.get(index);
+                            product.setAddToCart(false);
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "fail1", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "fail2", Toast.LENGTH_SHORT).show();
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization",GlobalVariable.TOKEN);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(Objects.requireNonNull(getContext()));
+        queue.add(json_request);
+    }
 }

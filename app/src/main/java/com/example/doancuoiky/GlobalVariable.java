@@ -56,6 +56,7 @@ public class GlobalVariable {
     public static final String PRODUCT_IMAGE_URL = localhost + "api/products-img";
     public static final String PRODUCT_URL = localhost + "api/products";
     public static final String FORGOT_PASSWORD_URL = localhost + "api/forgot-password";
+    public static final String CREATE_BILL_URL = localhost + "api/bill";
 
 
     // Global Function
