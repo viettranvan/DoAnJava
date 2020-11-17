@@ -59,9 +59,7 @@ public class SplashActivity extends AppCompatActivity {
 
         if (GlobalVariable.arrayProduct == null) {
             GlobalVariable.arrayProduct = new ArrayList<>();
-
 //            loadDataFromServer();
-
         }
     }
 
@@ -107,4 +105,5 @@ public class SplashActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(SplashActivity.this);
         queue.add(request);
     }
+
 }

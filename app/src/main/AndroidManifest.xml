@@ -15,13 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.OrderDetailActivity"></activity>
+        <activity android:name=".activity.ListRatingActivity"></activity>
+        <activity android:name=".activity.OrderDetailActivity" />
         <activity
             android:name=".activity.ListAvatarActivity"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
         <activity android:name=".activity.SupportActivity" />
         <activity android:name=".activity.OrderManagementActivity" />
-        <activity android:name=".activity.ProductDetailActivity" />
+        <activity android:name=".activity.ProductDetailActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".activity.ChangePasswordActivity" />
         <activity android:name=".activity.ForgotPasswordActivity" />
         <activity android:name=".activity.SignUpActivity" />

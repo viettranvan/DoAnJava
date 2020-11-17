@@ -76,7 +76,6 @@
                     android:orientation="vertical">
 
 
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -161,7 +160,8 @@
                         android:layout_marginTop="10dp"
                         android:background="@color/bg_white"
                         android:orientation="vertical"
-                        android:paddingBottom="10dp">
+                        android:paddingBottom="10dp"
+                        android:visibility="visible">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -178,6 +178,7 @@
                                 android:textStyle="bold" />
 
                             <Button
+                                android:id="@+id/btn_goto_comment_and_rating"
                                 style="@style/TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -193,16 +194,15 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:weightSum="10"
                             android:divider="?android:listDivider"
-                            android:showDividers="middle">
+                            android:orientation="horizontal"
+                            android:showDividers="middle"
+                            android:weightSum="10">
 
                             <RelativeLayout
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="4"
-                                >
+                                android:layout_weight="4">
 
                                 <TextView
                                     android:id="@+id/rate_percent_detail_activity"
@@ -219,11 +219,11 @@
                                     style="?android:attr/ratingBarStyleSmall"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_below="@+id/rate_percent_detail_activity"
+                                    android:layout_centerInParent="true"
                                     android:numStars="5"
                                     android:rating="3.3"
-                                    android:theme="@style/RatingBar"
-                                    android:layout_centerInParent="true"
-                                    android:layout_below="@+id/rate_percent_detail_activity"/>
+                                    android:theme="@style/RatingBar" />
 
                                 <TextView
                                     android:id="@+id/number_of_comment"
@@ -239,41 +239,43 @@
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
                                 android:layout_weight="6"
-                                android:orientation="vertical"
-                                android:layout_marginStart="10dp">
+                                android:orientation="vertical">
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:divider="?android:listDivider"
-                                    android:showDividers="end"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:showDividers="end">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:divider="?android:listDivider"
                                         android:orientation="horizontal"
                                         android:padding="5dp"
-                                        android:divider="?android:listDivider"
                                         android:showDividers="middle">
 
                                         <RatingBar
+                                            android:id="@+id/rtb_five_star"
                                             style="?android:attr/ratingBarStyleSmall"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:numStars="5"
                                             android:rating="5"
-                                            android:theme="@style/RatingBar"/>
+                                            android:theme="@style/RatingBar" />
 
                                         <TextView
+                                            android:id="@+id/tv_five_star"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="126"
-                                            android:gravity="center"
                                             android:layout_marginStart="10dp"
+                                            android:gravity="center"
+                                            android:text="126"
                                             android:textColor="@color/bg_black"
-                                            android:textSize="16sp"/>
+                                            android:textSize="16sp" />
 
                                     </LinearLayout>
                                 </LinearLayout>
@@ -282,33 +284,35 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:divider="?android:listDivider"
-                                    android:showDividers="end"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:showDividers="end">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:divider="?android:listDivider"
                                         android:orientation="horizontal"
                                         android:padding="5dp"
-                                        android:divider="?android:listDivider"
                                         android:showDividers="middle">
 
                                         <RatingBar
+                                            android:id="@+id/rtb_four_star"
                                             style="?android:attr/ratingBarStyleSmall"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:numStars="5"
                                             android:rating="4"
-                                            android:theme="@style/RatingBar"/>
+                                            android:theme="@style/RatingBar" />
 
                                         <TextView
+                                            android:id="@+id/tv_four_star"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="126"
-                                            android:gravity="center"
                                             android:layout_marginStart="10dp"
+                                            android:gravity="center"
+                                            android:text="126"
                                             android:textColor="@color/bg_black"
-                                            android:textSize="16sp"/>
+                                            android:textSize="16sp" />
 
                                     </LinearLayout>
                                 </LinearLayout>
@@ -317,33 +321,35 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:divider="?android:listDivider"
-                                    android:showDividers="end"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:showDividers="end">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:divider="?android:listDivider"
                                         android:orientation="horizontal"
                                         android:padding="5dp"
-                                        android:divider="?android:listDivider"
                                         android:showDividers="middle">
 
                                         <RatingBar
+                                            android:id="@+id/rtb_three_star"
                                             style="?android:attr/ratingBarStyleSmall"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:numStars="5"
                                             android:rating="3"
-                                            android:theme="@style/RatingBar"/>
+                                            android:theme="@style/RatingBar" />
 
                                         <TextView
+                                            android:id="@+id/tv_three_star"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="126"
-                                            android:gravity="center"
                                             android:layout_marginStart="10dp"
+                                            android:gravity="center"
+                                            android:text="126"
                                             android:textColor="@color/bg_black"
-                                            android:textSize="16sp"/>
+                                            android:textSize="16sp" />
 
                                     </LinearLayout>
                                 </LinearLayout>
@@ -352,33 +358,35 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:divider="?android:listDivider"
-                                    android:showDividers="end"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:showDividers="end">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:divider="?android:listDivider"
                                         android:orientation="horizontal"
                                         android:padding="5dp"
-                                        android:divider="?android:listDivider"
                                         android:showDividers="middle">
 
                                         <RatingBar
+                                            android:id="@+id/rtb_two_star"
                                             style="?android:attr/ratingBarStyleSmall"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:numStars="5"
                                             android:rating="2"
-                                            android:theme="@style/RatingBar"/>
+                                            android:theme="@style/RatingBar" />
 
                                         <TextView
+                                            android:id="@+id/tv_two_star"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="126"
-                                            android:gravity="center"
                                             android:layout_marginStart="10dp"
+                                            android:gravity="center"
+                                            android:text="126"
                                             android:textColor="@color/bg_black"
-                                            android:textSize="16sp"/>
+                                            android:textSize="16sp" />
 
                                     </LinearLayout>
                                 </LinearLayout>
@@ -387,33 +395,35 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:divider="?android:listDivider"
-                                    android:showDividers="end"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:showDividers="end">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:divider="?android:listDivider"
                                         android:orientation="horizontal"
                                         android:padding="5dp"
-                                        android:divider="?android:listDivider"
                                         android:showDividers="middle">
 
                                         <RatingBar
+                                            android:id="@+id/rtb_one_star"
                                             style="?android:attr/ratingBarStyleSmall"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:numStars="5"
                                             android:rating="1"
-                                            android:theme="@style/RatingBar"/>
+                                            android:theme="@style/RatingBar" />
 
                                         <TextView
+                                            android:id="@+id/tv_one_star"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="126"
-                                            android:gravity="center"
                                             android:layout_marginStart="10dp"
+                                            android:gravity="center"
+                                            android:text="126"
                                             android:textColor="@color/bg_black"
-                                            android:textSize="16sp"/>
+                                            android:textSize="16sp" />
 
                                     </LinearLayout>
                                 </LinearLayout>
@@ -422,6 +432,71 @@
 
                         </LinearLayout>
 
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_add_rating_and_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@string/text_title_add_rating"
+                            android:textColor="@color/bg_black_light"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <RatingBar
+                            android:id="@+id/rtg_add_rating_product_detail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:numStars="5"
+                            android:stepSize="1"
+                            android:theme="@style/RatingBar"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/bg_gray_invisible"
+                            android:gravity="center"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_input_add_comment_product_detail"
+                                android:layout_width="fill_parent"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:drawableStart="@drawable/icon_mail_18"
+                                android:background="@android:color/transparent"
+                                android:drawablePadding="12dp"
+                                android:hint="@string/text_input_add_comment"
+                                android:minWidth="320dp"
+                                android:singleLine="false"
+                                android:inputType="textMultiLine"
+                                android:scrollbars="vertical"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <Button
+                                android:id="@+id/btn_add_rating_and_comment"
+                                android:text="@string/text_title_add_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                style="@style/Button_layout_green"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"/>
 
                     </LinearLayout>
 

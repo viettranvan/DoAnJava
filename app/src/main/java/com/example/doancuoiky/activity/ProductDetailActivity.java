@@ -17,8 +17,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,15 +35,19 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
+import com.example.doancuoiky.adapter.OrderDetailAdapter;
 import com.example.doancuoiky.adapter.PhotoAdapter;
 import com.example.doancuoiky.adapter.PhotoProductAdapter;
 import com.example.doancuoiky.adapter.ProductAdapter;
 import com.example.doancuoiky.fragment.CartFragment;
 import com.example.doancuoiky.fragment.ProductFragment;
 import com.example.doancuoiky.modal.Cart;
+import com.example.doancuoiky.modal.Order;
+import com.example.doancuoiky.modal.OrderDetail;
 import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.modal.PhotoProduct;
 import com.example.doancuoiky.modal.Product;
+import com.example.doancuoiky.modal.RatingAndComment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +74,15 @@ public class ProductDetailActivity extends AppCompatActivity {
     ListView description;
     ArrayList<String> arraySpecifications;
     int indexProductInCart = -1;
+    Button btnGotoRatingAndComment;
+
+    TextView tvRatingPercent, tvTotalRate, tvOneStar, tvTwoStar, tvThreeStar, tvFourStar, tvFiveStar;
+    int oneStar = 0, twoStar = 0, threeStar = 0, fourStar = 0, fiveStar = 0, totalRate = 0;
+    RatingBar rtbInComment;
+    LinearLayout layoutAddRatingAndComment;
+    RatingBar rtbAddRating;
+    EditText edtAddComment;
+    Button btnAddRatingAndComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +101,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         String idProduct = intent.getStringExtra("productDetail");
 
         for (int ii = 0; ii < GlobalVariable.arrayProduct.size(); ii++) {
@@ -95,6 +111,37 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         }
 
+        final String id_product = GlobalVariable.arrayProduct.get(pos).getProductID();
+        setRateData(id_product);
+
+        // kiểm tra xem sản phẩm đã mua hay chưa, nếu đã mua mới đc đánh giá + cmt
+        checkProductIsPurchase(id_product);
+
+        onAddToCart(pos);
+        btnGotoRatingAndComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(ProductDetailActivity.this, ListRatingActivity.class);
+                intent1.putExtra("gotoRatingAndComment",id_product);
+                startActivity(intent1);
+            }
+        });
+
+
+        setPhotoAdapter(GlobalVariable.arrayProduct.get(pos).getProductID());
+        setDataSpecifications(GlobalVariable.arrayProduct.get(pos).getProductID());
+
+        tvProductName.setText(GlobalVariable.arrayProduct.get(pos).getProductName());
+
+        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        String _price = decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice()) + " đ";
+        tvProductPrice.setText(_price);
+
+        tvDescription.setText(GlobalVariable.arrayProduct.get(pos).getProductDescription());
+
+    }
+
+    private void onAddToCart(final int pos) {
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,7 +159,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     builder.setNegativeButton("Để sau", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {}
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
                     });
 
                     builder.show();
@@ -157,24 +205,12 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             }
         });
-
-        setPhotoAdapter(GlobalVariable.arrayProduct.get(pos).getProductID());
-        setDataSpecifications(GlobalVariable.arrayProduct.get(pos).getProductID());
-
-        tvProductName.setText(GlobalVariable.arrayProduct.get(pos).getProductName());
-
-        DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        String _price = decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice()) + " đ";
-        tvProductPrice.setText(_price);
-
-        tvDescription.setText(GlobalVariable.arrayProduct.get(pos).getProductDescription());
-
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void anhXa() {
-
+        btnGotoRatingAndComment = findViewById(R.id.btn_goto_comment_and_rating);
+        layoutAddRatingAndComment = findViewById(R.id.layout_add_rating_and_comment);
         tvProductName = findViewById(R.id.product_detail_name);
         tvProductPrice = findViewById(R.id.product_detail_price);
         goBack = findViewById(R.id.iv_back_product_detail);
@@ -183,8 +219,20 @@ public class ProductDetailActivity extends AppCompatActivity {
         circleIndicator = findViewById(R.id.circle_indicator_detail);
         addToCart = findViewById(R.id.btn_add_product_to_cart);
         tvDescription = findViewById(R.id.tv_description_detail_activity);
-
         description = findViewById(R.id.lv_description);
+
+        tvRatingPercent = findViewById(R.id.rate_percent_detail_activity);
+        tvTotalRate = findViewById(R.id.number_of_comment);
+        tvOneStar = findViewById(R.id.tv_one_star);
+        tvTwoStar = findViewById(R.id.tv_two_star);
+        tvThreeStar = findViewById(R.id.tv_three_star);
+        tvFourStar = findViewById(R.id.tv_four_star);
+        tvFiveStar = findViewById(R.id.tv_five_star);
+        rtbInComment = findViewById(R.id.rating_bar_in_comment);
+
+        rtbAddRating = findViewById(R.id.rtg_add_rating_product_detail);
+        edtAddComment = findViewById(R.id.edt_input_add_comment_product_detail);
+        btnAddRatingAndComment = findViewById(R.id.btn_add_rating_and_comment);
 
         description.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -314,6 +362,155 @@ public class ProductDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setRateData(final String id_product) {
+        StringRequest request = new StringRequest(StringRequest.Method.POST, GlobalVariable.GET_PRODUCT_RATE_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONArray data = object.getJSONArray("data");
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject obj = (JSONObject) data.get(i);
+                        int rate = Integer.parseInt(obj.getString("rate"));
+                        switch (rate) {
+                            case 1:
+                                oneStar++;
+                                break;
+                            case 2:
+                                twoStar++;
+                                break;
+                            case 3:
+                                threeStar++;
+                                break;
+                            case 4:
+                                fourStar++;
+                                break;
+                            case 5:
+                                fiveStar++;
+                                break;
+                        }
+                        totalRate += rate;
+                    }
+                    tvOneStar.setText(String.valueOf(oneStar));
+                    tvTwoStar.setText(String.valueOf(twoStar));
+                    tvThreeStar.setText(String.valueOf(threeStar));
+                    tvFourStar.setText(String.valueOf(fourStar));
+                    tvFiveStar.setText(String.valueOf(fiveStar));
+
+                    // số người đánh giá
+                    int numberOfRate = oneStar + twoStar + threeStar + fourStar + fiveStar;
+                    String totalComment = numberOfRate + " nhận xét";
+                    tvTotalRate.setText(totalComment);
+                    if(numberOfRate == 0){
+                        tvRatingPercent.setText("0");
+                        rtbInComment.setRating(0);
+                    }else{
+                        float percent = (float)totalRate/numberOfRate;
+                        tvRatingPercent.setText(String.valueOf(percent));
+                        rtbInComment.setRating(percent);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TAGTEST", "onErrorResponse: ");
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_product", id_product);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ProductDetailActivity.this);
+        queue.add(request);
+    }
+
+
+    // kiểm tra xem sản phẩm đã mua hay chưa, nếu đã mua mới đc đánh giá + cmt
+    private void checkProductIsPurchase(final String id_product){
+        StringRequest request = new StringRequest(StringRequest.Method.GET, GlobalVariable.GET_ORDER_URL,
+                new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONArray data = object.getJSONArray("data");
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject dataObject = (JSONObject) data.get(i);
+                        String id_user = dataObject.getString("id_user");
+
+                        if(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ID_USER).equals(id_user)){
+                            final String id_bill = dataObject.getString("id_bill");
+                            RequestQueue queue1 = Volley.newRequestQueue(ProductDetailActivity.this);
+                            StringRequest request1 = new StringRequest(StringRequest.Method.POST,
+                                    GlobalVariable.GET_ORDER_DETAIL_URL, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                        JSONObject object1 = new JSONObject(response);
+                                        JSONArray data = object1.getJSONArray("data");
+                                        for(int j = 0;j < data.length(); j++){
+                                            JSONObject obj1 = (JSONObject) data.get(j);
+                                            String idProduct = obj1.getString("id_product");
+                                            if(idProduct.equals(id_product)){
+                                                layoutAddRatingAndComment.setVisibility(View.VISIBLE);
+                                            }
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                }
+                            }){
+                                @Override
+                                public Map<String, String> getHeaders() {
+                                    Map<String, String> params = new HashMap<>();
+                                    params.put("Authorization",GlobalVariable.TOKEN);
+                                    return params;
+                                }
+
+                                @Override
+                                protected Map<String, String> getParams() {
+                                    Map<String, String> params = new HashMap<>();
+                                    params.put("id_bill",id_bill);
+                                    return params;
+                                }
+                            };
+                            queue1.add(request1);
+
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", GlobalVariable.TOKEN);
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(ProductDetailActivity.this);
+        queue.add(request);
     }
 
 }

@@ -22,10 +22,13 @@
     <string name="title_toolbar_search">Tìm kiếm</string>
     <string name="title_toolbar_cart">Giỏ hàng</string>
     <string name="title_toolbar_profile">Thông tin cá nhân</string>
+    <string name="title_toolbar_rating_and_comment">Khách hàng nhận xét</string>
+    <string name="toolbar_change_profile_title">Chỉnh sửa thông tin cá nhân</string>
 
     <!-- Image -->
     <string name="iamge">image</string>
     <string name="header_avatar">Avatar</string>
+
 
     <!-- Fragment text -->
     <string name="txt_cart">cart fragment</string>
@@ -97,9 +100,9 @@
     <string name="detail">Chi tiết</string>
     <string name="detail_order">Chi tiết đơn hàng</string>
 
-    <string name="toolbar_change_profile_title">Chỉnh sửa thông tin cá nhân</string>
     <string name="toolbar_order_management_title">Quản lý đơn hàng</string>
     <string name="text_product_quantity">Số lượng:</string>
+
 
 
     <!--  in sign up-->
@@ -213,6 +216,8 @@
     <string name="text_filter_by">Lọc theo:</string>
     <string name="text_no_result_return">Không có kết quả nào phù hợp</string>
 
+    <string name="text_no_rate_and_comment">Chưa có đánh giá nào</string>
+
 
     <string-array name="sort">
         <item>Không sắp xếp</item>
@@ -224,6 +229,9 @@
     <!-- In product Detail -->
     <string name="feedback_from_customer">Khách hàng nhận xét</string>
     <string name="text_show_all">Xem tất cả</string>
+    <string name="text_title_add_rating">Thêm nhận xét</string>
+    <string name="text_input_add_comment">Thêm nhận xét của bạn</string>
+
 
     <!-- In support screen -->
     <string name="title_support">Hỗ trợ</string>
@@ -255,7 +263,6 @@
     <string name="text_welcome_splash">Chào mừng bạn đến với MOLA</string>
     <string name="btn_goto_login">Đăng nhập ngay</string>
     <string name="btn_goto_main">Để sau</string>
-
 
 
 </resources>

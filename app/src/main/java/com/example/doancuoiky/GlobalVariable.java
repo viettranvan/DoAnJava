@@ -5,7 +5,6 @@ import com.example.doancuoiky.modal.Order;
 import com.example.doancuoiky.modal.Product;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class GlobalVariable {
@@ -47,7 +46,7 @@ public class GlobalVariable {
     public static final String PHONE_PATTERN  = "0[0-9]{9,10}";
 
 
-    private static final String localhost = "http://192.168.2.105:5000/";
+    private static final String localhost = "http://192.168.33.16:5000/";
     public static final String LOGIN_URL = localhost + "api/login";
     public static final String USER_INFO_URL = localhost + "api/user";
     public static final String USER_SIGN_UP_URL = localhost + "api/user";
@@ -60,6 +59,7 @@ public class GlobalVariable {
     public static final String GET_ORDER_URL = localhost + "api/total-bill";
     public static final String GET_ORDER_DETAIL_URL = localhost + "api/detail-bills";
     public static final String DELETE_BILL_URL = localhost + "api/delete-bill";
+    public static final String GET_PRODUCT_RATE_URL = localhost + "api/product-rate";
 
 
     // Global Function
