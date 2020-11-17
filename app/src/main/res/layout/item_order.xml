@@ -80,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/text_order_status_tmp"
-            android:textColor="@color/bg_green_light"
+            android:textColor="@color/bg_black"
             android:textSize="16sp"
             android:textStyle="bold"
             android:gravity="end"/>

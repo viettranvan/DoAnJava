@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
@@ -32,6 +33,7 @@ public class OrderDetailAdapter extends BaseAdapter{
     TextView productNameOrderDetail,productDescriptionOrderDetail,productPriceOrderDetail,productCountOrderDetail;
     ImageView imgProductOrderDetail;
     Product product;
+    Button btnGotoDetail;
 
     // constructor
     public OrderDetailAdapter(Context context, int layout, List<OrderDetail> orderProductList){
@@ -64,6 +66,15 @@ public class OrderDetailAdapter extends BaseAdapter{
 
         anhXa(view,i);
 
+        btnGotoDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),ProductDetailActivity.class);
+                intent.putExtra("productDetail", myOrderProductList.get(i).getId_product());
+                view.getContext().startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -75,6 +86,7 @@ public class OrderDetailAdapter extends BaseAdapter{
         productPriceOrderDetail = view.findViewById(R.id.tv_product_price_order_detail);
         productCountOrderDetail = view.findViewById(R.id.product_quantity_order_detail);
         imgProductOrderDetail = view.findViewById(R.id.img_product_order_detail);
+        btnGotoDetail = view.findViewById(R.id.btn_product_detail_order_detail);
 
         String id_product = myOrderProductList.get(i).getId_product();
         for(int index = 0;index < GlobalVariable.arrayProduct.size();index++){

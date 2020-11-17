@@ -1,7 +1,9 @@
 package com.example.doancuoiky.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,15 +55,10 @@ public class OrderDetailActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        btnDeleteOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(OrderDetailActivity.this, "delete", Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
         Intent intent = getIntent();
-        int pos = intent.getIntExtra("gotoOrderDetail", 0);
+        final int pos = intent.getIntExtra("gotoOrderDetail", 0);
         int status = intent.getIntExtra("orderStatus", 0);
         int total = intent.getIntExtra("orderTotal", 0);
 
@@ -69,6 +66,27 @@ public class OrderDetailActivity extends AppCompatActivity {
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String _total = decimalFormat.format(total) + " đ";
         tvTotal.setText(_total);
+
+        btnDeleteOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
+                builder.setTitle("Thông báo");
+                builder.setMessage("Bạn có muốn hủy đơn hàng này ?");
+                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onDeleteOrder(GlobalVariable.arrayOrder.get(pos).getId_bill_order());
+                    }
+                });
+                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+                builder.show();
+            }
+        });
 
         switch (status) {
             case 0:
@@ -143,6 +161,50 @@ public class OrderDetailActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("id_bill", GlobalVariable.arrayOrder.get(position).getId_bill_order());
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(OrderDetailActivity.this);
+        queue.add(request);
+    }
+
+    private void onDeleteOrder(final String id_bill){
+        StringRequest request = new StringRequest(StringRequest.Method.POST, GlobalVariable.DELETE_BILL_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONObject result = object.getJSONObject("result");
+                    int code = Integer.parseInt(result.getString("code"));
+                    if(code == 0){
+                        MainActivity.setDataUserOrder(OrderDetailActivity.this);
+                        Toast.makeText(OrderDetailActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(OrderDetailActivity.this,MainActivity.class);
+                        intent.putExtra("gotoProfile","profile");
+                        startActivity(intent);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TAG2", "error2: " + error.toString());
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization",GlobalVariable.TOKEN);
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("id_bill",id_bill);
                 return params;
             }
         };
