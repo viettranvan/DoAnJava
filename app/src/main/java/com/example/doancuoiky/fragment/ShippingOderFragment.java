@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ public class ShippingOderFragment extends Fragment {
 
     ListView lvShippingOrder;
     ArrayList<Order> arrayShippingOrder;
+    RelativeLayout noticeOrderIsEmpty;
 
     @Nullable
     @Override
@@ -28,12 +30,20 @@ public class ShippingOderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_shipping_oder,container,false);
 
         anhXa(view);
+        if(arrayShippingOrder.size() == 0){
+            lvShippingOrder.setVisibility(View.GONE);
+            noticeOrderIsEmpty.setVisibility(View.VISIBLE);
+        }else{
+            lvShippingOrder.setVisibility(View.VISIBLE);
+            noticeOrderIsEmpty.setVisibility(View.GONE);
+        }
 
         return view;
     }
 
     private void anhXa(View view) {
         lvShippingOrder = view.findViewById(R.id.lv_shipping_order_fragment_pending_order);
+        noticeOrderIsEmpty = view.findViewById(R.id.layout_notice_order_empty_shipping_order);
 
         if(arrayShippingOrder == null){
             arrayShippingOrder = new ArrayList<>();

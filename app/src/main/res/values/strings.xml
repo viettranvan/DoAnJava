@@ -95,9 +95,11 @@
     <string name="one">1</string>
     <string name="close">X</string>
     <string name="detail">Chi tiết</string>
+    <string name="detail_order">Chi tiết đơn hàng</string>
 
     <string name="toolbar_change_profile_title">Chỉnh sửa thông tin cá nhân</string>
     <string name="toolbar_order_management_title">Quản lý đơn hàng</string>
+    <string name="text_product_quantity">Số lượng:</string>
 
 
     <!--  in sign up-->
@@ -182,6 +184,8 @@
     <string name="text_status_0">Đang chờ xử lý</string>
     <string name="text_status_1">Đang giao</string>
     <string name="text_status_2">Hoàn tất</string>
+    <string name="text_order_empty">Danh sách đơn hàng rỗng</string>
+    <string name="delete_order">Hủy đơn hàng</string>
 
     <string name="text_order_id_tmp">ORDER001</string>
     <string name="text_order_date_tmp">11/03/2020 12:15:03</string>
@@ -251,5 +255,7 @@
     <string name="text_welcome_splash">Chào mừng bạn đến với MOLA</string>
     <string name="btn_goto_login">Đăng nhập ngay</string>
     <string name="btn_goto_main">Để sau</string>
+
+
 
 </resources>

@@ -259,13 +259,6 @@ public class ProfileFragment extends Fragment {
         gotoShippingOrder = view.findViewById(R.id.layout_oder_shipping_profile_fragment);
         gotoSuccessOrder = view.findViewById(R.id.layout_oder_success_profile_fragment);
 
-//        String imageName = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR).; //  this is image file name
-//        String PACKAGE_NAME = Objects.requireNonNull(getContext()).getPackageName();
-//        int imgId = getResources().getIdentifier(PACKAGE_NAME+":drawable/" + imageName ,
-//                null, null);
-//
-//        imgAvatar.setImageResource(imgId);
-
 
     }
 

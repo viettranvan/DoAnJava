@@ -1,12 +1,14 @@
 package com.example.doancuoiky.fragment;
 
 import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ public class PendingOrderFragment extends Fragment {
 
     ListView lvPendingOrder;
     ArrayList<Order> arrayPendingOrder;
+    RelativeLayout noticeOrderIsEmpty;
 
 
     @Nullable
@@ -35,12 +38,20 @@ public class PendingOrderFragment extends Fragment {
 
         anhXa(view);
 
+        if(arrayPendingOrder.size() == 0){
+            lvPendingOrder.setVisibility(View.GONE);
+            noticeOrderIsEmpty.setVisibility(View.VISIBLE);
+        }else{
+            lvPendingOrder.setVisibility(View.VISIBLE);
+            noticeOrderIsEmpty.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
     private void anhXa(View view) {
         lvPendingOrder = view.findViewById(R.id.lv_pending_order_fragment_pending_order);
-
+        noticeOrderIsEmpty = view.findViewById(R.id.layout_notice_order_empty_pending_order);
         if(arrayPendingOrder == null ){
             arrayPendingOrder = new ArrayList<>();
             for(int i = 0;i < GlobalVariable.arrayOrder.size();i++){

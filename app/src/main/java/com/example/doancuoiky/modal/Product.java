@@ -34,6 +34,7 @@ public class Product implements Serializable {
         this.count = count;
     }
 
+
     public int getCount() {
         return count;
     }

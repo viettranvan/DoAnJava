@@ -47,7 +47,7 @@ public class GlobalVariable {
     public static final String PHONE_PATTERN  = "0[0-9]{9,10}";
 
 
-    private static final String localhost = "http://192.168.33.16:5000/";
+    private static final String localhost = "http://192.168.2.105:5000/";
     public static final String LOGIN_URL = localhost + "api/login";
     public static final String USER_INFO_URL = localhost + "api/user";
     public static final String USER_SIGN_UP_URL = localhost + "api/user";
@@ -57,6 +57,8 @@ public class GlobalVariable {
     public static final String PRODUCT_URL = localhost + "api/products";
     public static final String FORGOT_PASSWORD_URL = localhost + "api/forgot-password";
     public static final String CREATE_BILL_URL = localhost + "api/bill";
+    public static final String GET_ORDER_URL = localhost + "api/total-bill";
+    public static final String GET_ORDER_DETAIL_URL = localhost + "api/detail-bills";
 
 
     // Global Function
@@ -84,33 +86,3 @@ public class GlobalVariable {
     }
 }
 
-//    public static String formatDateInVN(String date) {
-//
-//        String day, month, year;
-//        int int_year, int_month, int_day;
-//
-//        int_year = Integer.parseInt(date.substring(0, 4));
-//        int_month = Integer.parseInt(date.substring(5, 7));
-//        int_day = Integer.parseInt(date.substring(8, 10));
-//
-//        Calendar cal = Calendar.getInstance();
-//        cal.set(Calendar.DAY_OF_MONTH, int_day);
-//        cal.set(Calendar.MONTH, int_month - 1);
-//        cal.set(Calendar.YEAR, int_year);
-//        cal.add(Calendar.DAY_OF_MONTH, 1);  // tăng lên 1 ngày
-//
-//        if(cal.get(Calendar.DAY_OF_MONTH) < 10){
-//            day = "0" + cal.get(Calendar.DAY_OF_MONTH);
-//        }else{
-//            day = "" + cal.get(Calendar.DAY_OF_MONTH);
-//        }
-//
-//        if((cal.get(Calendar.MONTH) + 1) < 10){
-//            month = "0" + (cal.get(Calendar.MONTH) + 1);
-//        }else{
-//            month = "" + (cal.get(Calendar.MONTH) + 1);
-//        }
-//        year    = "" + cal.get(Calendar.YEAR);
-//
-//        return day + "/" + month + "/" + year;
-//    }

@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingFormatArgumentException;
 import java.util.Objects;
 import java.util.Timer;
 
@@ -126,7 +127,6 @@ public class CartFragment extends Fragment  {
 
             }
         });
-
 
         cartAdapter.onDelete(new CartAdapter.IClickOnDeleteProductInCart() {
             @Override
@@ -298,6 +298,7 @@ public class CartFragment extends Fragment  {
                     if(code == 0){
                         Toast.makeText(getContext(), "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
                         GlobalVariable.arrayCart.clear();
+                        MainActivity.setDataUserOrder(getContext());
                         checkData();
                         MainActivity.setCountProductInCart(0);
                         cartAdapter.notifyDataSetChanged();

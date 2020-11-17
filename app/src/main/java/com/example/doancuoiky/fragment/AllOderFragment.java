@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
@@ -25,6 +26,7 @@ public class AllOderFragment extends Fragment {
     }
 
     ListView lvOrder;
+    RelativeLayout noticeOrderIsEmpty;
 
     @Nullable
     @Override
@@ -33,6 +35,13 @@ public class AllOderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_all_oder, container, false);
 
         anhXa(view);
+        if(GlobalVariable.arrayOrder.size() == 0){
+            lvOrder.setVisibility(View.GONE);
+            noticeOrderIsEmpty.setVisibility(View.VISIBLE);
+        }else{
+            lvOrder.setVisibility(View.VISIBLE);
+            noticeOrderIsEmpty.setVisibility(View.GONE);
+        }
 
         return view;
 
@@ -40,7 +49,7 @@ public class AllOderFragment extends Fragment {
 
     private void anhXa(View view) {
         lvOrder = view.findViewById(R.id.lv_all_order_fragment_all_order);
-
+        noticeOrderIsEmpty = view.findViewById(R.id.layout_notice_order_empty_all_order);
 
         OrderAdapter adapter = new OrderAdapter(getContext(),R.layout.item_order,GlobalVariable.arrayOrder);
         lvOrder.setAdapter(adapter);

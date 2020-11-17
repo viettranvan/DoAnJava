@@ -67,7 +67,6 @@ public class ProductDetailActivity extends AppCompatActivity {
     ListView description;
     ArrayList<String> arraySpecifications;
     int indexProductInCart = -1;
-    MainActivity m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

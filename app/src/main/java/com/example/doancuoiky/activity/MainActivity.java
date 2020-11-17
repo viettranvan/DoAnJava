@@ -45,6 +45,7 @@ import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.ViewPagerAdapter;
 import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.fragment.ProductFragment;
+import com.example.doancuoiky.modal.Order;
 import com.example.doancuoiky.modal.PhotoProduct;
 import com.example.doancuoiky.modal.Product;
 import com.google.android.material.navigation.NavigationView;
@@ -79,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView headerName, headerEmail;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,10 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initData();
 
-
         anhXa();
-
-
 
         setUpViewPager(); /*chuyển trang bằng cách click vào icon hoặc vuốt*/
 
@@ -127,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         setDataProfile();
+        setDataUserOrder(MainActivity.this);
 
         checkLogin();
     }
@@ -147,22 +145,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             GlobalVariable.arrayProduct = new ArrayList<>();
         }
 
-//            GlobalVariable.arrayProduct.add(new Product("001","001","Điện thoại realme",
-//                    getString(R.string.mota),"4gb-64gb",4000000,R.drawable.realme_banner_resize));
-//            GlobalVariable.arrayProduct.add(new Product("002","001","Điện thoại iphone XR",
-//                    getString(R.string.mota),"4gb-64gb",10000000,R.drawable.iphone));
-//            GlobalVariable.arrayProduct.add(new Product("003","001","Điện thoại samsung",
-//                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.samsum_banner_resize));
-//            GlobalVariable.arrayProduct.add(new Product("004","002","Laptop Asus",
-//                    getString(R.string.mota),"4gb-64gb",10500500,R.drawable.laptop_asus));
-//            GlobalVariable.arrayProduct.add(new Product("005","002","Laptop dell",
-//                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.laptop_dell));
-//            GlobalVariable.arrayProduct.add(new Product("006","001","Điện thoại samsung",
-//                    getString(R.string.mota),"4gb-64gb",8000000,R.drawable.meow));
-//            GlobalVariable.arrayProduct.add(new Product("007","002","Laptop Asus",
-//                    getString(R.string.mota),"4gb-64gb",10500500,R.mipmap.ic_launcher));
-//            GlobalVariable.arrayProduct.add(new Product("008","002","Laptop dell",
-//                    getString(R.string.mota),"4gb-64gb",9000000,R.drawable.iphone1));
 
         if (GlobalVariable.arrayMobile == null) {
             GlobalVariable.arrayMobile = new ArrayList<>();
@@ -182,6 +164,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     GlobalVariable.arrayLaptop.add(GlobalVariable.arrayProduct.get(i));
                 }
             }
+        }
+
+        if(GlobalVariable.arrayOrder == null){
+            GlobalVariable.arrayOrder = new ArrayList<>();
+        }
+
+    }
+
+    public static void setDataUserOrder(Context context){
+        if(GlobalVariable.arrayOrder != null) {
+            GlobalVariable.arrayOrder.clear();
+            StringRequest request = new StringRequest(StringRequest.Method.GET, GlobalVariable.GET_ORDER_URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+
+                        JSONObject object = new JSONObject(response);
+                        JSONArray data = object.getJSONArray("data");
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject dataObject = (JSONObject) data.get(i);
+                            String id_user = dataObject.getString("id_user");
+                            if (id_user.equals(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ID_USER))) {
+                                GlobalVariable.arrayOrder.add(new Order(
+                                        dataObject.getString("id_bill"),
+                                        formatDate(dataObject.getString("date_order")),
+                                        Integer.parseInt(dataObject.getString("bill_status")),
+                                        Integer.parseInt(dataObject.getString("total"))
+                                ));
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Authorization", GlobalVariable.TOKEN);
+                    return params;
+                }
+            };
+
+            RequestQueue queue = Volley.newRequestQueue(context);
+            queue.add(request);
         }
     }
 
@@ -420,7 +451,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_login:
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
-//                Toast.makeText(MainActivity.this,"login",Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_profile:
@@ -431,8 +461,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerLayout.closeDrawer(GravityCompat.START);
                 GlobalVariable.isLogin = false;
                 GlobalVariable.TOKEN = null;
+                GlobalVariable.arrayOrder.clear();
                 GlobalVariable.arrayProfile.clear();
                 GlobalVariable.arrayProfile = null;
+                GlobalVariable.arrayOrder = null;
                 checkLogin();
 
                 finish();
@@ -602,6 +634,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onCartIconClickListener() {
         ahBottomNavigation.setCurrentItem(3);
+    }
+
+    private static String formatDate(String date){
+        String year = date.substring(0, 4);
+        String month = date.substring(5, 7);
+        String day = date.substring(8, 10);
+        return day + '/' + month + '/' + year;
     }
 
 }
