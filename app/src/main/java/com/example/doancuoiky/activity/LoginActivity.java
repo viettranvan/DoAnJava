@@ -3,14 +3,20 @@ package com.example.doancuoiky.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -31,13 +37,14 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
     private Button forgotPassword, signIn, signUp;
     private EditText textInputUsername, textInputPassword;
-
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         anhXa();
+
+
+
 
         validateUsername();
         validatePassword();
@@ -176,13 +186,26 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else{
                         JSONObject data = object.getJSONObject("data");
-                        String token = data.getString("token");
+                        final String token = data.getString("token");
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("loginTrue", true);
-                        GlobalVariable.TOKEN = token;
-                        startActivity(intent);
-                        finish();
+                        dialog = ProgressDialog.show(LoginActivity.this, "", "Đang đăng nhập...",
+                                true);
+
+                        dialog.show();
+                        hideKeyboard();
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra("loginTrue", true);
+                                GlobalVariable.TOKEN = token;
+                                startActivity(intent);
+                                finish();
+                                dialog.dismiss();
+                            }
+                        }, 2000); // 3000 milliseconds delay
+
                     }
 
 
@@ -195,8 +218,7 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác!"
-                        + error.toString()  + textInputUsername.getText().toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác!",Toast.LENGTH_LONG ).show();
                 Log.d("TAG1", "data user => " + textInputUsername.getText().toString() + "\n"+
                         textInputPassword.getText().toString());
             }
@@ -233,5 +255,10 @@ public class LoginActivity extends AppCompatActivity {
         });
         queue.add(request);
 
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(),0);
     }
 }
