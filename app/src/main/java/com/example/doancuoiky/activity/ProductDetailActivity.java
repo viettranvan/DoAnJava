@@ -117,6 +117,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         // kiểm tra xem sản phẩm đã mua hay chưa, nếu đã mua mới đc đánh giá + cmt
         checkProductIsPurchase(id_product);
 
+        btnAddRatingAndComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddSubmitRatingAndComment(id_product);
+            }
+        });
+
         onAddToCart(pos);
         btnGotoRatingAndComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,6 +381,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject obj = (JSONObject) data.get(i);
                         int rate = Integer.parseInt(obj.getString("rate"));
+                        String idProduct = obj.getString("id_product");
+                        String idUser = obj.getString("id_user");
+                        String comment = obj.getString("cmt");
+                        float rating = Float.parseFloat(obj.getString("rate"));
+                        if(idProduct.equals(id_product) &&
+                                idUser.equals(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ID_USER))){
+                            rtbAddRating.setRating(rating);
+                            edtAddComment.setText(comment);
+                        }
+
                         switch (rate) {
                             case 1:
                                 oneStar++;
@@ -513,4 +530,136 @@ public class ProductDetailActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+    private void onAddRatingAndComment(final String id_product){
+        StringRequest request = new StringRequest(StringRequest.Method.POST, GlobalVariable.ADD_RATE_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONObject result = object.getJSONObject("result");
+                    int code = Integer.parseInt(result.getString("code"));
+                    if(code == 0){
+                        Toast.makeText(ProductDetailActivity.this, "Thêm nhận xét thành công", Toast.LENGTH_SHORT).show();
+                        setRateData(id_product);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization",GlobalVariable.TOKEN);
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_product",id_product);
+                params.put("rate",rtbAddRating.getRating()+"");
+                params.put("cmt",edtAddComment.getText().toString());
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(ProductDetailActivity.this);
+        queue.add(request);
+    }
+
+    private void onUpdateRatingAndComment(final String id_product){
+        StringRequest request = new StringRequest(StringRequest.Method.POST, GlobalVariable.UPDATE_RATE_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONObject result = object.getJSONObject("result");
+                    int code = Integer.parseInt(result.getString("code"));
+                    if(code == 0){
+                        Toast.makeText(ProductDetailActivity.this, "Cập nhật nhận xét thành công", Toast.LENGTH_SHORT).show();
+                        setRateData(id_product);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization",GlobalVariable.TOKEN);
+                return params;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_product",id_product);
+                params.put("rate",rtbAddRating.getRating()+"");
+                params.put("cmt",edtAddComment.getText().toString());
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(ProductDetailActivity.this);
+        queue.add(request);
+    }
+
+    private void onAddSubmitRatingAndComment(final String id_product){
+        StringRequest request = new StringRequest(StringRequest.Method.POST, GlobalVariable.GET_PRODUCT_RATE_URL, new Response.Listener<String>() {
+            boolean flag = false;
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONArray data = object.getJSONArray("data");
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject obj = (JSONObject) data.get(i);
+                        String idUser = obj.getString("id_user");
+                        if(idUser.equals(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ID_USER))){
+                            flag = true;
+                        }
+                    }
+
+                    if(flag){
+                        //cap nhat danh gia
+                        onUpdateRatingAndComment(id_product);
+                    }else {
+                        //them danh gia moi
+                        onAddRatingAndComment(id_product);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("TAGTEST", "onErrorResponse: ");
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_product", id_product);
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(ProductDetailActivity.this);
+        queue.add(request);
+    }
 }

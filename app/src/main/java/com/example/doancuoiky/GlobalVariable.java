@@ -60,6 +60,8 @@ public class GlobalVariable {
     public static final String GET_ORDER_DETAIL_URL = localhost + "api/detail-bills";
     public static final String DELETE_BILL_URL = localhost + "api/delete-bill";
     public static final String GET_PRODUCT_RATE_URL = localhost + "api/product-rate";
+    public static final String ADD_RATE_URL = localhost + "api/add-rate";
+    public static final String UPDATE_RATE_URL = localhost + "api/update-rate";
 
 
     // Global Function
