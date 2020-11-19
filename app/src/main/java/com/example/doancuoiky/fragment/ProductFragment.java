@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.doancuoiky.AnimationUtil;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.activity.LoginActivity;
+import com.example.doancuoiky.activity.ProductDetailActivity;
 import com.example.doancuoiky.modal.Cart;
 import com.example.doancuoiky.modal.Product;
 import com.example.doancuoiky.adapter.ProductAdapter;
@@ -58,6 +60,7 @@ public class ProductFragment extends Fragment  {
     TextView tvFilterType,tvFilterPrice;
     CardView cvFilterType,cvFilterPrice;
 
+
     private RadioButton rdAllProduct,rdMobile,rdLaptop,rdPriceType1,rdPriceType2,rdPriceType3,rdPriceType4;
     private Button btnCancel,btnSubmit;
 
@@ -69,7 +72,18 @@ public class ProductFragment extends Fragment  {
 
         anhXa(mView);
 
+
         setAdapterRecycleViewProduct();
+
+        productAdapter.gotoDetail(new ProductAdapter.IClickGotoDetailListener() {
+            @Override
+            public void onClickGotoDetail(int pos) {
+                String idProduct = mArrayProduct.get(pos).getProductID();
+                Intent intent = new Intent(getContext(), ProductDetailActivity.class);
+                intent.putExtra("productDetail", idProduct);
+                Objects.requireNonNull(getContext()).startActivity(intent);
+            }
+        });
 
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +111,9 @@ public class ProductFragment extends Fragment  {
                         break;
                     case 2:
                         descendingSortPrice();
+                        break;
+                    case 3:
+                        descendingSortRating();
                         break;
                 }
             }
@@ -505,6 +522,20 @@ public class ProductFragment extends Fragment  {
             }
         });
         productAdapter.notifyDataSetChanged();
+    }
+
+    // sap xep giam dan theo danh gia
+    private void descendingSortRating(){
+
+        Collections.sort(mArrayProduct, new Comparator<Product>() {
+            @Override
+            public int compare(Product product1, Product product2) {
+                return Float.compare(product2.getRating(),product1.getRating());
+            }
+        });
+
+        productAdapter.notifyDataSetChanged();
+
     }
 
     public static void showAllMobileProduct(){

@@ -25,12 +25,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Product> mListProduct;
     private IClickAddToCartListener iClickAddToCartListener;
+    private IClickGotoDetailListener iClickGotoDetailListener;
     private RelativeLayout relativeLayout;
 
     // dung interface de callback su kien ra ben ngoai
     public interface IClickAddToCartListener{
         // dinh nghia cho method muon xu ly
         void onClickAddToCart(ImageView imgAddToCart,Product product);
+    }
+
+    public interface IClickGotoDetailListener{
+        // dinh nghia cho method muon xu ly
+        void onClickGotoDetail(int pos);
+    }
+
+    public void gotoDetail(IClickGotoDetailListener listener){
+        this.iClickGotoDetailListener = listener;
     }
 
     public void setData(List<Product> list,IClickAddToCartListener listener){
@@ -55,7 +65,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Picasso.get()
                 .load(product.getProductImage())
                 .into(holder.imgProduct);
-//        holder.imgProduct.setImageResource(product.getProductImage());
         holder.tvProductName.setText(product.getProductName());
         holder.tvProductDescription.setText(product.getProductDescription());
 
@@ -86,9 +95,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(view.getContext(),ProductDetailActivity.class);
-                intent.putExtra("productDetail", GlobalVariable.arrayProduct.get(position).getProductID());
-                view.getContext().startActivity(intent);
+                iClickGotoDetailListener.onClickGotoDetail(position);
+
             }
         });
     }

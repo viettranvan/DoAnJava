@@ -97,7 +97,8 @@ public class OrderDetailAdapter extends BaseAdapter{
                         GlobalVariable.arrayProduct.get(index).getProductName(),
                         GlobalVariable.arrayProduct.get(index).getProductDescription(),
                         GlobalVariable.arrayProduct.get(index).getProductPrice(),
-                        GlobalVariable.arrayProduct.get(index).getProductImage()
+                        GlobalVariable.arrayProduct.get(index).getProductImage(),
+                        GlobalVariable.arrayProduct.get(index).getRating()
                         );
                 break;
             }

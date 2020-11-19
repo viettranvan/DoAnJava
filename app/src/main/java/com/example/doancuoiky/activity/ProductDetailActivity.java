@@ -80,9 +80,10 @@ public class ProductDetailActivity extends AppCompatActivity {
     int oneStar = 0, twoStar = 0, threeStar = 0, fourStar = 0, fiveStar = 0, totalRate = 0;
     RatingBar rtbInComment;
     LinearLayout layoutAddRatingAndComment;
-    RatingBar rtbAddRating;
+    RatingBar rtbAddRating,rtbTotal;
     EditText edtAddComment;
     Button btnAddRatingAndComment;
+    TextView tvQuantityComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +115,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         final String id_product = GlobalVariable.arrayProduct.get(pos).getProductID();
         setRateData(id_product);
 
-        // kiểm tra xem sản phẩm đã mua hay chưa, nếu đã mua mới đc đánh giá + cmt
-        checkProductIsPurchase(id_product);
+        if(GlobalVariable.isLogin) {
+            // kiểm tra xem sản phẩm đã mua hay chưa, nếu đã mua mới đc đánh giá + cmt
+            checkProductIsPurchase(id_product);
+        }
 
         btnAddRatingAndComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,6 +231,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         tvDescription = findViewById(R.id.tv_description_detail_activity);
         description = findViewById(R.id.lv_description);
 
+        rtbTotal = findViewById(R.id.rtb_total_rating_product_title);
+        tvQuantityComment = findViewById(R.id.tv_quantity_rating_product_title);
         tvRatingPercent = findViewById(R.id.rate_percent_detail_activity);
         tvTotalRate = findViewById(R.id.number_of_comment);
         tvOneStar = findViewById(R.id.tv_one_star);
@@ -385,10 +390,13 @@ public class ProductDetailActivity extends AppCompatActivity {
                         String idUser = obj.getString("id_user");
                         String comment = obj.getString("cmt");
                         float rating = Float.parseFloat(obj.getString("rate"));
-                        if(idProduct.equals(id_product) &&
-                                idUser.equals(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ID_USER))){
-                            rtbAddRating.setRating(rating);
-                            edtAddComment.setText(comment);
+
+                        if(GlobalVariable.isLogin) {
+                            if (idProduct.equals(id_product) &&
+                                    idUser.equals(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ID_USER))) {
+                                rtbAddRating.setRating(rating);
+                                edtAddComment.setText(comment);
+                            }
                         }
 
                         switch (rate) {
@@ -410,6 +418,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         }
                         totalRate += rate;
                     }
+
                     tvOneStar.setText(String.valueOf(oneStar));
                     tvTwoStar.setText(String.valueOf(twoStar));
                     tvThreeStar.setText(String.valueOf(threeStar));
@@ -418,7 +427,10 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     // số người đánh giá
                     int numberOfRate = oneStar + twoStar + threeStar + fourStar + fiveStar;
+                    String _quantity = "(" + numberOfRate + " đánh giá)";
+                    tvQuantityComment.setText(_quantity);
                     String totalComment = numberOfRate + " nhận xét";
+
                     tvTotalRate.setText(totalComment);
                     if(numberOfRate == 0){
                         tvRatingPercent.setText("0");
@@ -426,6 +438,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                     }else{
                         float percent = (float)totalRate/numberOfRate;
                         tvRatingPercent.setText(String.valueOf(percent));
+
+                        rtbTotal.setRating(percent);
                         rtbInComment.setRating(percent);
                     }
 

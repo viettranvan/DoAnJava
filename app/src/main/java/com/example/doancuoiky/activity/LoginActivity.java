@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
                 if(checkData()){
                     onLogin();
 
@@ -193,7 +192,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         dialog.show();
                         hideKeyboard();
-
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             public void run() {
