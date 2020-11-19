@@ -15,6 +15,7 @@ public class GlobalVariable {
     public static ArrayList<Product> arrayProduct;
     public static ArrayList<Product> arrayMobile;
     public static ArrayList<Product> arrayLaptop;
+    public static ArrayList<Product> arraySuggestion;
 
     public static String TOKEN = null;
     public static ArrayList<String> arrayProfile;

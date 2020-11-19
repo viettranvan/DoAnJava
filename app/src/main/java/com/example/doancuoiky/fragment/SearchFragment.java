@@ -1,14 +1,9 @@
 package com.example.doancuoiky.fragment;
 
-import android.accessibilityservice.AccessibilityService;
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,51 +11,32 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
-import com.example.doancuoiky.AnimationUtil;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
-import com.example.doancuoiky.activity.MainActivity;
 import com.example.doancuoiky.activity.ProductDetailActivity;
-import com.example.doancuoiky.adapter.PhotoAdapter;
-import com.example.doancuoiky.adapter.ProductAdapter;
-import com.example.doancuoiky.adapter.ProductNewAdapter;
 import com.example.doancuoiky.adapter.ProductSearchAdapter;
+import com.example.doancuoiky.adapter.ProductSuggestionAdapter;
 import com.example.doancuoiky.adapter.SearchAdapter;
-import com.example.doancuoiky.modal.Cart;
-import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.modal.Product;
 import com.example.doancuoiky.modal.Search;
 
-import java.nio.file.attribute.GroupPrincipal;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Timer;
-
-import me.relex.circleindicator.CircleIndicator;
 
 public class SearchFragment extends Fragment {
 
@@ -75,8 +51,10 @@ public class SearchFragment extends Fragment {
     ArrayList<Product> arraySearch;
     TextView tvNoSearchResultReturn;
 
-    private RecyclerView rcvSearch;
+    private RecyclerView rcvSearch, rcvSuggestion;
+    private LinearLayout layoutSuggestion;
     ProductSearchAdapter searchAdapter;
+    ProductSuggestionAdapter adapterSuggestion;
 
 
     @Nullable
@@ -87,7 +65,6 @@ public class SearchFragment extends Fragment {
         anhXa(view);
         checkData();
         setAdapterSearch();
-
 
         clearHistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,10 +84,19 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        adapterSuggestion.onGotoDetail(new ProductSuggestionAdapter.IClickGotoProductDetail() {
+            @Override
+            public void onClickGotoDetail(String idProduct) {
+                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(),ProductDetailActivity.class);
+                intent.putExtra("productDetail",idProduct);
+                startActivity(intent);
+            }
+        });
+
+
         setHasOptionsMenu(true);
         return  view;
     }
-
 
 
     private void setDataSearch(String keyword){
@@ -125,9 +111,11 @@ public class SearchFragment extends Fragment {
         }
         if(arraySearch.size() == 0){
             tvNoSearchResultReturn.setVisibility(View.VISIBLE);
+            layoutSuggestion.setVisibility(View.GONE);
         }
         else{
             tvNoSearchResultReturn.setVisibility(View.GONE);
+            layoutSuggestion.setVisibility(View.VISIBLE);
         }
         searchAdapter.notifyDataSetChanged();
 
@@ -152,7 +140,9 @@ public class SearchFragment extends Fragment {
         layoutHistory = view.findViewById(R.id.layout_history_search_search_fragment);
         rcvSearch = view.findViewById(R.id.rcv_search);
         tvNoSearchResultReturn = view.findViewById(R.id.tv_no_search_result_return);
-        arrayListProductName = new ArrayList<Search>();
+        arrayListProductName = new ArrayList<>();
+        rcvSuggestion = view.findViewById(R.id.rcv_suggestion_rate_greater_than_4_3);
+        layoutSuggestion = view.findViewById(R.id.layout_suggestion_rate_greater_than_4_3);
 
         // set data
         for(int i = 0;i < GlobalVariable.arrayProduct.size(); i++){
@@ -160,7 +150,7 @@ public class SearchFragment extends Fragment {
         }
 
         if(arrayListHistory == null){
-            arrayListHistory = new ArrayList<Search>();
+            arrayListHistory = new ArrayList<>();
         }
 
 
@@ -169,6 +159,13 @@ public class SearchFragment extends Fragment {
 
         adapterHistory = new SearchAdapter(getContext(),R.layout.item_search,arrayListHistory);
         lvHistory.setAdapter(adapterHistory);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+        rcvSuggestion.setLayoutManager(linearLayoutManager);
+
+        adapterSuggestion = new ProductSuggestionAdapter(getContext(),GlobalVariable.arraySuggestion);
+        rcvSuggestion.setAdapter(adapterSuggestion);
+
     }
 
     // them icon search len thanh toolbar
@@ -182,15 +179,15 @@ public class SearchFragment extends Fragment {
         MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                Toast.makeText(getContext(), "Expand" , Toast.LENGTH_SHORT).show();
-                Log.d("TAG1", "Expand: focus:" +txtSearch.isFocusable() );
+                //expand
+
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                Toast.makeText(getContext(), "Collapse", Toast.LENGTH_SHORT).show();
-                Log.d("TAG1", "Collapse: focus:" +txtSearch.isFocusable() );
+                //Collapse
+
                 return true;
             }
         };
@@ -228,11 +225,12 @@ public class SearchFragment extends Fragment {
             }
         });
 
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 checkAddHistory(query);
-                Toast.makeText(getContext(), query, Toast.LENGTH_SHORT).show();
                 txtSearch.clearFocus();
                 lvData.setVisibility(View.GONE);
                 hideKeyboard(view);
@@ -271,6 +269,7 @@ public class SearchFragment extends Fragment {
                 if (hasFocus) {
                     rcvSearch.setVisibility(View.GONE);
                     lvData.setVisibility(View.VISIBLE);
+                    layoutSuggestion.setVisibility(View.GONE);
                 } else {
                     lvData.setVisibility(View.GONE);
                 }
@@ -280,6 +279,7 @@ public class SearchFragment extends Fragment {
 
     private void showDataSearchReturn(String keyword) {
         rcvSearch.setVisibility(View.VISIBLE);
+
         setDataSearch(keyword);
     }
 
@@ -308,7 +308,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void hideKeyboard(View v) {
-        InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
     }
 }

@@ -43,7 +43,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
 
-
 public class ProductFragment extends Fragment  {
 
     private RecyclerView rcvProduct;
@@ -533,7 +532,6 @@ public class ProductFragment extends Fragment  {
                 return Float.compare(product2.getRating(),product1.getRating());
             }
         });
-
         productAdapter.notifyDataSetChanged();
 
     }

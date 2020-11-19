@@ -351,7 +351,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(ProductDetailActivity.this);
         queue.add(request);
 
-
     }
 
 
@@ -633,7 +632,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void onAddSubmitRatingAndComment(final String id_product){
-        StringRequest request = new StringRequest(StringRequest.Method.POST, GlobalVariable.GET_PRODUCT_RATE_URL, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(StringRequest.Method.POST,
+                GlobalVariable.GET_PRODUCT_RATE_URL, new Response.Listener<String>() {
             boolean flag = false;
             @Override
             public void onResponse(String response) {

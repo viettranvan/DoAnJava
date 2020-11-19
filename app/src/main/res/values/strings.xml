@@ -144,6 +144,7 @@
     <string name="input_key">Nhập tên sản phẩm bạn muốn tìm kiếm</string>
     <string name="search">Tìm kiếm</string>
     <string name="cart">Giỏ hàng</string>
+    <string name="text_title_suggestion">Sản phẩm thịnh hành</string>
 
     <!-- drawable menu -->
     <string name="home">Trang chính</string>
