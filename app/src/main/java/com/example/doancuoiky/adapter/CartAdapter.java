@@ -3,6 +3,8 @@ package com.example.doancuoiky.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +41,7 @@ public class CartAdapter extends BaseAdapter{
     Context myContext;
     int myLayout;
     List<Cart> arrayCart;
-    TextView cartProductName,cartProductDescription,cartProductPrice,cartProductCount;
+    TextView cartProductName,cartProductDescription,cartProductPrice,cartProductCount,cartProductPriceSale;
     Button btnMinus,btnPlus,btnDeleteProduct,btnDetail;
     ImageView imgCartProduct;
 
@@ -144,13 +146,14 @@ public class CartAdapter extends BaseAdapter{
         btnDeleteProduct = view.findViewById(R.id.btn_delete_product);
         imgCartProduct = view.findViewById(R.id.img_cart_product);
         btnDetail = view.findViewById(R.id.btn_cart_detail);
+        cartProductPriceSale = view.findViewById(R.id.tv_cart_product_price_sale);
 
         // gán giá trị
         cartProductName.setText(arrayCart.get(i).getName());
         cartProductDescription.setText(arrayCart.get(i).getDescription());
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        String _price = decimalFormat.format(arrayCart.get(i).getPrice()) + " đ";
+        String _price = "Giá: "  + decimalFormat.format(arrayCart.get(i).getPrice()) + " đ";
         cartProductPrice.setText(_price);
 
         String _count = arrayCart.get(i).getCount() + "";
@@ -158,7 +161,23 @@ public class CartAdapter extends BaseAdapter{
         Picasso.get()
                 .load(arrayCart.get(i).getCartProductImg())
                 .into(imgCartProduct);
-//        imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
+
+
+        int price_sale = (arrayCart.get(i).getPrice() /100) * arrayCart.get(i).getSale();
+        String sale = "-" + arrayCart.get(i).getSale() + "%:" + decimalFormat.format(arrayCart.get(i).getPrice()- price_sale) + " đ";
+
+        cartProductPrice.setText(_price);
+
+        if(arrayCart.get(i).getSale() == 0){
+            cartProductPriceSale.setVisibility(View.GONE);
+        }else{
+            cartProductPrice.setPaintFlags(cartProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            cartProductPrice.setTextColor(Color.rgb(170,170,170));
+
+            cartProductPriceSale.setVisibility(View.VISIBLE);
+            cartProductPriceSale.setText(sale);
+        }
+
 
         int currentCount = arrayCart.get(i).getCount();
         if(currentCount <= 1){

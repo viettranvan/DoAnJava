@@ -83,13 +83,9 @@ public class SplashActivity extends AppCompatActivity {
                         final String price = result.getString("price");
                         final String product_type = result.getString("product_type");
                         final String desciption = result.getString("desciption");
-                        final String addedDate = result.getString("addedDate");
-                        final String isSaling = result.getString("isSaling");
                         final String sale = result.getString("sale");
                         final String productImage = result.getString("link");
 
-
-//                        numberOfRate = oneStar = twoStar =threeStar =fourStar = fiveStar = 0;
 
                         StringRequest request2 = new StringRequest(StringRequest.Method.POST, GlobalVariable.GET_PRODUCT_RATE_URL, new Response.Listener<String>() {
                             @Override
@@ -128,13 +124,13 @@ public class SplashActivity extends AppCompatActivity {
 
                                     if(numberOfRate == 0){
                                         GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
-                                                desciption,Integer.parseInt(price),productImage,0f));
+                                                desciption,Integer.parseInt(price),productImage,0f,Integer.parseInt(sale)));
 
                                     }else{
                                         float percent = (float)totalRate/numberOfRate;
 
                                         GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
-                                                desciption,Integer.parseInt(price),productImage,percent));
+                                                desciption,Integer.parseInt(price),productImage,percent,Integer.parseInt(sale)));
 
                                     }
 

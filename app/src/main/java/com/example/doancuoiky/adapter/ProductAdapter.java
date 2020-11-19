@@ -1,6 +1,8 @@
 package com.example.doancuoiky.adapter;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,8 +71,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvProductDescription.setText(product.getProductDescription());
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        String _price = decimalFormat .format(product.getProductPrice()) +" đ";
-        holder.tvProductPrice.setText(_price);
+        String _price = "Giá: " + decimalFormat.format(product.getProductPrice()) +" đ";
+
+        int price_sale = (product.getProductPrice() /100) * product.getSale();
+        String sale = "-" + product.getSale() + "%:" + decimalFormat.format(product.getProductPrice() - price_sale) + " đ";
+
+        if(product.getSale() == 0){
+            holder.tvProductPrice.setText(_price);
+            holder.tvProductPrice.setTextColor(Color.rgb(244,67,54));
+            holder.tvProductPrice.setPaintFlags(holder.tvProductPriceSale.getPaintFlags() | Paint.ANTI_ALIAS_FLAG);
+            holder.tvProductPriceSale.setVisibility(View.GONE);
+        }else{
+            holder.tvProductPrice.setText(_price);
+            holder.tvProductPrice.setPaintFlags(holder.tvProductPriceSale.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.tvProductPrice.setTextColor(Color.rgb(170,170,170));
+
+            holder.tvProductPriceSale.setVisibility(View.VISIBLE);
+            holder.tvProductPriceSale.setText(sale);
+        }
 
         if(product.isAddToCart()){
             holder.imgAddToCart.setBackgroundResource(R.drawable.bg_gray_corner_6);
@@ -83,7 +101,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.imgAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"index = " + position,Toast.LENGTH_SHORT).show();
                 if(!product.isAddToCart()){
                     iClickAddToCartListener.onClickAddToCart(holder.imgAddToCart,product);
                 }
@@ -94,9 +111,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 iClickGotoDetailListener.onClickGotoDetail(position);
-
             }
         });
     }
@@ -116,6 +131,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         private TextView tvProductDescription;
         private TextView tvProductPrice;
         private ImageView imgAddToCart;
+        private TextView tvProductPriceSale;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -125,7 +141,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductDescription = itemView.findViewById(R.id.tv_product_description);
             tvProductPrice = itemView.findViewById(R.id.tv_product_price);
             imgAddToCart = itemView.findViewById(R.id.img_add_to_cart);
-            relativeLayout = itemView.findViewById(R.id.abc);
+            relativeLayout = itemView.findViewById(R.id.layout_product);
+            tvProductPriceSale = itemView.findViewById(R.id.tv_product_price_sale);
+
         }
     }
 

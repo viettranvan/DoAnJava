@@ -9,6 +9,8 @@ import androidx.viewpager.widget.ViewPager;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -63,7 +65,7 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    private TextView tvProductName, tvProductPrice, tvDescription;
+    private TextView tvProductName, tvProductPrice, tvDescription, tvProductPriceSale;
     private ImageView goBack;
     Toolbar toolbar;
     private ViewPager viewPager;
@@ -145,7 +147,23 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String _price = decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice()) + " đ";
+
+
+        int price_sale = (GlobalVariable.arrayProduct.get(pos).getProductPrice() /100) * GlobalVariable.arrayProduct.get(pos).getSale();
+        String sale = "-" + GlobalVariable.arrayProduct.get(pos).getSale() + "%:" +
+                decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice()- price_sale) + " đ";
+
         tvProductPrice.setText(_price);
+
+        if(GlobalVariable.arrayProduct.get(pos).getSale() == 0){
+            tvProductPriceSale.setVisibility(View.GONE);
+        }else{
+            tvProductPrice.setPaintFlags(tvProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            tvProductPrice.setTextColor(Color.rgb(170,170,170));
+
+            tvProductPriceSale.setVisibility(View.VISIBLE);
+            tvProductPriceSale.setText(sale);
+        }
 
         tvDescription.setText(GlobalVariable.arrayProduct.get(pos).getProductDescription());
 
@@ -185,6 +203,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     String description = GlobalVariable.arrayProduct.get(pos).getProductDescription();
                     int price = GlobalVariable.arrayProduct.get(pos).getProductPrice();
                     String image = GlobalVariable.arrayProduct.get(pos).getProductImage();
+                    int sale =  GlobalVariable.arrayProduct.get(pos).getSale();
 
                     if (GlobalVariable.arrayCart.size() > 0) {
                         for (int i = 0; i < GlobalVariable.arrayCart.size(); i++) {
@@ -195,7 +214,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         }
                     }
                     if (indexProductInCart == -1) {
-                        Cart cart = new Cart(id, typeId, name, description, price, image, 1);
+                        Cart cart = new Cart(id, typeId, name, description, price, image,sale, 1);
                         GlobalVariable.arrayCart.add(cart);
                         MainActivity.setCountProductInCart(GlobalVariable.arrayCart.size());
                     } else {
@@ -205,14 +224,12 @@ public class ProductDetailActivity extends AppCompatActivity {
                         if (cart.getCount() < 10) {
                             newCount += 1;
                         }
-                        GlobalVariable.arrayCart.set(indexProductInCart, new Cart(id, typeId, name, description, price, image, newCount));
+                        GlobalVariable.arrayCart.set(indexProductInCart, new Cart(id, typeId, name, description, price, image,sale, newCount));
                         CartFragment.updateTotalPrice();
                         CartFragment.cartAdapter.notifyDataSetChanged();
                     }
                     Toast.makeText(ProductDetailActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-
                 }
-
             }
         });
     }
@@ -223,6 +240,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         layoutAddRatingAndComment = findViewById(R.id.layout_add_rating_and_comment);
         tvProductName = findViewById(R.id.product_detail_name);
         tvProductPrice = findViewById(R.id.product_detail_price);
+        tvProductPriceSale = findViewById(R.id.product_detail_price_sale);
         goBack = findViewById(R.id.iv_back_product_detail);
         toolbar = findViewById(R.id.toolbar_product_detail);
         viewPager = findViewById(R.id.view_pager_photo_detail_photo);

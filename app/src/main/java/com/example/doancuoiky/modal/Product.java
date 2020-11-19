@@ -13,9 +13,12 @@ public class Product implements Serializable {
     private int count;
     private boolean isAddToCart;
     float rating ;
+    int sale;
+
+
 
     public Product(String productID, String productTypeID, String productName,
-                   String productDescription, int productPrice, String productImage, float rating) {
+                   String productDescription, int productPrice, String productImage, float rating, int sale) {
         this.productID = productID;
         this.productTypeID = productTypeID;
         this.productName = productName;
@@ -23,19 +26,28 @@ public class Product implements Serializable {
         this.productPrice = productPrice;
         this.productImage = productImage;
         this.rating = rating;
+        this.sale = sale;
     }
 
     public Product(String productID, String productTypeID, String productName, String productDescription,
-                   int productPrice, String productImage, int count) {
+                   int productPrice, String productImage,int count) {
         this.productID = productID;
         this.productTypeID = productTypeID;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
         this.productImage = productImage;
+
         this.count = count;
     }
 
+    public int getSale() {
+        return sale;
+    }
+
+    public void setSale(int sale) {
+        this.sale = sale;
+    }
 
     public int getCount() {
         return count;

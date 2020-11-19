@@ -14,10 +14,19 @@ public class Cart {
     private String description;
     private int price;
     private String cartProductImg;
+    private int sale;
     private int count;
 
+    public int getSale() {
+        return sale;
+    }
+
+    public void setSale(int sale) {
+        this.sale = sale;
+    }
+
     public Cart(String ID, String typeID, String name, String description,
-                int price, String cartProductImg, int count) {
+                int price, String cartProductImg, int sale, int count) {
         this.ID = ID;
         TypeID = typeID;
         this.name = name;
@@ -25,6 +34,7 @@ public class Cart {
         this.price = price;
         this.cartProductImg = cartProductImg;
         this.count = count;
+        this.sale = sale;
     }
 
     public String getID() {

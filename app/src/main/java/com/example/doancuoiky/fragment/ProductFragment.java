@@ -442,8 +442,9 @@ public class ProductFragment extends Fragment  {
                             String description = product.getProductDescription();
                             int price = product.getProductPrice();
                             String image = product.getProductImage();
+                            int sale = product.getSale();
 
-                            Cart cart = new Cart(id,typeId,name,description,price,image,1);
+                            Cart cart = new Cart(id,typeId,name,description,price,image,sale,1);
                             GlobalVariable.arrayCart.add(cart);
 
                             // tăng số lượng sản phẩm giỏ hàng lên 1

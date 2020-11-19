@@ -209,7 +209,9 @@ public class CartFragment extends Fragment  {
         int total = 0;
         for(int i = 0;i < GlobalVariable.arrayCart.size();i++){
             int count = GlobalVariable.arrayCart.get(i).getCount();
-            total += GlobalVariable.arrayCart.get(i).getPrice() * count;
+            int caculatePrice = GlobalVariable.arrayCart.get(i).getPrice() -
+                    (GlobalVariable.arrayCart.get(i).getPrice()/100)*GlobalVariable.arrayCart.get(i).getSale();
+            total += caculatePrice * count;
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String _price = decimalFormat.format(total) + "đ";

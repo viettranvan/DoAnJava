@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public static void setDataUserOrder(Context context){
-        if(GlobalVariable.arrayOrder != null) {
+        if(GlobalVariable.arrayProfile != null) {
             GlobalVariable.arrayOrder.clear();
             StringRequest request = new StringRequest(StringRequest.Method.GET, GlobalVariable.GET_ORDER_URL, new Response.Listener<String>() {
                 @Override
@@ -563,6 +563,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 params.put("email", GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_EMAIL));
                 params.put("username", GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_USER_NAME));
                 params.put("rate", _rate);
+                params.put("birthday", GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_BIRTHDAY));
+                params.put("gender", GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_GENDER));
+                params.put("citizen_identification", GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_CITIZEN_IDENTIFICATION));
+                params.put("phone_number", GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_PHONE_NUMBER));
+                params.put("address", GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ADDRESS));
+                params.put("avatar",GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_AVATAR));
                 return params;
             }
 
@@ -665,8 +671,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         final String price = result.getString("price");
                         final String product_type = result.getString("product_type");
                         final String desciption = result.getString("desciption");
-                        final String addedDate = result.getString("addedDate");
-                        final String isSaling = result.getString("isSaling");
                         final String sale = result.getString("sale");
                         final String productImage = result.getString("link");
 
@@ -710,8 +714,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         float percent = (float) totalRate / numberOfRate;
 
                                         if(percent >= 4.3f){
-                                            GlobalVariable.arraySuggestion.add(new Product(id_product,product_type,
-                                                    product_name, desciption,Integer.parseInt(price),productImage,percent
+                                            GlobalVariable.arraySuggestion.add(new Product(id_product,product_type,product_name
+                                                    , desciption,Integer.parseInt(price),productImage,percent,Integer.parseInt(sale)
                                             ));
                                         }
                                     }

@@ -2,6 +2,8 @@ package com.example.doancuoiky.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,12 +59,27 @@ public class ProductNewAdapter extends RecyclerView.Adapter<ProductNewAdapter.It
         holder.tvProductName.setText(productNew.getProductName());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String _price = "Giá: " + decimalFormat.format(productNew.getProductPrice())+ " đ";
+
+        int price_sale = (productNew.getProductPrice() /100) * productNew.getSale();
+        String sale = "-" + productNew.getSale() + "%:" + decimalFormat.format(productNew.getProductPrice() - price_sale) + " đ";
+
         holder.tvProductPrice.setText(_price);
+
+        if(price_sale > 0){
+            holder.tvProductPrice.setPaintFlags(holder.tvProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.tvProductPrice.setTextColor(Color.rgb(170,170,170));
+
+            holder.tvProductPriceSale.setVisibility(View.VISIBLE);
+            holder.tvProductPriceSale.setText(sale);
+        }else{
+            holder.tvProductPriceSale.setVisibility(View.GONE);
+        }
+
+//        holder.tvProductPriceSale.setPaintFlags(holder.tvProductPriceSale.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         Picasso.get()
                 .load(productNew.getProductImage())
                 .into(holder.imgProduct);
-//        holder.imgProduct.setImageResource(productNew.getProductImage());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +87,8 @@ public class ProductNewAdapter extends RecyclerView.Adapter<ProductNewAdapter.It
                 iClickGotoProductDetail.onClickGotoDetail(arrayProductNew.get(position).getProductID());
             }
         });
+
+
     }
 
     @Override
@@ -79,7 +98,7 @@ public class ProductNewAdapter extends RecyclerView.Adapter<ProductNewAdapter.It
 
     public static class ItemHolder extends RecyclerView.ViewHolder{
         public ImageView imgProduct;
-        public TextView tvProductName, tvProductDescription, tvProductPrice;
+        public TextView tvProductName, tvProductDescription, tvProductPrice,tvProductPriceSale;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +106,7 @@ public class ProductNewAdapter extends RecyclerView.Adapter<ProductNewAdapter.It
             tvProductName = itemView.findViewById(R.id.tv_product_name_product_new);
             tvProductDescription = itemView.findViewById(R.id.tv_product_description_product_new);
             tvProductPrice = itemView.findViewById(R.id.tv_product_price_product_new);
+            tvProductPriceSale = itemView.findViewById(R.id.tv_product_price_sale_product_new);
         }
     }
 }
