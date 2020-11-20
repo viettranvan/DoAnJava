@@ -8,26 +8,49 @@ import javax.xml.namespace.QName;
 
 public class Cart {
 
-    private int cartProductImg;
+    private String ID;
+    private String TypeID;
     private String name;
     private String description;
     private int price;
-    private String count;
+    private String cartProductImg;
+    private int sale;
+    private int count;
 
-    public Cart(int cartProductImg, String name, String description, int price, String count) {
-        this.cartProductImg = cartProductImg;
+    public int getSale() {
+        return sale;
+    }
+
+    public void setSale(int sale) {
+        this.sale = sale;
+    }
+
+    public Cart(String ID, String typeID, String name, String description,
+                int price, String cartProductImg, int sale, int count) {
+        this.ID = ID;
+        TypeID = typeID;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.count = count;
-    }
-
-    public int getCartProductImg() {
-        return cartProductImg;
-    }
-
-    public void setCartProductImg(int cartProductImg) {
         this.cartProductImg = cartProductImg;
+        this.count = count;
+        this.sale = sale;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getTypeID() {
+        return TypeID;
+    }
+
+    public void setTypeID(String typeID) {
+        TypeID = typeID;
     }
 
     public String getName() {
@@ -46,6 +69,7 @@ public class Cart {
         this.description = description;
     }
 
+
     public int getPrice() {
         return price;
     }
@@ -54,11 +78,20 @@ public class Cart {
         this.price = price;
     }
 
-    public String getCount() {
+    public String getCartProductImg() {
+        return cartProductImg;
+    }
+
+    public void setCartProductImg(String cartProductImg) {
+        this.cartProductImg = cartProductImg;
+    }
+
+    public int getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(int count) {
         this.count = count;
     }
+
 }

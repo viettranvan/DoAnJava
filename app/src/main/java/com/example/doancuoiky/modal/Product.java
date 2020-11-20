@@ -4,55 +4,118 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
 
-    private int resourceId;
-    private String name;
-    private String description;
-    private int price;
+    private String productID;
+    private String productTypeID;
+    private String productName;
+    private String productDescription;
+    private int productPrice;
+    private String productImage;
+    private int count;
     private boolean isAddToCart;
+    float rating ;
+    int sale;
 
-    public Product(int resourceId, String name, String description, int price) {
-        this.resourceId = resourceId;
-        this.name = name;
-        this.description = description;
-        this.price = price;
+
+
+    public Product(String productID, String productTypeID, String productName,
+                   String productDescription, int productPrice, String productImage, float rating, int sale) {
+        this.productID = productID;
+        this.productTypeID = productTypeID;
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.productPrice = productPrice;
+        this.productImage = productImage;
+        this.rating = rating;
+        this.sale = sale;
     }
 
-    public int getResourceId() {
-        return resourceId;
+    public Product(String productID, String productTypeID, String productName, String productDescription,
+                   int productPrice, String productImage,int count) {
+        this.productID = productID;
+        this.productTypeID = productTypeID;
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.productPrice = productPrice;
+        this.productImage = productImage;
+
+        this.count = count;
     }
 
-    public void setResourceId(int resourceId) {
-        this.resourceId = resourceId;
+    public int getSale() {
+        return sale;
     }
 
-    public String getName() {
-        return name;
+    public void setSale(int sale) {
+        this.sale = sale;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getCount() {
+        return count;
     }
 
-    public String getDescription() {
-        return description;
+    public void setCount(int count) {
+        this.count = count;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public float getRating() {
+        return rating;
     }
 
-    public int getPrice() {
-        return price;
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public String getProductID() {
+        return productID;
+    }
+
+    public void setProductID(String productID) {
+        this.productID = productID;
+    }
+
+    public String getProductTypeID() {
+        return productTypeID;
+    }
+
+    public void setProductTypeID(String productTypeID) {
+        this.productTypeID = productTypeID;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
+
+
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
     public boolean isAddToCart() {
-
-
-
         return isAddToCart;
     }
 

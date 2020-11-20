@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/value_search"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/name"
         android:gravity="center_vertical"
         android:layout_marginStart="10dp"
@@ -18,15 +18,22 @@
         android:textSize="20sp"
         />
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/icon_copy_to_search"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/icon_copy_to_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_copy_search_18"
-            android:layout_alignParentEnd="true" />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_copy_search_18"
+        android:layout_alignParentEnd="true"
+        />
+<!--    <RelativeLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content">-->
+<!--        <ImageView-->
+<!--            android:id="@+id/icon_copy_to_search"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/icon_copy_search_18"-->
+<!--            android:layout_alignParentEnd="true" />-->
+<!--    </RelativeLayout>-->
 
-</LinearLayout>
+</RelativeLayout>

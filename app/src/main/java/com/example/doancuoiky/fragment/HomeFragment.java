@@ -21,16 +21,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.activity.ChangePasswordActivity;
 import com.example.doancuoiky.activity.MainActivity;
 import com.example.doancuoiky.activity.ProductDetailActivity;
+import com.example.doancuoiky.adapter.ProductAdapter;
 import com.example.doancuoiky.adapter.ProductNewAdapter;
 import com.example.doancuoiky.modal.Photo;
 import com.example.doancuoiky.adapter.PhotoAdapter;
 import com.example.doancuoiky.R;
+import com.example.doancuoiky.modal.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -50,6 +54,8 @@ public class HomeFragment extends Fragment {
     private Timer mTimer;
     private goToCartOnClickListener mGoToCart;
     private RecyclerView recyclerView;
+    private ArrayList<Product> productNew;
+    private MainActivity mainActivity;
 
     ProductNewAdapter productNewAdapter;
 
@@ -60,12 +66,14 @@ public class HomeFragment extends Fragment {
 
         anhXa(view);
 
+
         productNewAdapter.onGotoDetail(new ProductNewAdapter.IClickGotoProductDetail() {
             @Override
-            public void onClickGotoDetail(int index) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), ProductDetailActivity.class);
+            public void onClickGotoDetail(String idProduct) {
+                Intent intent = new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(), ProductDetailActivity.class);
 //                intent.putExtra("productDetail",index);
-                intent.putExtra("productDetail",index);
+                intent.putExtra("productDetail",idProduct);
+
                 startActivity(intent);
             }
         });
@@ -79,6 +87,7 @@ public class HomeFragment extends Fragment {
         viewPager = view.findViewById(R.id.view_pager_photo);
         circleIndicator = view.findViewById(R.id.circle_indicator);
         recyclerView = view.findViewById(R.id.rcv_product_new_home_fragment);
+        mainActivity = (MainActivity) getActivity();
 
         mListPhoto = getListPhoto();
         photoAdapter = new PhotoAdapter(getContext(),mListPhoto);
@@ -87,10 +96,24 @@ public class HomeFragment extends Fragment {
         circleIndicator.setViewPager(viewPager);
         photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
 
-        productNewAdapter = new ProductNewAdapter(getContext(),MainActivity.arrayProductNew);
+        if(productNew == null){
+            productNew = new ArrayList<>();
+        }
+
+        if(GlobalVariable.arrayProduct.size() > 6){
+            for(int i = 0 ;i < 6;i++){
+                productNew.add(GlobalVariable.arrayProduct.get(i));
+            }
+        }
+        else{
+            productNew = GlobalVariable.arrayProduct;
+        }
+
+        productNewAdapter = new ProductNewAdapter(getContext(), productNew);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         recyclerView.setAdapter(productNewAdapter);
+
     }
 
     private List<Photo> getListPhoto(){
@@ -103,7 +126,6 @@ public class HomeFragment extends Fragment {
         list.add(new Photo(R.drawable.xiaomi_banner_resize));
 
         return list;
-
     }
 
     // them icon gio hang len thanh toolbar
@@ -116,12 +138,8 @@ public class HomeFragment extends Fragment {
     // su kien click icon gio hang tren thanh toolbar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.ic_cart_toolbar:
-
-                mGoToCart.onCartIconClickListener();
-                break;
-
+        if (item.getItemId() == R.id.ic_cart_toolbar) {
+            mGoToCart.onCartIconClickListener();
         }
         return super.onOptionsItemSelected(item);
     }

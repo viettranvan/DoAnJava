@@ -1,10 +1,10 @@
 package com.example.doancuoiky.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +12,14 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.viewpager.widget.PagerAdapter;
 
-import com.bumptech.glide.Glide;
+import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
-import com.example.doancuoiky.activity.MainActivity;
 import com.example.doancuoiky.activity.ProductDetailActivity;
 import com.example.doancuoiky.fragment.CartFragment;
-import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.modal.Cart;
-import com.example.doancuoiky.modal.Photo;
-import com.example.doancuoiky.modal.Product;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -48,9 +41,10 @@ public class CartAdapter extends BaseAdapter{
     Context myContext;
     int myLayout;
     List<Cart> arrayCart;
-    TextView cartProductName,cartProductDescription,cartProductPrice,cartProductCount;
+    TextView cartProductName,cartProductDescription,cartProductPrice,cartProductCount,cartProductPriceSale;
     Button btnMinus,btnPlus,btnDeleteProduct,btnDetail;
     ImageView imgCartProduct;
+
 
 
     // constructor
@@ -75,9 +69,10 @@ public class CartAdapter extends BaseAdapter{
         return 0;
     }
 
+    @SuppressLint("ViewHolder")
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
-        LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         view = inflater.inflate(myLayout,null);
 
@@ -88,15 +83,16 @@ public class CartAdapter extends BaseAdapter{
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int currentCount = Integer.parseInt(arrayCart.get(i).getCount());
+                int currentCount = arrayCart.get(i).getCount();
 
-                if(currentCount <= 1){
-                }
-                else{
+                if(currentCount > 1){
                     currentCount -= 1;
                 }
-                MainActivity.arrarCart.get(i).setCount(currentCount + "");
-                cartProductCount.setText(arrayCart.get(i).getCount());
+
+                GlobalVariable.arrayCart.get(i).setCount(currentCount);
+                String _count_minus = arrayCart.get(i).getCount() +  "";
+                cartProductCount.setText(_count_minus);
+                CartFragment.updateTotalPrice();
                 notifyDataSetChanged();
 
             }
@@ -107,10 +103,12 @@ public class CartAdapter extends BaseAdapter{
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int currentCount = Integer.parseInt(arrayCart.get(i).getCount());
+                int currentCount = arrayCart.get(i).getCount();
                 currentCount += 1;
-                MainActivity.arrarCart.get(i).setCount(currentCount + "");
-                cartProductCount.setText(arrayCart.get(i).getCount());
+                GlobalVariable.arrayCart.get(i).setCount(currentCount);
+                String _count_plus = arrayCart.get(i).getCount() + "";
+                cartProductCount.setText(_count_plus);
+                CartFragment.updateTotalPrice();
                 notifyDataSetChanged();
             }
         });
@@ -126,8 +124,10 @@ public class CartAdapter extends BaseAdapter{
         btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"tới màn hình chi tiết index = " + i,Toast.LENGTH_SHORT).show();
+                String id = GlobalVariable.arrayCart.get(i).getID();
+
                 Intent intent = new Intent(view.getContext(), ProductDetailActivity.class);
+                intent.putExtra("productDetail",id);
                 view.getContext().startActivity(intent);
             }
         });
@@ -146,20 +146,40 @@ public class CartAdapter extends BaseAdapter{
         btnDeleteProduct = view.findViewById(R.id.btn_delete_product);
         imgCartProduct = view.findViewById(R.id.img_cart_product);
         btnDetail = view.findViewById(R.id.btn_cart_detail);
+        cartProductPriceSale = view.findViewById(R.id.tv_cart_product_price_sale);
 
         // gán giá trị
         cartProductName.setText(arrayCart.get(i).getName());
         cartProductDescription.setText(arrayCart.get(i).getDescription());
 
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        cartProductPrice.setText(decimalFormat.format(arrayCart.get(i).getPrice()) + " đ");
+        String _price = "Giá: "  + decimalFormat.format(arrayCart.get(i).getPrice()) + " đ";
+        cartProductPrice.setText(_price);
+
+        String _count = arrayCart.get(i).getCount() + "";
+        cartProductCount.setText(_count);
+        Picasso.get()
+                .load(arrayCart.get(i).getCartProductImg())
+                .into(imgCartProduct);
 
 
+        int price_sale = (arrayCart.get(i).getPrice() /100) * arrayCart.get(i).getSale();
+        String sale = "-" + arrayCart.get(i).getSale() + "%:" + decimalFormat.format(arrayCart.get(i).getPrice()- price_sale) + " đ";
 
-        cartProductCount.setText(arrayCart.get(i).getCount());
-        imgCartProduct.setImageResource(arrayCart.get(i).getCartProductImg());
+        cartProductPrice.setText(_price);
 
-        int currentCount = Integer.parseInt(arrayCart.get(i).getCount());
+        if(arrayCart.get(i).getSale() == 0){
+            cartProductPriceSale.setVisibility(View.GONE);
+        }else{
+            cartProductPrice.setPaintFlags(cartProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            cartProductPrice.setTextColor(Color.rgb(170,170,170));
+
+            cartProductPriceSale.setVisibility(View.VISIBLE);
+            cartProductPriceSale.setText(sale);
+        }
+
+
+        int currentCount = arrayCart.get(i).getCount();
         if(currentCount <= 1){
             btnMinus.setEnabled(false);
             notifyDataSetChanged();
