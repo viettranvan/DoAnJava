@@ -88,6 +88,7 @@ public class OrderAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), OrderDetailActivity.class);
                 intent.putExtra("gotoOrderDetail",i);
+                intent.putExtra("orderID",mArrayOrder.get(i).getId_bill_order());
                 intent.putExtra("orderStatus",mArrayOrder.get(i).getOrder_status());
                 intent.putExtra("orderTotal",mArrayOrder.get(i).getTotal());
                 view.getContext().startActivity(intent);

@@ -300,7 +300,7 @@ public class CartFragment extends Fragment  {
                     if(code == 0){
                         Toast.makeText(getContext(), "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
                         GlobalVariable.arrayCart.clear();
-                        MainActivity.setDataUserOrder(getContext());
+                        ProfileFragment.setDataUserOrder(getContext());
                         checkData();
                         MainActivity.setCountProductInCart(0);
                         cartAdapter.notifyDataSetChanged();

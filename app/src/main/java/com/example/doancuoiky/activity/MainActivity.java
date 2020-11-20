@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         setDataProfile();
-        setDataUserOrder(MainActivity.this);
         setDataSuggestion();
 
         checkLogin();
@@ -177,49 +176,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public static void setDataUserOrder(Context context){
-        if(GlobalVariable.arrayProfile != null) {
-            GlobalVariable.arrayOrder.clear();
-            StringRequest request = new StringRequest(StringRequest.Method.GET, GlobalVariable.GET_ORDER_URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-
-                        JSONObject object = new JSONObject(response);
-                        JSONArray data = object.getJSONArray("data");
-                        for (int i = 0; i < data.length(); i++) {
-                            JSONObject dataObject = (JSONObject) data.get(i);
-                            String id_user = dataObject.getString("id_user");
-                            if (id_user.equals(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ID_USER))) {
-                                GlobalVariable.arrayOrder.add(new Order(
-                                        dataObject.getString("id_bill"),
-                                        formatDate(dataObject.getString("date_order")),
-                                        Integer.parseInt(dataObject.getString("bill_status")),
-                                        Integer.parseInt(dataObject.getString("total"))
-                                ));
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("Authorization", GlobalVariable.TOKEN);
-                    return params;
-                }
-            };
-
-            RequestQueue queue = Volley.newRequestQueue(context);
-            queue.add(request);
-        }
-    }
 
     private void setDataProfile() {
 
@@ -645,13 +601,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onCartIconClickListener() {
         ahBottomNavigation.setCurrentItem(3);
-    }
-
-    private static String formatDate(String date){
-        String year = date.substring(0, 4);
-        String month = date.substring(5, 7);
-        String day = date.substring(8, 10);
-        return day + '/' + month + '/' + year;
     }
 
     private void setDataSuggestion(){

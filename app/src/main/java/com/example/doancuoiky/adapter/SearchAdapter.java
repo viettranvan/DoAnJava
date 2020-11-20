@@ -19,6 +19,7 @@ import java.util.List;
 public class SearchAdapter extends BaseAdapter implements Filterable {
 
     private IClickOnCopyKeySearch iClickOnCopyKeySearch;
+    private IClickOnSearchByKeyword iClickOnSearchByKeyword;
 
     // dung interface de callback su kien ra ben ngoai -> Fragment Cart
     public interface IClickOnCopyKeySearch{
@@ -26,14 +27,23 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         void onClickCopyKeySearch(int index); // truyền vào index -> vị trí cần xóa
     }
 
+    public interface IClickOnSearchByKeyword{
+        void onSearchByKeyword(int index);
+    }
+
     public void onCopyKeySearch(SearchAdapter.IClickOnCopyKeySearch listener){
         this.iClickOnCopyKeySearch = listener;
+    }
+
+    public void onSearchByKeyword(SearchAdapter.IClickOnSearchByKeyword listener){
+        this.iClickOnSearchByKeyword = listener;
     }
 
     Context myContext;
     int myLayout;
     List<Search> arraySearchData;
     ImageView ivCopy;
+    TextView valueSearch;
     CustomFilter filter;
     List<Search> filterList;
 
@@ -66,7 +76,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         view = inflater.inflate(myLayout,null);
 
         // anhs xa va gan gia tri
-        TextView valueSearch = view.findViewById(R.id.value_search );
+        valueSearch = view.findViewById(R.id.value_search );
         ivCopy = view.findViewById(R.id.icon_copy_to_search);
 
 
@@ -80,6 +90,13 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
 
         // gan gia tri
         valueSearch.setText(arraySearchData.get(i).getTitle());
+
+        valueSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iClickOnSearchByKeyword.onSearchByKeyword(i);
+            }
+        });
 
         return view;
     }

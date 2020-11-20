@@ -1,6 +1,7 @@
 package com.example.doancuoiky.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 
 import android.content.res.Resources;
@@ -19,6 +20,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 
@@ -29,10 +35,17 @@ import com.example.doancuoiky.activity.LoginActivity;
 
 import com.example.doancuoiky.activity.MainActivity;
 import com.example.doancuoiky.activity.OrderManagementActivity;
+import com.example.doancuoiky.modal.Order;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -62,6 +75,9 @@ public class ProfileFragment extends Fragment {
         setOnClick();
 
         setData();
+
+        setDataUserOrder(getContext());
+
         return view;
     }
 
@@ -278,4 +294,54 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    public static void setDataUserOrder(Context context){
+        if(GlobalVariable.arrayProfile != null) {
+            GlobalVariable.arrayOrder.clear();
+            StringRequest request = new StringRequest(StringRequest.Method.GET, GlobalVariable.GET_ORDER_URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+
+                        JSONObject object = new JSONObject(response);
+                        JSONArray data = object.getJSONArray("data");
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject dataObject = (JSONObject) data.get(i);
+                            String id_user = dataObject.getString("id_user");
+                            if (id_user.equals(GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_ID_USER))) {
+                                GlobalVariable.arrayOrder.add(new Order(
+                                        dataObject.getString("id_bill"),
+                                        formatDate(dataObject.getString("date_order")),
+                                        Integer.parseInt(dataObject.getString("bill_status")),
+                                        Integer.parseInt(dataObject.getString("total"))
+                                ));
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Authorization", GlobalVariable.TOKEN);
+                    return params;
+                }
+            };
+
+            RequestQueue queue = Volley.newRequestQueue(context);
+            queue.add(request);
+        }
+    }
+
+    private static String formatDate(String date){
+        String year = date.substring(0, 4);
+        String month = date.substring(5, 7);
+        String day = date.substring(8, 10);
+        return day + '/' + month + '/' + year;
+    }
 }

@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.OrderDetailAdapter;
+import com.example.doancuoiky.fragment.ProfileFragment;
 import com.example.doancuoiky.modal.OrderDetail;
 
 import org.json.JSONArray;
@@ -59,6 +60,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final int pos = intent.getIntExtra("gotoOrderDetail", 0);
+        final String orderID = intent.getStringExtra("orderID");
         int status = intent.getIntExtra("orderStatus", 0);
         int total = intent.getIntExtra("orderTotal", 0);
 
@@ -76,7 +78,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        onDeleteOrder(GlobalVariable.arrayOrder.get(pos).getId_bill_order());
+                        onDeleteOrder(orderID);
                     }
                 });
                 builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -176,7 +178,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                     JSONObject result = object.getJSONObject("result");
                     int code = Integer.parseInt(result.getString("code"));
                     if(code == 0){
-                        MainActivity.setDataUserOrder(OrderDetailActivity.this);
+                        ProfileFragment.setDataUserOrder(OrderDetailActivity.this);
                         Toast.makeText(OrderDetailActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(OrderDetailActivity.this,MainActivity.class);
                         intent.putExtra("gotoProfile","profile");

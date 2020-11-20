@@ -145,6 +145,7 @@
     <string name="search">Tìm kiếm</string>
     <string name="cart">Giỏ hàng</string>
     <string name="text_title_suggestion">Sản phẩm thịnh hành</string>
+    <string name="text_title_search_keyword">Kết quả tìm kiếm cho: </string>
 
     <!-- drawable menu -->
     <string name="home">Trang chính</string>

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,12 +49,13 @@ public class SearchFragment extends Fragment {
     SearchView searchView;
     ArrayList<Product> arraySearch;
     TextView tvNoSearchResultReturn;
+    TextView searchKeyword;
 
     private RecyclerView rcvSearch, rcvSuggestion;
     private LinearLayout layoutSuggestion;
     ProductSearchAdapter searchAdapter;
     ProductSuggestionAdapter adapterSuggestion;
-
+    RelativeLayout layoutResultSearch;
 
     @Nullable
     @Override
@@ -143,7 +143,8 @@ public class SearchFragment extends Fragment {
         arrayListProductName = new ArrayList<>();
         rcvSuggestion = view.findViewById(R.id.rcv_suggestion_rate_greater_than_4_3);
         layoutSuggestion = view.findViewById(R.id.layout_suggestion_rate_greater_than_4_3);
-
+        layoutResultSearch = view.findViewById(R.id.layout_result_search);
+        searchKeyword = view.findViewById(R.id.tv_search_keyword);
         // set data
         for(int i = 0;i < GlobalVariable.arrayProduct.size(); i++){
             arrayListProductName.add(new Search(GlobalVariable.arrayProduct.get(i).getProductName().trim()));
@@ -199,11 +200,16 @@ public class SearchFragment extends Fragment {
         txtSearch = ((EditText)searchView.findViewById(androidx.appcompat.R.id.search_src_text));
         txtSearch.setHint("Nhập tên sản phẩm bạn muốn tìm kiếm");
 
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                return false;
+            }
+        });
+
         txtSearch.setHintTextColor(Color.LTGRAY);
         txtSearch.setTextColor(Color.WHITE);
-        txtSearch.setFocusable(true);
 
-        Log.d("TAG1", "onCreateOptionsMenu: focus:" +txtSearch.isFocusable() );
 
         adapterHistory.onCopyKeySearch(new SearchAdapter.IClickOnCopyKeySearch() {
             @Override
@@ -211,6 +217,42 @@ public class SearchFragment extends Fragment {
                 String text = arrayListHistory.get(index).getTitle();
                 if(menu.findItem(R.id.ic_search_toolbar).expandActionView()){
                     txtSearch.setText(text);
+                }
+            }
+        });
+
+        adapterHistory.onSearchByKeyword(new SearchAdapter.IClickOnSearchByKeyword() {
+            @Override
+            public void onSearchByKeyword(int index) {
+                String text = arrayListHistory.get(index).getTitle();
+                if(menu.findItem(R.id.ic_search_toolbar).expandActionView()){
+                    txtSearch.setText(text);
+
+                    checkAddHistory(text);
+                    txtSearch.clearFocus();
+                    lvData.setVisibility(View.GONE);
+                    hideKeyboard(view);
+                    checkFocus();
+
+                    showDataSearchReturn(text);
+                }
+            }
+        });
+
+        adapterData.onSearchByKeyword(new SearchAdapter.IClickOnSearchByKeyword() {
+            @Override
+            public void onSearchByKeyword(int index) {
+                String text = arrayListProductName.get(index).getTitle();
+                if(menu.findItem(R.id.ic_search_toolbar).expandActionView()){
+                    txtSearch.setText(text);
+
+                    checkAddHistory(text);
+                    txtSearch.clearFocus();
+                    lvData.setVisibility(View.GONE);
+                    hideKeyboard(view);
+                    checkFocus();
+
+                    showDataSearchReturn(text);
                 }
             }
         });
@@ -249,8 +291,8 @@ public class SearchFragment extends Fragment {
                 }
                 else{
                     lvData.setVisibility(View.INVISIBLE);
-                    rcvSearch.setVisibility(View.GONE);
-
+                    layoutResultSearch.setVisibility(View.GONE);
+                    tvNoSearchResultReturn.setVisibility(View.GONE);
                     checkData();
                 }
                 return true;
@@ -267,18 +309,24 @@ public class SearchFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
-                    rcvSearch.setVisibility(View.GONE);
-                    lvData.setVisibility(View.VISIBLE);
+                    if(txtSearch.getText().toString().length() == 0){
+                        lvData.setVisibility(View.GONE);
+                    }else{
+                        lvData.setVisibility(View.VISIBLE);
+                    }
+                    layoutResultSearch.setVisibility(View.GONE);
                     layoutSuggestion.setVisibility(View.GONE);
                 } else {
                     lvData.setVisibility(View.GONE);
+
                 }
             }
         });
     }
 
     private void showDataSearchReturn(String keyword) {
-        rcvSearch.setVisibility(View.VISIBLE);
+        layoutResultSearch.setVisibility(View.VISIBLE);
+        searchKeyword.setText(keyword);
 
         setDataSearch(keyword);
     }
