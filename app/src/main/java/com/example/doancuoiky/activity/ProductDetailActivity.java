@@ -65,7 +65,7 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    private TextView tvProductName, tvProductPrice, tvDescription, tvProductPriceSale;
+    private TextView tvProductName, tvProductPrice, tvDescription, tvProductPriceSale, tvProductSalePercent;
     private ImageView goBack;
     Toolbar toolbar;
     private ViewPager viewPager;
@@ -150,16 +150,22 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
         int price_sale = (GlobalVariable.arrayProduct.get(pos).getProductPrice() /100) * GlobalVariable.arrayProduct.get(pos).getSale();
-        String sale = "-" + GlobalVariable.arrayProduct.get(pos).getSale() + "%:" +
-                decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice()- price_sale) + " đ";
+
+        String salePercent = "-" + GlobalVariable.arrayProduct.get(pos).getSale() + "%";
+        String sale = decimalFormat.format(GlobalVariable.arrayProduct.get(pos).getProductPrice()- price_sale) + " đ";
 
         tvProductPrice.setText(_price);
 
         if(GlobalVariable.arrayProduct.get(pos).getSale() == 0){
             tvProductPriceSale.setVisibility(View.GONE);
+            tvProductSalePercent.setVisibility(View.GONE);
         }else{
             tvProductPrice.setPaintFlags(tvProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            tvProductPrice.setTextColor(Color.rgb(170,170,170));
+            tvProductPrice.setTextColor(Color.rgb(0,0,0));
+            tvProductPrice.setTextSize(14f);
+            tvProductSalePercent.setText(salePercent);
+            tvProductSalePercent.setVisibility(View.VISIBLE);
+
 
             tvProductPriceSale.setVisibility(View.VISIBLE);
             tvProductPriceSale.setText(sale);
@@ -248,6 +254,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         addToCart = findViewById(R.id.btn_add_product_to_cart);
         tvDescription = findViewById(R.id.tv_description_detail_activity);
         description = findViewById(R.id.lv_description);
+        tvProductSalePercent = findViewById(R.id.product_detail_sale_percent);
 
         rtbTotal = findViewById(R.id.rtb_total_rating_product_title);
         tvQuantityComment = findViewById(R.id.tv_quantity_rating_product_title);
@@ -694,4 +701,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(ProductDetailActivity.this);
         queue.add(request);
     }
+
+
 }

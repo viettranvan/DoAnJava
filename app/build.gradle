@@ -47,4 +47,6 @@ dependencies {
     // thu vien load anh tu url
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    implementation 'com.borjabravo:readmoretextview:2.1.0'
+
 }

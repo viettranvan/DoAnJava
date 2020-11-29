@@ -277,23 +277,22 @@ public class ChangeInfoActivity extends AppCompatActivity {
                                     }
                                 });
                                 builder.show();
-
                             }
                             else{
-                                Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại",
+                                Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại1",
                                         Toast.LENGTH_LONG).show();
                                 Log.d("TAG1", "error1: ");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại => " + e.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại2 => " + e.toString(), Toast.LENGTH_SHORT).show();
                             Log.d("TAG1", "error: => " + e.toString());
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại",
+                Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại3",
                         Toast.LENGTH_LONG).show();
                 Log.d("TAG1", "error2: => " + error.toString());
 
@@ -309,7 +308,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 params.put("email", _email);
                 params.put("birthday", _birthday);
                 params.put("gender", _gender);
-                params.put("citizen_identification", _citizen);
+                params.put("citizen_identification", _citizen+"");
                 params.put("phone_number", _phone);
                 params.put("address", _address);
                 params.put("avatar",_avatar);

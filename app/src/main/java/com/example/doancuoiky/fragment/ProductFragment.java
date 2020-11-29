@@ -71,7 +71,6 @@ public class ProductFragment extends Fragment  {
 
         anhXa(mView);
 
-
         setAdapterRecycleViewProduct();
 
         productAdapter.gotoDetail(new ProductAdapter.IClickGotoDetailListener() {
@@ -81,6 +80,7 @@ public class ProductFragment extends Fragment  {
                 Intent intent = new Intent(getContext(), ProductDetailActivity.class);
                 intent.putExtra("productDetail", idProduct);
                 Objects.requireNonNull(getContext()).startActivity(intent);
+
             }
         });
 

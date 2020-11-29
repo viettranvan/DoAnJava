@@ -216,7 +216,7 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác!",Toast.LENGTH_LONG ).show();
+                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác!2",Toast.LENGTH_LONG ).show();
                 Log.d("TAG1", "data user => " + textInputUsername.getText().toString() + "\n"+
                         textInputPassword.getText().toString());
             }
@@ -228,6 +228,7 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("loginname", textInputUsername.getText().toString().trim());
                 params.put("userpassword", textInputPassword.getText().toString().trim());
+
 
                 return params;
             }

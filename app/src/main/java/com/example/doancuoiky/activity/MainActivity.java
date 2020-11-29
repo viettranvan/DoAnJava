@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView headerName, headerEmail;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +89,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initData();
 
         anhXa();
+
+        for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
+            Log.d("TAGSALE", "sale => " + GlobalVariable.arrayProduct.get(i).getProductName() + " :"
+                    + GlobalVariable.arrayProduct.get(i).getSale());
+        }
 
         setUpViewPager(); /*chuyển trang bằng cách click vào icon hoặc vuốt*/
 

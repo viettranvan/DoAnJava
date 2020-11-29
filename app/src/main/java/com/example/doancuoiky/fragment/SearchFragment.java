@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.example.doancuoiky.activity.ProductDetailActivity;
 import com.example.doancuoiky.adapter.ProductSearchAdapter;
 import com.example.doancuoiky.adapter.ProductSuggestionAdapter;
 import com.example.doancuoiky.adapter.SearchAdapter;
+import com.example.doancuoiky.adapter.SearchHistoryAdapter;
 import com.example.doancuoiky.modal.Product;
 import com.example.doancuoiky.modal.Search;
 
@@ -39,10 +41,11 @@ import java.util.Objects;
 
 public class SearchFragment extends Fragment {
 
-    private ListView lvData,lvHistory;
+    private ListView lvDataNameProduct,lvHistory;
     private ArrayList<Search> arrayListProductName, arrayListHistory;
     private TextView clearHistory;
-    private SearchAdapter adapterData,adapterHistory;
+    private SearchAdapter adapterData;
+    private SearchHistoryAdapter adapterHistory;
     private LinearLayout layoutHistory;
     private View view;
     EditText txtSearch;
@@ -59,7 +62,8 @@ public class SearchFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_search, container, false);
 
         anhXa(view);
@@ -134,7 +138,7 @@ public class SearchFragment extends Fragment {
             arraySearch = new ArrayList<>();
         }
 
-        lvData = view.findViewById(R.id.lv_search);
+        lvDataNameProduct = view.findViewById(R.id.lv_search);
         lvHistory = view.findViewById(R.id.lv_history_search);
         clearHistory = view.findViewById(R.id.tv_delete_history_search_fragment);
         layoutHistory = view.findViewById(R.id.layout_history_search_search_fragment);
@@ -156,12 +160,13 @@ public class SearchFragment extends Fragment {
 
 
         adapterData = new SearchAdapter(getContext(),R.layout.item_search,arrayListProductName);
-        lvData.setAdapter(adapterData);
+        lvDataNameProduct.setAdapter(adapterData);
 
-        adapterHistory = new SearchAdapter(getContext(),R.layout.item_search,arrayListHistory);
+        adapterHistory = new SearchHistoryAdapter(getContext(),R.layout.item_search,arrayListHistory);
         lvHistory.setAdapter(adapterHistory);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL,false);
         rcvSuggestion.setLayoutManager(linearLayoutManager);
 
         adapterSuggestion = new ProductSuggestionAdapter(getContext(),GlobalVariable.arraySuggestion);
@@ -211,9 +216,10 @@ public class SearchFragment extends Fragment {
         txtSearch.setTextColor(Color.WHITE);
 
 
-        adapterHistory.onCopyKeySearch(new SearchAdapter.IClickOnCopyKeySearch() {
+        adapterHistory.onCopyKeySearch(new SearchHistoryAdapter.IClickOnCopyKeySearch() {
             @Override
             public void onClickCopyKeySearch(int index) {
+
                 String text = arrayListHistory.get(index).getTitle();
                 if(menu.findItem(R.id.ic_search_toolbar).expandActionView()){
                     txtSearch.setText(text);
@@ -221,7 +227,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        adapterHistory.onSearchByKeyword(new SearchAdapter.IClickOnSearchByKeyword() {
+        adapterHistory.onSearchByKeyword(new SearchHistoryAdapter.IClickOnSearchByKeyword() {
             @Override
             public void onSearchByKeyword(int index) {
                 String text = arrayListHistory.get(index).getTitle();
@@ -230,7 +236,7 @@ public class SearchFragment extends Fragment {
 
                     checkAddHistory(text);
                     txtSearch.clearFocus();
-                    lvData.setVisibility(View.GONE);
+                    lvDataNameProduct.setVisibility(View.GONE);
                     hideKeyboard(view);
                     checkFocus();
 
@@ -248,7 +254,7 @@ public class SearchFragment extends Fragment {
 
                     checkAddHistory(text);
                     txtSearch.clearFocus();
-                    lvData.setVisibility(View.GONE);
+                    lvDataNameProduct.setVisibility(View.GONE);
                     hideKeyboard(view);
                     checkFocus();
 
@@ -259,10 +265,10 @@ public class SearchFragment extends Fragment {
 
         adapterData.onCopyKeySearch(new SearchAdapter.IClickOnCopyKeySearch() {
             @Override
-            public void onClickCopyKeySearch(int index) {
-                String text = arrayListProductName.get(index).getTitle();
+            public void onClickCopyKeySearch(String product_name) {
+//                String text = arrayListProductName.get(index).getTitle();
                 if(menu.findItem(R.id.ic_search_toolbar).expandActionView()){
-                    txtSearch.setText(text);
+                    txtSearch.setText(product_name);
                 }
             }
         });
@@ -274,7 +280,7 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 checkAddHistory(query);
                 txtSearch.clearFocus();
-                lvData.setVisibility(View.GONE);
+                lvDataNameProduct.setVisibility(View.GONE);
                 hideKeyboard(view);
                 checkFocus();
 
@@ -285,12 +291,12 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(newText.length() > 0){
-                    lvData.setVisibility(View.VISIBLE);
+                    lvDataNameProduct.setVisibility(View.VISIBLE);
                     adapterData.getFilter().filter(newText);
                     layoutHistory.setVisibility(View.INVISIBLE);
                 }
                 else{
-                    lvData.setVisibility(View.INVISIBLE);
+                    lvDataNameProduct.setVisibility(View.INVISIBLE);
                     layoutResultSearch.setVisibility(View.GONE);
                     tvNoSearchResultReturn.setVisibility(View.GONE);
                     checkData();
@@ -310,14 +316,14 @@ public class SearchFragment extends Fragment {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
                     if(txtSearch.getText().toString().length() == 0){
-                        lvData.setVisibility(View.GONE);
+                        lvDataNameProduct.setVisibility(View.GONE);
                     }else{
-                        lvData.setVisibility(View.VISIBLE);
+                        lvDataNameProduct.setVisibility(View.VISIBLE);
                     }
                     layoutResultSearch.setVisibility(View.GONE);
                     layoutSuggestion.setVisibility(View.GONE);
                 } else {
-                    lvData.setVisibility(View.GONE);
+                    lvDataNameProduct.setVisibility(View.GONE);
 
                 }
             }

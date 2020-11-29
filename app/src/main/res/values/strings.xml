@@ -267,4 +267,10 @@
     <string name="btn_goto_main">Để sau</string>
 
 
+    <string name="text_show_more">Mở rộng</string>
+    <string name="text_show_less">Thu gọn</string>
+
+
+
+
 </resources>

@@ -40,7 +40,6 @@ public class PhotoProductAdapter extends PagerAdapter {
             Picasso.get()
                     .load(photo.getProductImage())
                     .into(imgPhoto);
-//            Glide.with(mContext).load(photo.getResourceID()).into(imgPhoto);
         }
 
         // add view to view group

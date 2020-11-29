@@ -1,7 +1,6 @@
 package com.example.doancuoiky.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.modal.Search;
@@ -18,7 +16,7 @@ import com.example.doancuoiky.modal.Search;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchAdapter extends BaseAdapter implements Filterable {
+public class SearchHistoryAdapter extends BaseAdapter  {
 
     private IClickOnCopyKeySearch iClickOnCopyKeySearch;
     private IClickOnSearchByKeyword iClickOnSearchByKeyword;
@@ -26,18 +24,18 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
     // dung interface de callback su kien ra ben ngoai -> Fragment Cart
     public interface IClickOnCopyKeySearch{
         // dinh nghia cho method muon xu ly
-        void onClickCopyKeySearch(String product_name); // truyền vào index -> vị trí cần xóa
+        void onClickCopyKeySearch(int index); // truyền vào index -> vị trí cần xóa
     }
 
     public interface IClickOnSearchByKeyword{
         void onSearchByKeyword(int index);
     }
 
-    public void onCopyKeySearch(SearchAdapter.IClickOnCopyKeySearch listener){
+    public void onCopyKeySearch(SearchHistoryAdapter.IClickOnCopyKeySearch listener){
         this.iClickOnCopyKeySearch = listener;
     }
 
-    public void onSearchByKeyword(SearchAdapter.IClickOnSearchByKeyword listener){
+    public void onSearchByKeyword(SearchHistoryAdapter.IClickOnSearchByKeyword listener){
         this.iClickOnSearchByKeyword = listener;
     }
 
@@ -46,14 +44,11 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
     List<Search> arraySearchData;
     ImageView ivCopy;
     TextView valueSearch;
-    CustomFilter filter;
-    List<Search> filterList;
 
-    public SearchAdapter(Context context,int layout,List<Search> array){
+    public SearchHistoryAdapter(Context context,int layout,List<Search> array){
         myContext = context;
         myLayout = layout;
         arraySearchData = array;
-        this.filterList = array;
     }
 
     @Override
@@ -64,8 +59,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public Object getItem(int i) {
-        return arraySearchData.get(i);
-//        return null;
+        return null;
     }
 
     @Override
@@ -75,8 +69,6 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
-
-
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(myLayout,null);
 
@@ -89,11 +81,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         ivCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                notifyDataSetChanged();
-//                Toast.makeText(view.getContext(), "id => " +
-//                        arraySearchData.get(i).getTitle()
-//                        , Toast.LENGTH_LONG).show();
-                iClickOnCopyKeySearch.onClickCopyKeySearch(arraySearchData.get(i).getTitle());
+                iClickOnCopyKeySearch.onClickCopyKeySearch(i);
             }
         });
 
@@ -103,7 +91,6 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         valueSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 iClickOnSearchByKeyword.onSearchByKeyword(i);
             }
         });
@@ -111,47 +98,4 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         return view;
     }
 
-    @Override
-    public Filter getFilter() {
-
-        if(filter == null){
-            filter = new CustomFilter();
-        }
-        return filter;
-    }
-
-    class CustomFilter extends Filter{
-
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            FilterResults filterResults = new FilterResults();
-
-            if(charSequence == null || charSequence.length() == 0 ){
-                filterResults.count = filterList.size();
-                filterResults.values = filterList;
-            }
-            else{
-                String searchStr = charSequence.toString().toLowerCase();
-                List<Search> filters = new ArrayList<>();
-
-                for(int i = 0;i < filterList.size();i++){
-                    if(filterList.get(i).getTitle().toLowerCase().contains(searchStr)){
-                        Search s = new Search(filterList.get(i).getTitle());
-                        filters.add(s);
-                    }
-                }
-                filterResults.count = filters.size();
-                filterResults.values = filters;
-            }
-
-            return filterResults;
-        }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            arraySearchData = (List<Search>) filterResults.values;
-
-            notifyDataSetChanged();
-        }
-    }
 }

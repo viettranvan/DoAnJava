@@ -41,7 +41,7 @@ public class CartAdapter extends BaseAdapter{
     Context myContext;
     int myLayout;
     List<Cart> arrayCart;
-    TextView cartProductName,cartProductDescription,cartProductPrice,cartProductCount,cartProductPriceSale;
+    TextView cartProductName,cartProductDescription,cartProductPrice,cartProductCount,cartProductPriceSale, tvProductSalePercent;
     Button btnMinus,btnPlus,btnDeleteProduct,btnDetail;
     ImageView imgCartProduct;
 
@@ -147,6 +147,7 @@ public class CartAdapter extends BaseAdapter{
         imgCartProduct = view.findViewById(R.id.img_cart_product);
         btnDetail = view.findViewById(R.id.btn_cart_detail);
         cartProductPriceSale = view.findViewById(R.id.tv_cart_product_price_sale);
+        tvProductSalePercent = view.findViewById(R.id.tv_cart_product_sale_percent);
 
         // gán giá trị
         cartProductName.setText(arrayCart.get(i).getName());
@@ -164,18 +165,25 @@ public class CartAdapter extends BaseAdapter{
 
 
         int price_sale = (arrayCart.get(i).getPrice() /100) * arrayCart.get(i).getSale();
-        String sale = "-" + arrayCart.get(i).getSale() + "%:" + decimalFormat.format(arrayCart.get(i).getPrice()- price_sale) + " đ";
+        String salePercent = "-" + arrayCart.get(i).getSale() + "%";
+        String sale = decimalFormat.format(arrayCart.get(i).getPrice()- price_sale) + " đ";
 
         cartProductPrice.setText(_price);
 
         if(arrayCart.get(i).getSale() == 0){
             cartProductPriceSale.setVisibility(View.GONE);
+            tvProductSalePercent.setVisibility(View.GONE);
         }else{
             cartProductPrice.setPaintFlags(cartProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            cartProductPrice.setTextColor(Color.rgb(170,170,170));
+            cartProductPrice.setTextColor(Color.rgb(0,0,0));
+            cartProductPrice.setTextSize(14f);
+            tvProductSalePercent.setText(salePercent);
+            tvProductSalePercent.setVisibility(View.VISIBLE);
 
             cartProductPriceSale.setVisibility(View.VISIBLE);
             cartProductPriceSale.setText(sale);
+
+
         }
 
 
