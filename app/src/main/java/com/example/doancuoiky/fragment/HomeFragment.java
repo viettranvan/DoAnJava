@@ -101,8 +101,12 @@ public class HomeFragment extends Fragment {
         }
 
         if(GlobalVariable.arrayProduct.size() > 6){
-            for(int i = 0 ;i < 6;i++){
-                productNew.add(GlobalVariable.arrayProduct.get(i));
+            for(int i = 0 ;i < GlobalVariable.arrayProduct.size();i++){
+                String id = GlobalVariable.arrayProduct.get(i).getProductID();
+                if(id.equals("19") || id.equals("22") || id.equals("13") ||
+                        id.equals("27") || id.equals("25") || id.equals("35")) {
+                    productNew.add(GlobalVariable.arrayProduct.get(i));
+                }
             }
         }
         else{
@@ -119,10 +123,11 @@ public class HomeFragment extends Fragment {
     private List<Photo> getListPhoto(){
         List<Photo> list = new ArrayList<>();
         list.add(new Photo(R.drawable.iphone_banner_resize));
-        list.add(new Photo(R.drawable.vivo_banner_resize));
+        list.add(new Photo(R.drawable.banner_laptop_01));
         list.add(new Photo(R.drawable.vsmart_banner_resize));
-        list.add(new Photo(R.drawable.samsum_banner_resize));
+        list.add(new Photo(R.drawable.banner_laptop_02));
         list.add(new Photo(R.drawable.realme_banner_resize));
+        list.add(new Photo(R.drawable.banner_laptop_03));
         list.add(new Photo(R.drawable.xiaomi_banner_resize));
 
         return list;

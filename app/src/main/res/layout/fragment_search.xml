@@ -111,7 +111,9 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textColor="@color/bg_black"
-                android:padding="5dp"/>
+                android:padding="5dp"
+                android:maxLines="2"
+                android:ellipsize="end"/>
         </LinearLayout>
 
 

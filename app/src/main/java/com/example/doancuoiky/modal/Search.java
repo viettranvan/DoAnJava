@@ -4,6 +4,7 @@ public class Search {
 
     public String title;
 
+
     public Search(String title) {
         this.title = title;
     }

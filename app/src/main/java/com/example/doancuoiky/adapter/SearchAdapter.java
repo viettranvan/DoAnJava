@@ -1,6 +1,7 @@
 package com.example.doancuoiky.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.doancuoiky.R;
 import com.example.doancuoiky.modal.Search;
@@ -24,11 +26,11 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
     // dung interface de callback su kien ra ben ngoai -> Fragment Cart
     public interface IClickOnCopyKeySearch{
         // dinh nghia cho method muon xu ly
-        void onClickCopyKeySearch(int index); // truyền vào index -> vị trí cần xóa
+        void onClickCopyKeySearch(String product_name); // truyền vào index -> vị trí cần xóa
     }
 
     public interface IClickOnSearchByKeyword{
-        void onSearchByKeyword(int index);
+        void onSearchByKeyword(String product_name);
     }
 
     public void onCopyKeySearch(SearchAdapter.IClickOnCopyKeySearch listener){
@@ -62,7 +64,8 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return arraySearchData.get(i);
+//        return null;
     }
 
     @Override
@@ -72,6 +75,8 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
+
+
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(myLayout,null);
 
@@ -84,7 +89,9 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         ivCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                iClickOnCopyKeySearch.onClickCopyKeySearch(i);
+                notifyDataSetChanged();
+
+                iClickOnCopyKeySearch.onClickCopyKeySearch(arraySearchData.get(i).getTitle());
             }
         });
 
@@ -94,7 +101,8 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         valueSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iClickOnSearchByKeyword.onSearchByKeyword(i);
+
+                iClickOnSearchByKeyword.onSearchByKeyword(arraySearchData.get(i).getTitle());
             }
         });
 

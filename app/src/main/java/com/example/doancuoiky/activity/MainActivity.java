@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView headerName, headerEmail;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +89,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initData();
 
         anhXa();
+
+        for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
+            Log.d("TAGSALE", "sale => " + GlobalVariable.arrayProduct.get(i).getProductName() + " :"
+                    + GlobalVariable.arrayProduct.get(i).getSale());
+        }
 
         setUpViewPager(); /*chuyển trang bằng cách click vào icon hoặc vuốt*/
 
@@ -663,9 +669,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         float percent = (float) totalRate / numberOfRate;
 
                                         if(percent >= 4.3f){
-                                            GlobalVariable.arraySuggestion.add(new Product(id_product,product_type,product_name
-                                                    , desciption,Integer.parseInt(price),productImage,percent,Integer.parseInt(sale)
-                                            ));
+                                            if(sale.equals("null") || sale.equals("0")){
+                                                GlobalVariable.arraySuggestion.add(new Product(id_product,product_type,product_name
+                                                        , desciption,Integer.parseInt(price),productImage,percent,0
+                                                ));
+                                            }else {
+                                                GlobalVariable.arraySuggestion.add(new Product(id_product, product_type, product_name
+                                                        , desciption, Integer.parseInt(price), productImage, percent, Integer.parseInt(sale)
+                                                ));
+                                            }
                                         }
                                     }
 

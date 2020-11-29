@@ -64,18 +64,23 @@ public class ProductSearchAdapter extends RecyclerView.Adapter<ProductSearchAdap
         String _price = "Giá: " + decimalFormat.format(productNew.getProductPrice())+ " đ";
 
         int price_sale = (productNew.getProductPrice() /100) * productNew.getSale();
-        String sale = "-" + productNew.getSale() + "%:" + decimalFormat.format(productNew.getProductPrice() - price_sale) + " đ";
+        String salePercent = "-" + productNew.getSale() + "%";
+        String sale = decimalFormat.format(productNew.getProductPrice() - price_sale) + " đ";
 
         holder.tvProductPrice.setText(_price);
 
         if(price_sale > 0){
             holder.tvProductPrice.setPaintFlags(holder.tvProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tvProductPrice.setTextColor(Color.rgb(170,170,170));
+            holder.tvProductPrice.setTextColor(Color.rgb(0,0,0));
+            holder.tvProductPrice.setTextSize(14f);
+            holder.tvProductSalePercent.setText(salePercent);
+            holder.tvProductSalePercent.setVisibility(View.VISIBLE);
 
             holder.tvProductPriceSale.setVisibility(View.VISIBLE);
             holder.tvProductPriceSale.setText(sale);
         }else{
             holder.tvProductPriceSale.setVisibility(View.GONE);
+            holder.tvProductSalePercent.setVisibility(View.GONE);
         }
 
         Picasso.get()
@@ -97,7 +102,7 @@ public class ProductSearchAdapter extends RecyclerView.Adapter<ProductSearchAdap
 
     public class ItemHolder extends RecyclerView.ViewHolder{
         public ImageView imgProduct;
-        public TextView tvProductName, tvProductDescription, tvProductPrice, tvProductPriceSale;
+        public TextView tvProductName, tvProductDescription, tvProductPrice, tvProductPriceSale,tvProductSalePercent;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,6 +111,7 @@ public class ProductSearchAdapter extends RecyclerView.Adapter<ProductSearchAdap
             tvProductDescription = itemView.findViewById(R.id.tv_product_description_product_search);
             tvProductPrice = itemView.findViewById(R.id.tv_product_price_product_search);
             tvProductPriceSale = itemView.findViewById(R.id.tv_product_price_product_search_sale);
+            tvProductSalePercent = itemView.findViewById(R.id.tv_product_sale_percent_product_search);
         }
     }
 }

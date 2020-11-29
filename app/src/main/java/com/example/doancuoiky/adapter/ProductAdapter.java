@@ -3,6 +3,7 @@ package com.example.doancuoiky.adapter;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull final ProductViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
+
         final Product product = mListProduct.get(position);
         if(product == null){
             return;
@@ -74,9 +77,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         String _price = "Giá: " + decimalFormat.format(product.getProductPrice()) +" đ";
 
         int price_sale = (product.getProductPrice() /100) * product.getSale();
-        String sale = "-" + product.getSale() + "%:" + decimalFormat.format(product.getProductPrice() - price_sale) + " đ";
+        String salePercent = "-" + product.getSale() + "%";
+        String sale = decimalFormat.format(product.getProductPrice() - price_sale) + " đ";
 
         if(product.getSale() == 0){
+            holder.tvProductSalePercent.setVisibility(View.GONE);
             holder.tvProductPrice.setText(_price);
             holder.tvProductPrice.setTextColor(Color.rgb(244,67,54));
             holder.tvProductPrice.setPaintFlags(holder.tvProductPriceSale.getPaintFlags() | Paint.ANTI_ALIAS_FLAG);
@@ -84,7 +89,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }else{
             holder.tvProductPrice.setText(_price);
             holder.tvProductPrice.setPaintFlags(holder.tvProductPriceSale.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tvProductPrice.setTextColor(Color.rgb(170,170,170));
+            holder.tvProductPrice.setTextColor(Color.rgb(0,0,0));
+            holder.tvProductPrice.setTextSize(14f);
+            holder.tvProductSalePercent.setText(salePercent);
+            holder.tvProductSalePercent.setVisibility(View.VISIBLE);
 
             holder.tvProductPriceSale.setVisibility(View.VISIBLE);
             holder.tvProductPriceSale.setText(sale);
@@ -111,6 +119,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                notifyDataSetChanged();
                 iClickGotoDetailListener.onClickGotoDetail(position);
             }
         });
@@ -132,6 +141,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         private TextView tvProductPrice;
         private ImageView imgAddToCart;
         private TextView tvProductPriceSale;
+        private TextView tvProductSalePercent;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -143,7 +153,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             imgAddToCart = itemView.findViewById(R.id.img_add_to_cart);
             relativeLayout = itemView.findViewById(R.id.layout_product);
             tvProductPriceSale = itemView.findViewById(R.id.tv_product_price_sale);
-
+            tvProductSalePercent = itemView.findViewById(R.id.tv_product_sale_percent);
         }
     }
 

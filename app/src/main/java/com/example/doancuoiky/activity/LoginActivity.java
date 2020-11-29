@@ -84,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(LoginActivity.this, "quen mat khau", Toast.LENGTH_SHORT).show();
                 Intent intent2 = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                 startActivity(intent2);
             }
@@ -216,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác!",Toast.LENGTH_LONG ).show();
+                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác!2",Toast.LENGTH_LONG ).show();
                 Log.d("TAG1", "data user => " + textInputUsername.getText().toString() + "\n"+
                         textInputPassword.getText().toString());
             }
@@ -228,6 +227,7 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("loginname", textInputUsername.getText().toString().trim());
                 params.put("userpassword", textInputPassword.getText().toString().trim());
+
 
                 return params;
             }

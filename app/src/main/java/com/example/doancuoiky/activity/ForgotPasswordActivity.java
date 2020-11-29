@@ -3,9 +3,11 @@ package com.example.doancuoiky.activity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +39,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private Button btnSendMail;
     private EditText edtEmail;
     private boolean isValidEmail = false;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 validateEmail();
                 if (isValidEmail) {
+                    dialog = ProgressDialog.show(ForgotPasswordActivity.this, "", "Vui lòng chờ...",
+                            true);
+                    dialog.show();
+
                     onForgotPassword();
                 }
             }
@@ -69,11 +76,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
-                    Log.d("TAGkh", "response: ");
+
+
                     JSONObject object = new JSONObject(response);
                     JSONObject result = object.getJSONObject("result");
                     int code = Integer.parseInt(result.getString("code"));
                     if (code == 0)  {
+
+                        dialog.dismiss();
                         AlertDialog.Builder builder = new AlertDialog.Builder(ForgotPasswordActivity.this);
                         builder.setTitle("Thông báo");
                         builder.setMessage("Mật khẩu của bạn đã được cập nhật, vui lòng kiểm tra hộp thư và đăng nhập lại");
@@ -98,7 +108,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(ForgotPasswordActivity.this, "Email bạn vừa nhập không chính xác", Toast.LENGTH_LONG).show();
-
+                dialog.dismiss();
             }
         }) {
             @Override

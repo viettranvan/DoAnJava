@@ -39,6 +39,8 @@ public class SplashActivity extends AppCompatActivity {
         loadDataFromServer();
 
         setOnClick();
+
+
     }
 
     private void setOnClick() {
@@ -68,7 +70,9 @@ public class SplashActivity extends AppCompatActivity {
 
     public void loadDataFromServer() {
         GlobalVariable.arrayProduct.clear();
-        StringRequest request = new StringRequest(StringRequest.Method.GET, GlobalVariable.PRODUCT_URL, new Response.Listener<String>() {
+        Log.d("TESTTAG", "vo dc day1");
+        StringRequest request = new StringRequest(StringRequest.Method.GET, GlobalVariable.PRODUCT_URL,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -86,11 +90,12 @@ public class SplashActivity extends AppCompatActivity {
                         final String sale = result.getString("sale");
                         final String productImage = result.getString("link");
 
-
-                        StringRequest request2 = new StringRequest(StringRequest.Method.POST, GlobalVariable.GET_PRODUCT_RATE_URL, new Response.Listener<String>() {
+                        StringRequest request2 = new StringRequest(StringRequest.Method.POST,
+                                GlobalVariable.GET_PRODUCT_RATE_URL, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 try {
+                                    Log.d("SIZEPD", "size:=> " + GlobalVariable.arrayProduct.size());
                                     JSONObject object = new JSONObject(response);
                                     JSONArray data = object.getJSONArray("data");
                                     int oneStar = 0, twoStar = 0, threeStar = 0, fourStar = 0, fiveStar = 0, totalRate = 0, numberOfRate = 0;
@@ -122,26 +127,36 @@ public class SplashActivity extends AppCompatActivity {
                                     // số người đánh giá
                                     numberOfRate = oneStar + twoStar + threeStar + fourStar + fiveStar;
 
-                                    if(numberOfRate == 0){
-                                        GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
-                                                desciption,Integer.parseInt(price),productImage,0f,Integer.parseInt(sale)));
 
+                                    if(numberOfRate == 0){
+                                        if(sale.equals("null") ||  sale.equals("0")){
+                                            GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
+                                                    desciption,Integer.parseInt(price),productImage,0f,0));
+                                        }else{
+                                            GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
+                                                    desciption,Integer.parseInt(price),productImage,0f,Integer.parseInt(sale)));
+                                        }
                                     }else{
                                         float percent = (float)totalRate/numberOfRate;
-
-                                        GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
-                                                desciption,Integer.parseInt(price),productImage,percent,Integer.parseInt(sale)));
-
+                                        if(sale.equals("null") ||  sale.equals("0")){
+                                            GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
+                                                    desciption,Integer.parseInt(price),productImage,percent,0));
+                                        }else{
+                                            GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
+                                                    desciption,Integer.parseInt(price),productImage,percent,Integer.parseInt(sale)));
+                                        }
                                     }
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    Log.d("SIZEPD", "error:=> " + GlobalVariable.arrayProduct.size());
                                 }
                             }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.d("TAGTEST", "onErrorResponse: ");
+                                Log.d("SIZEPD", "error:=> " + GlobalVariable.arrayProduct.size());
                             }
                         }) {
                             @Override
@@ -155,9 +170,12 @@ public class SplashActivity extends AppCompatActivity {
                         queue2.add(request2);
 
                     }
+                    Log.d("TESTTAG", "vo dc day2");
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.d("TESTTAG", "vo dc day3" + e.toString());
                 }
 
             }
@@ -165,6 +183,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("TAG1", "onErrorResponse: " + error.toString());
+                Log.d("TESTTAG", "vo dc day4");
             }
         });
 
@@ -173,3 +192,5 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 }
+
+

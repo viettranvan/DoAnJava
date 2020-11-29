@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +70,6 @@ public class ProductFragment extends Fragment  {
 
         anhXa(mView);
 
-
         setAdapterRecycleViewProduct();
 
         productAdapter.gotoDetail(new ProductAdapter.IClickGotoDetailListener() {
@@ -81,6 +79,7 @@ public class ProductFragment extends Fragment  {
                 Intent intent = new Intent(getContext(), ProductDetailActivity.class);
                 intent.putExtra("productDetail", idProduct);
                 Objects.requireNonNull(getContext()).startActivity(intent);
+
             }
         });
 
@@ -155,9 +154,6 @@ public class ProductFragment extends Fragment  {
                 }
                 else{
                     mArrayProduct.clear();
-                    Toast.makeText(mainActivity, "" + GlobalVariable.arrayProduct.size()
-                            + "\ntype: " + filterType
-                            + "\nprice: " + filterPrice, Toast.LENGTH_LONG).show();
 
                     setTextFilterBy();
 
