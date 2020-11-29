@@ -92,7 +92,7 @@ public class CartFragment extends Fragment  {
                 if(address.length() == 0 || address.equals("null")){
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle("Thông báo");
-                    builder.setMessage("Vui lòng nhập địa chỉ nhận hàng");
+                    builder.setMessage("Vui lòng nhập địa chỉ nhận hàng:");
                     builder.setPositiveButton("Nhập địa chỉ", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -233,7 +233,7 @@ public class CartFragment extends Fragment  {
                receiveAddress = edtAddress.getText().toString();
                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                builder.setTitle("Thông báo");
-               builder.setMessage("Xác nhận giao hàng đến địa:\n" + receiveAddress);
+               builder.setMessage("Xác nhận giao hàng đến địa chỉ:\n" + receiveAddress);
 
                builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                    @Override

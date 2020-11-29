@@ -30,7 +30,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
     }
 
     public interface IClickOnSearchByKeyword{
-        void onSearchByKeyword(int index);
+        void onSearchByKeyword(String product_name);
     }
 
     public void onCopyKeySearch(SearchAdapter.IClickOnCopyKeySearch listener){
@@ -90,9 +90,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
             @Override
             public void onClick(final View view) {
                 notifyDataSetChanged();
-//                Toast.makeText(view.getContext(), "id => " +
-//                        arraySearchData.get(i).getTitle()
-//                        , Toast.LENGTH_LONG).show();
+
                 iClickOnCopyKeySearch.onClickCopyKeySearch(arraySearchData.get(i).getTitle());
             }
         });
@@ -104,7 +102,7 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
             @Override
             public void onClick(View view) {
 
-                iClickOnSearchByKeyword.onSearchByKeyword(i);
+                iClickOnSearchByKeyword.onSearchByKeyword(arraySearchData.get(i).getTitle());
             }
         });
 

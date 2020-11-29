@@ -247,18 +247,17 @@ public class SearchFragment extends Fragment {
 
         adapterData.onSearchByKeyword(new SearchAdapter.IClickOnSearchByKeyword() {
             @Override
-            public void onSearchByKeyword(int index) {
-                String text = arrayListProductName.get(index).getTitle();
+            public void onSearchByKeyword(String product_name) {
                 if(menu.findItem(R.id.ic_search_toolbar).expandActionView()){
-                    txtSearch.setText(text);
+                    txtSearch.setText(product_name);
 
-                    checkAddHistory(text);
+                    checkAddHistory(product_name);
                     txtSearch.clearFocus();
                     lvDataNameProduct.setVisibility(View.GONE);
                     hideKeyboard(view);
                     checkFocus();
 
-                    showDataSearchReturn(text);
+                    showDataSearchReturn(product_name);
                 }
             }
         });
@@ -266,7 +265,6 @@ public class SearchFragment extends Fragment {
         adapterData.onCopyKeySearch(new SearchAdapter.IClickOnCopyKeySearch() {
             @Override
             public void onClickCopyKeySearch(String product_name) {
-//                String text = arrayListProductName.get(index).getTitle();
                 if(menu.findItem(R.id.ic_search_toolbar).expandActionView()){
                     txtSearch.setText(product_name);
                 }

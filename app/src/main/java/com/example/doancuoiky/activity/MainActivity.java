@@ -669,9 +669,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         float percent = (float) totalRate / numberOfRate;
 
                                         if(percent >= 4.3f){
-                                            GlobalVariable.arraySuggestion.add(new Product(id_product,product_type,product_name
-                                                    , desciption,Integer.parseInt(price),productImage,percent,Integer.parseInt(sale)
-                                            ));
+                                            if(sale.equals("null") || sale.equals("0")){
+                                                GlobalVariable.arraySuggestion.add(new Product(id_product,product_type,product_name
+                                                        , desciption,Integer.parseInt(price),productImage,percent,0
+                                                ));
+                                            }else {
+                                                GlobalVariable.arraySuggestion.add(new Product(id_product, product_type, product_name
+                                                        , desciption, Integer.parseInt(price), productImage, percent, Integer.parseInt(sale)
+                                                ));
+                                            }
                                         }
                                     }
 
