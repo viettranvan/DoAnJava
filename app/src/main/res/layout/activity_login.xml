@@ -30,7 +30,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:src="@drawable/meow"
+                android:src="@drawable/login_and_register"
                 android:layout_gravity="center"
                 android:layout_marginBottom="32dp"
                 android:scaleType="centerInside" />

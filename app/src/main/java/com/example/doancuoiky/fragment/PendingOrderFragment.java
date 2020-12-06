@@ -1,5 +1,6 @@
 package com.example.doancuoiky.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
+import com.example.doancuoiky.activity.OrderDetailActivity;
 import com.example.doancuoiky.adapter.OrderAdapter;
 import com.example.doancuoiky.modal.Order;
 
@@ -29,12 +31,12 @@ public class PendingOrderFragment extends Fragment {
     ListView lvPendingOrder;
     ArrayList<Order> arrayPendingOrder;
     RelativeLayout noticeOrderIsEmpty;
-
+    OrderAdapter orderAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pending_oder, container, false);
+        final View view = inflater.inflate(R.layout.fragment_pending_oder, container, false);
 
         anhXa(view);
 
@@ -45,6 +47,18 @@ public class PendingOrderFragment extends Fragment {
             lvPendingOrder.setVisibility(View.VISIBLE);
             noticeOrderIsEmpty.setVisibility(View.GONE);
         }
+
+        orderAdapter.gotoDetail(new OrderAdapter.IClickGoToDetail() {
+            @Override
+            public void onClickGoToDetail(int position) {
+                Intent intent = new Intent(view.getContext(), OrderDetailActivity.class);
+                intent.putExtra("gotoOrderDetail",position);
+                intent.putExtra("orderID",arrayPendingOrder.get(position).getId_bill_order());
+                intent.putExtra("orderStatus",arrayPendingOrder.get(position).getOrder_status());
+                intent.putExtra("orderTotal",arrayPendingOrder.get(position).getTotal());
+                view.getContext().startActivity(intent);
+            }
+        });
 
         return view;
     }
@@ -68,7 +82,7 @@ public class PendingOrderFragment extends Fragment {
                 }
             }
         }
-        OrderAdapter adapter = new OrderAdapter(getContext(),R.layout.item_order,arrayPendingOrder);
-        lvPendingOrder.setAdapter(adapter);
+        orderAdapter = new OrderAdapter(getContext(),R.layout.item_order,arrayPendingOrder);
+        lvPendingOrder.setAdapter(orderAdapter);
     }
 }

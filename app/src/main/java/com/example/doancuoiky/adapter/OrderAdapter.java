@@ -1,20 +1,16 @@
 package com.example.doancuoiky.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.doancuoiky.R;
-import com.example.doancuoiky.activity.OrderDetailActivity;
 import com.example.doancuoiky.modal.Order;
-
-import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -24,8 +20,17 @@ public class OrderAdapter extends BaseAdapter {
     Context mContex;
     int mLayout;
     List<Order> mArrayOrder;
+    private IClickGoToDetail iClickGoToDetail;
 
+    // dung interface de callback su kien ra ben ngoai
+    public interface IClickGoToDetail{
+        // dinh nghia cho method muon xu ly
+        void onClickGoToDetail(int position);
+    }
 
+    public void gotoDetail(IClickGoToDetail listener){
+        this.iClickGoToDetail = listener;
+    }
 
     public OrderAdapter(Context context, int layout, List<Order> order){
         mContex = context;
@@ -48,6 +53,7 @@ public class OrderAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("ViewHolder")
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
@@ -86,12 +92,7 @@ public class OrderAdapter extends BaseAdapter {
         btnGoToDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), OrderDetailActivity.class);
-                intent.putExtra("gotoOrderDetail",i);
-                intent.putExtra("orderID",mArrayOrder.get(i).getId_bill_order());
-                intent.putExtra("orderStatus",mArrayOrder.get(i).getOrder_status());
-                intent.putExtra("orderTotal",mArrayOrder.get(i).getTotal());
-                view.getContext().startActivity(intent);
+                iClickGoToDetail.onClickGoToDetail(i);
             }
         });
 

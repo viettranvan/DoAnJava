@@ -14,8 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -59,12 +57,11 @@ public class OrderDetailActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        final int pos = intent.getIntExtra("gotoOrderDetail", 0);
         final String orderID = intent.getStringExtra("orderID");
         int status = intent.getIntExtra("orderStatus", 0);
         int total = intent.getIntExtra("orderTotal", 0);
 
-        getListOrderDetail(pos);
+        getListOrderDetail(orderID);
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String _total = decimalFormat.format(total) + " đ";
         tvTotal.setText(_total);
@@ -120,7 +117,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     }
 
-    private void getListOrderDetail(final int position) {
+    private void getListOrderDetail(final String idBill) {
         StringRequest request = new StringRequest(StringRequest.Method.POST, GlobalVariable.GET_ORDER_DETAIL_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -161,7 +158,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("id_bill", GlobalVariable.arrayOrder.get(position).getId_bill_order());
+                params.put("id_bill", idBill);
                 return params;
             }
         };
@@ -196,14 +193,14 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         }){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String,String> params = new HashMap<>();
                 params.put("Authorization",GlobalVariable.TOKEN);
                 return params;
             }
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 Map<String,String> params = new HashMap<>();
                 params.put("id_bill",id_bill);
                 return params;

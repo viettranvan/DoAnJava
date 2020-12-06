@@ -1,5 +1,6 @@
 package com.example.doancuoiky.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
+import com.example.doancuoiky.activity.OrderDetailActivity;
 import com.example.doancuoiky.adapter.OrderAdapter;
 import com.example.doancuoiky.modal.Order;
 
@@ -23,11 +25,11 @@ public class ShippingOderFragment extends Fragment {
     ListView lvShippingOrder;
     ArrayList<Order> arrayShippingOrder;
     RelativeLayout noticeOrderIsEmpty;
-
+    OrderAdapter orderAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shipping_oder,container,false);
+        final View view = inflater.inflate(R.layout.fragment_shipping_oder,container,false);
 
         anhXa(view);
         if(arrayShippingOrder.size() == 0){
@@ -37,6 +39,18 @@ public class ShippingOderFragment extends Fragment {
             lvShippingOrder.setVisibility(View.VISIBLE);
             noticeOrderIsEmpty.setVisibility(View.GONE);
         }
+
+        orderAdapter.gotoDetail(new OrderAdapter.IClickGoToDetail() {
+            @Override
+            public void onClickGoToDetail(int position) {
+                Intent intent = new Intent(view.getContext(), OrderDetailActivity.class);
+                intent.putExtra("gotoOrderDetail",position);
+                intent.putExtra("orderID",arrayShippingOrder.get(position).getId_bill_order());
+                intent.putExtra("orderStatus",arrayShippingOrder.get(position).getOrder_status());
+                intent.putExtra("orderTotal",arrayShippingOrder.get(position).getTotal());
+                view.getContext().startActivity(intent);
+            }
+        });
 
         return view;
     }
@@ -62,7 +76,7 @@ public class ShippingOderFragment extends Fragment {
             }
         }
 
-        OrderAdapter adapter = new OrderAdapter(getContext(),R.layout.item_order,arrayShippingOrder);
-        lvShippingOrder.setAdapter(adapter);
+        orderAdapter = new OrderAdapter(getContext(),R.layout.item_order,arrayShippingOrder);
+        lvShippingOrder.setAdapter(orderAdapter);
     }
 }

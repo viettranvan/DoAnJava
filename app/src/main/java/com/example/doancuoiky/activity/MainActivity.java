@@ -333,7 +333,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // bottom tab
     private void setUpViewPager() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),
+                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         ahBottomNavigationViewPager.setAdapter(adapter);
         ahBottomNavigationViewPager.setPagingEnabled(true);
 
@@ -430,8 +431,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 GlobalVariable.TOKEN = null;
                 GlobalVariable.arrayOrder.clear();
                 GlobalVariable.arrayProfile.clear();
+                GlobalVariable.arrayCart.clear();
                 GlobalVariable.arrayProfile = null;
                 GlobalVariable.arrayOrder = null;
+                GlobalVariable.arrayCart= null;
                 checkLogin();
 
                 finish();
