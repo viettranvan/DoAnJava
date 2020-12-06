@@ -3,6 +3,8 @@ package com.example.doancuoiky.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +32,8 @@ public class OrderDetailAdapter extends BaseAdapter{
     Context myContext;
     int myLayout;
     List<OrderDetail> myOrderProductList;
-    TextView productNameOrderDetail,productDescriptionOrderDetail,productPriceOrderDetail,productCountOrderDetail;
+    TextView productNameOrderDetail,productDescriptionOrderDetail,productCountOrderDetail;
+    TextView productPriceOrderDetail,tvProductSalePercent, tvProductPriceSale;
     ImageView imgProductOrderDetail;
     Product product;
     Button btnGotoDetail;
@@ -87,6 +90,8 @@ public class OrderDetailAdapter extends BaseAdapter{
         productCountOrderDetail = view.findViewById(R.id.product_quantity_order_detail);
         imgProductOrderDetail = view.findViewById(R.id.img_product_order_detail);
         btnGotoDetail = view.findViewById(R.id.btn_product_detail_order_detail);
+        tvProductSalePercent = view.findViewById(R.id.tv_product_price_sale_percent_order_detail);
+        tvProductPriceSale = view.findViewById(R.id.tv_product_price_sale_order_detail);
 
         String id_product = myOrderProductList.get(i).getId_product();
         for(int index = 0;index < GlobalVariable.arrayProduct.size();index++){
@@ -112,6 +117,24 @@ public class OrderDetailAdapter extends BaseAdapter{
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
         String _price = decimalFormat.format(product.getProductPrice()) + " đ";
         productPriceOrderDetail.setText(_price);
+
+        int price_sale = (product.getProductPrice() /100) * product.getSale();
+        String salePercent = "-" + product.getSale() + "%";
+        String sale = decimalFormat.format(product.getProductPrice() - price_sale) + " đ";
+
+        if(product.getSale() == 0){
+            tvProductPriceSale.setVisibility(View.GONE);
+            tvProductSalePercent.setVisibility(View.GONE);
+        }else{
+            productPriceOrderDetail.setPaintFlags(productPriceOrderDetail.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            productPriceOrderDetail.setTextColor(Color.rgb(0,0,0));
+            productPriceOrderDetail.setTextSize(14f);
+            tvProductSalePercent.setText(salePercent);
+            tvProductSalePercent.setVisibility(View.VISIBLE);
+
+            tvProductPriceSale.setVisibility(View.VISIBLE);
+            tvProductPriceSale.setText(sale);
+        }
 
         String _count = myOrderProductList.get(i).getQuanlity() + "";
         productCountOrderDetail.setText(_count);
