@@ -13,6 +13,7 @@ This application will solve problems so that customers can order for themselves 
 - Open terminal, cd to folder `api` (back-end/api)
 - Type `node server.js` to connected to the database
 - Open android studio, wait to android studio build project
+- Change your IPv4 address in GlobalVariable.java (variavle: localhost)
 
 
 # Auhtor
