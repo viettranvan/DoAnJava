@@ -2,8 +2,6 @@ package com.example.doancuoiky.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.solver.GoalRow;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -13,7 +11,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,11 +42,8 @@ import com.example.doancuoiky.R;
 import com.example.doancuoiky.adapter.ViewPagerAdapter;
 import com.example.doancuoiky.fragment.HomeFragment;
 import com.example.doancuoiky.fragment.ProductFragment;
-import com.example.doancuoiky.modal.Order;
-import com.example.doancuoiky.modal.PhotoProduct;
 import com.example.doancuoiky.modal.Product;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +51,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -90,15 +83,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         anhXa();
 
-        for(int i = 0;i < GlobalVariable.arrayProduct.size();i++){
-            Log.d("TAGSALE", "sale => " + GlobalVariable.arrayProduct.get(i).getProductName() + " :"
-                    + GlobalVariable.arrayProduct.get(i).getSale());
-        }
-
         setUpViewPager(); /*chuyển trang bằng cách click vào icon hoặc vuốt*/
 
         actionToolBar(); // toolbar, mở drawer menu
 
+        // gắn sự kiện click cho mỗi item trong menu
         menuNavigationView.setNavigationItemSelectedListener(this);
 
         if (GlobalVariable.arrayCart.size() > 0) {
@@ -136,12 +125,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initData() {
-
         if (GlobalVariable.arrayCart == null) {
             GlobalVariable.arrayCart = new ArrayList<>();
-//            GlobalVariable.arrayCart.add(new Cart("00a","001","test","4gb","small",100000,R.drawable.meow,1));
         }
-
 
         if (GlobalVariable.arrayProfile == null) {
             GlobalVariable.arrayProfile = new ArrayList<>();
@@ -150,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (GlobalVariable.arrayProduct == null) {
             GlobalVariable.arrayProduct = new ArrayList<>();
         }
-
 
         if (GlobalVariable.arrayMobile == null) {
             GlobalVariable.arrayMobile = new ArrayList<>();
@@ -181,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-
 
     private void setDataProfile() {
 

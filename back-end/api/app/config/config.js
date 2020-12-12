@@ -1,8 +1,8 @@
 module.exports = {
     HOST: 'localhost',
     USER: 'root',
-    PASSWORD: 'hung9xpro',
-    DB: 'javaproject',
+    PASSWORD: 'hung9xpro', // yout password
+    DB: 'fixdatajava', // your database name
     pool: {
         max: 5,
         min: 0,

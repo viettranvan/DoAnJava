@@ -378,7 +378,7 @@ public class ProductFragment extends Fragment  {
         else if(filterPrice.equals("TYPE4")){
             // trên 20 triệu
             cvFilterPrice.setVisibility(View.VISIBLE);
-            tvFilterPrice.setText(getString(R.string.text_filter_price_type1));
+            tvFilterPrice.setText(getString(R.string.text_filter_price_type3));
         }
 
     }
@@ -495,6 +495,10 @@ public class ProductFragment extends Fragment  {
     private void noSort(){
         mArrayProduct.clear();
         mArrayProduct.addAll(GlobalVariable.arrayProduct);
+        tvFilterPrice.setText("");
+        tvFilterType.setText("");
+        cvFilterType.setVisibility(View.GONE);
+        cvFilterPrice.setVisibility(View.GONE);
         productAdapter.notifyDataSetChanged();
     }
 
@@ -503,7 +507,10 @@ public class ProductFragment extends Fragment  {
         Collections.sort(mArrayProduct, new Comparator<Product>() {
             @Override
             public int compare(Product product1, Product product2) {
-                return Integer.compare(product2.getProductPrice(), product1.getProductPrice());
+
+                int firstPrice = product1.getProductPrice() - (product1.getProductPrice()/100)*product1.getSale();
+                int secondPrice = product2.getProductPrice() - (product2.getProductPrice()/100)*product2.getSale();
+                return Integer.compare(secondPrice , firstPrice);
             }
         });
         productAdapter.notifyDataSetChanged();
@@ -514,7 +521,10 @@ public class ProductFragment extends Fragment  {
         Collections.sort(mArrayProduct, new Comparator<Product>() {
             @Override
             public int compare(Product product1, Product product2) {
-                return Integer.compare(product1.getProductPrice(), product2.getProductPrice());
+                int firstPrice = product1.getProductPrice() - (product1.getProductPrice()/100)*product1.getSale();
+                int secondPrice = product2.getProductPrice() - (product2.getProductPrice()/100)*product2.getSale();
+//                return Integer.compare(product1.getProductPrice() , product2.getProductPrice());
+                return Integer.compare(firstPrice , secondPrice);
             }
         });
         productAdapter.notifyDataSetChanged();

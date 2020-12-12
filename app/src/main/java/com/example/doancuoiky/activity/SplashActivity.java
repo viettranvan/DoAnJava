@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private Button btnGotoLogin,btnGotoMain;
+    private Button btnGotoLogin, btnGotoMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +47,13 @@ public class SplashActivity extends AppCompatActivity {
         btnGotoMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
             }
         });
         btnGotoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             }
         });
     }
@@ -64,126 +64,115 @@ public class SplashActivity extends AppCompatActivity {
 
         if (GlobalVariable.arrayProduct == null) {
             GlobalVariable.arrayProduct = new ArrayList<>();
-//            loadDataFromServer();
         }
     }
 
     public void loadDataFromServer() {
         GlobalVariable.arrayProduct.clear();
-        Log.d("TESTTAG", "vo dc day1");
         StringRequest request = new StringRequest(StringRequest.Method.GET, GlobalVariable.PRODUCT_URL,
                 new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject object = new JSONObject(response);
-                    JSONArray data = object.getJSONArray("data");
-                    for(int i = 0;i < data.length();i++){
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            JSONArray data = object.getJSONArray("data");
+                            for (int i = 0; i < data.length(); i++) {
 
-                        JSONObject result = (JSONObject) data.get(i);
+                                JSONObject result = (JSONObject) data.get(i);
 
-                        final String id_product = result.getString("id_product");
-                        final String product_name = result.getString("product_name");
-                        final String price = result.getString("price");
-                        final String product_type = result.getString("product_type");
-                        final String desciption = result.getString("desciption");
-                        final String sale = result.getString("sale");
-                        final String productImage = result.getString("link");
+                                final String id_product = result.getString("id_product");
+                                final String product_name = result.getString("product_name");
+                                final String price = result.getString("price");
+                                final String product_type = result.getString("product_type");
+                                final String desciption = result.getString("desciption");
+                                final String sale = result.getString("sale");
+                                final String productImage = result.getString("link");
 
-                        StringRequest request2 = new StringRequest(StringRequest.Method.POST,
-                                GlobalVariable.GET_PRODUCT_RATE_URL, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    Log.d("SIZEPD", "size:=> " + GlobalVariable.arrayProduct.size());
-                                    JSONObject object = new JSONObject(response);
-                                    JSONArray data = object.getJSONArray("data");
-                                    int oneStar = 0, twoStar = 0, threeStar = 0, fourStar = 0, fiveStar = 0, totalRate = 0, numberOfRate = 0;
-                                    for (int i = 0; i < data.length(); i++) {
-                                        JSONObject obj = (JSONObject) data.get(i);
+                                StringRequest request2 = new StringRequest(StringRequest.Method.POST,
+                                        GlobalVariable.GET_PRODUCT_RATE_URL, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            JSONObject object = new JSONObject(response);
+                                            JSONArray data = object.getJSONArray("data");
+                                            int oneStar = 0, twoStar = 0, threeStar = 0, fourStar = 0, fiveStar = 0, totalRate = 0, numberOfRate = 0;
+                                            for (int i = 0; i < data.length(); i++) {
+                                                JSONObject obj = (JSONObject) data.get(i);
 
-                                        int rate = Integer.parseInt(obj.getString("rate"));
+                                                int rate = Integer.parseInt(obj.getString("rate"));
 
-                                        switch (rate) {
-                                            case 1:
-                                                oneStar++;
-                                                break;
-                                            case 2:
-                                                twoStar++;
-                                                break;
-                                            case 3:
-                                                threeStar++;
-                                                break;
-                                            case 4:
-                                                fourStar++;
-                                                break;
-                                            case 5:
-                                                fiveStar++;
-                                                break;
+                                                switch (rate) {
+                                                    case 1:
+                                                        oneStar++;
+                                                        break;
+                                                    case 2:
+                                                        twoStar++;
+                                                        break;
+                                                    case 3:
+                                                        threeStar++;
+                                                        break;
+                                                    case 4:
+                                                        fourStar++;
+                                                        break;
+                                                    case 5:
+                                                        fiveStar++;
+                                                        break;
+                                                }
+                                                totalRate += rate;
+                                            }
+
+                                            // số người đánh giá
+                                            numberOfRate = oneStar + twoStar + threeStar + fourStar + fiveStar;
+
+
+                                            if (numberOfRate == 0) {
+                                                if (sale.equals("null") || sale.equals("0")) {
+                                                    GlobalVariable.arrayProduct.add(new Product(id_product, product_type, product_name,
+                                                            desciption, Integer.parseInt(price), productImage, 0f, 0));
+                                                } else {
+                                                    GlobalVariable.arrayProduct.add(new Product(id_product, product_type, product_name,
+                                                            desciption, Integer.parseInt(price), productImage, 0f, Integer.parseInt(sale)));
+                                                }
+                                            } else {
+                                                float percent = (float) totalRate / numberOfRate;
+                                                if (sale.equals("null") || sale.equals("0")) {
+                                                    GlobalVariable.arrayProduct.add(new Product(id_product, product_type, product_name,
+                                                            desciption, Integer.parseInt(price), productImage, percent, 0));
+                                                } else {
+                                                    GlobalVariable.arrayProduct.add(new Product(id_product, product_type, product_name,
+                                                            desciption, Integer.parseInt(price), productImage, percent, Integer.parseInt(sale)));
+                                                }
+                                            }
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
                                         }
-                                        totalRate += rate;
                                     }
-
-                                    // số người đánh giá
-                                    numberOfRate = oneStar + twoStar + threeStar + fourStar + fiveStar;
-
-
-                                    if(numberOfRate == 0){
-                                        if(sale.equals("null") ||  sale.equals("0")){
-                                            GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
-                                                    desciption,Integer.parseInt(price),productImage,0f,0));
-                                        }else{
-                                            GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
-                                                    desciption,Integer.parseInt(price),productImage,0f,Integer.parseInt(sale)));
-                                        }
-                                    }else{
-                                        float percent = (float)totalRate/numberOfRate;
-                                        if(sale.equals("null") ||  sale.equals("0")){
-                                            GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
-                                                    desciption,Integer.parseInt(price),productImage,percent,0));
-                                        }else{
-                                            GlobalVariable.arrayProduct.add(new Product(id_product,product_type,product_name,
-                                                    desciption,Integer.parseInt(price),productImage,percent,Integer.parseInt(sale)));
-                                        }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
                                     }
+                                }) {
+                                    @Override
+                                    protected Map<String, String> getParams() throws AuthFailureError {
+                                        Map<String, String> params = new HashMap<>();
+                                        params.put("id_product", id_product);
+                                        return params;
+                                    }
+                                };
+                                RequestQueue queue2 = Volley.newRequestQueue(SplashActivity.this);
+                                queue2.add(request2);
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    Log.d("SIZEPD", "error:=> " + GlobalVariable.arrayProduct.size());
-                                }
                             }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("TAGTEST", "onErrorResponse: ");
-                                Log.d("SIZEPD", "error:=> " + GlobalVariable.arrayProduct.size());
-                            }
-                        }) {
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> params = new HashMap<>();
-                                params.put("id_product", id_product);
-                                return params;
-                            }
-                        };
-                        RequestQueue queue2 = Volley.newRequestQueue(SplashActivity.this);
-                        queue2.add(request2);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
-                    Log.d("TESTTAG", "vo dc day2");
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("TESTTAG", "vo dc day3" + e.toString());
-                }
-
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("TAG1", "onErrorResponse: " + error.toString());
-                Log.d("TESTTAG", "vo dc day4");
             }
         });
 

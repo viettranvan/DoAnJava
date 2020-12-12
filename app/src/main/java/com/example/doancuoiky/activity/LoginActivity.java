@@ -53,9 +53,6 @@ public class LoginActivity extends AppCompatActivity {
 
         anhXa();
 
-
-
-
         validateUsername();
         validatePassword();
 
@@ -65,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(checkData()){
                     onLogin();
-
                 }
                 else {
                     setError();
@@ -201,10 +197,8 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                                 dialog.dismiss();
                             }
-                        }, 2000); // 3000 milliseconds delay
-
+                        }, 2000); // 2000 milliseconds delay
                     }
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -215,9 +209,7 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác!2",Toast.LENGTH_LONG ).show();
-                Log.d("TAG1", "data user => " + textInputUsername.getText().toString() + "\n"+
-                        textInputPassword.getText().toString());
+                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác!",Toast.LENGTH_LONG ).show();
             }
         }){
 
@@ -227,7 +219,6 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("loginname", textInputUsername.getText().toString().trim());
                 params.put("userpassword", textInputPassword.getText().toString().trim());
-
 
                 return params;
             }
@@ -247,7 +238,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void retry(VolleyError error) throws VolleyError {
+            public void retry(VolleyError error) {
 
             }
         });
