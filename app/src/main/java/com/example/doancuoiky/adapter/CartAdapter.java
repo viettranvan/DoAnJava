@@ -183,7 +183,6 @@ public class CartAdapter extends BaseAdapter{
             cartProductPriceSale.setVisibility(View.VISIBLE);
             cartProductPriceSale.setText(sale);
 
-
         }
 
 

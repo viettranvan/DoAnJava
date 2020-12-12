@@ -1,21 +1,13 @@
 package com.example.doancuoiky.activity;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,16 +26,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.doancuoiky.GlobalVariable;
 import com.example.doancuoiky.R;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -128,6 +117,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         String getDate = GlobalVariable.arrayProfile.get(GlobalVariable.INDEX_BIRTHDAY);
         int YEAR , MONTH , DATE ;
+
         if(getDate.length() > 0){
             getDate = GlobalVariable.formatDateInVN(getDate);
             YEAR = Integer.parseInt(getDate.substring(6, 10));
@@ -178,6 +168,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         avatar = findViewById(R.id.img_avatar_change_info);
         openFile = findViewById(R.id.img_open_folder);
 
+        // gán giá trị
         String[] listAvatarName = getResources().getStringArray(R.array.list_avatar);
         arrayListAvatar = new ArrayList<>(Arrays.asList(listAvatarName));
 
@@ -273,7 +264,6 @@ public class ChangeInfoActivity extends AppCompatActivity {
                                 builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        Log.d("TAGBIRTH", "onClick: " + _birthday);
                                     }
                                 });
                                 builder.show();
@@ -281,20 +271,17 @@ public class ChangeInfoActivity extends AppCompatActivity {
                             else{
                                 Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại1",
                                         Toast.LENGTH_LONG).show();
-                                Log.d("TAG1", "error1: ");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại2 => " + e.toString(), Toast.LENGTH_SHORT).show();
-                            Log.d("TAG1", "error: => " + e.toString());
+                            Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại => " + e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại3",
+                Toast.makeText(ChangeInfoActivity.this, "Cập nhật thất bại",
                         Toast.LENGTH_LONG).show();
-                Log.d("TAG1", "error2: => " + error.toString());
 
             }
         }){

@@ -47,7 +47,7 @@ public class GlobalVariable {
     public static final String PHONE_PATTERN  = "0[0-9]{9,10}";
 
 
-    private static final String localhost = "http://192.168.2.103:5000/";
+    private static final String localhost = "http://192.168.2.105:5000/";
     public static final String LOGIN_URL = localhost + "api/login";
     public static final String USER_INFO_URL = localhost + "api/user";
     public static final String USER_SIGN_UP_URL = localhost + "api/user";

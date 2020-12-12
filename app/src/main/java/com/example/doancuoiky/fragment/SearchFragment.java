@@ -172,6 +172,7 @@ public class SearchFragment extends Fragment {
         adapterSuggestion = new ProductSuggestionAdapter(getContext(),GlobalVariable.arraySuggestion);
         rcvSuggestion.setAdapter(adapterSuggestion);
 
+
     }
 
     // them icon search len thanh toolbar
@@ -181,6 +182,7 @@ public class SearchFragment extends Fragment {
 
 //        // auto focus search
         menu.findItem(R.id.ic_search_toolbar).expandActionView();
+        layoutSuggestion.setVisibility(View.GONE);
 
         MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {
             @Override
@@ -193,7 +195,7 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 //Collapse
-
+                layoutSuggestion.setVisibility(View.GONE);
                 return true;
             }
         };
